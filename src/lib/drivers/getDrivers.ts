@@ -3,6 +3,8 @@ import querystring from 'querystring';
 import { URL_BACKEND } from '@utils/utils';
 import { DriversSearchData } from 'DriversTypes';
 
+//
+
 export async function getDriver(cpf_cnpj: string) {
   try {
     const response = await fetch(`${URL_BACKEND}/drivers/${cpf_cnpj}`, {
