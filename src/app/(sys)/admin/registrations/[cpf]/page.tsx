@@ -12,7 +12,7 @@ import {
   driversStatusRFKeys,
 } from '@/lib/utils/driversConstants';
 import { timestampToBR } from '@/lib/utils/utils';
-import RiskManangerButton from './components/RiskManangerButton';
+import TabsPage from './components/TabsPage';
 
 export const dynamic = 'force-dynamic';
 
@@ -76,11 +76,9 @@ export default async function registrationPage({ params }: DataType) {
         </div>
       </div>
 
-      <div className="mb-4">
-        <RiskManangerButton />
-      </div>
+      <TabsPage cpf_cnpj={params.cpf} />
 
-      <div className="pb-10">
+      <div className="pb-10 pt-5 bg-rede-gray-800">
         <RegistrationData registration={registration.data} />
       </div>
     </div>

@@ -10,6 +10,7 @@ type DataType = {
   setValue: any;
   isLoading?: boolean;
   setIsLoading?: any;
+  value?: string;
 };
 
 export default function CepMaskedInput({
@@ -19,8 +20,9 @@ export default function CepMaskedInput({
   setValue,
   isLoading,
   setIsLoading,
+  value,
 }: DataType) {
-  const [mask, setMask] = useState('99999-999');
+  const mask = '99999-999';
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const text = event.target.value;
@@ -58,7 +60,7 @@ export default function CepMaskedInput({
 
       <div className="mt-1">
         <InputMask
-          {...register(name, {
+          {...register('address_zip_code', {
             required: 'CEP é obrigatório',
             maxLength: {
               value: 9,
@@ -77,6 +79,7 @@ export default function CepMaskedInput({
           maskChar=""
           placeholder="00000-000"
           type="text"
+          defaultValue={value}
           className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
         />
         {errors[name] && (
