@@ -14,14 +14,21 @@ export default function RegistrationData({ registration }: DataType) {
     useState<Registration>(registration);
 
   const [tab, setTab] = useState<'data' | 'edit'>('data');
+  const [isSaved, setIsSaved] = useState(false);
 
   return tab == 'data' ? (
-    <RegistrationInfo registration={currentRegistration} setTab={setTab} />
+    <RegistrationInfo
+      registration={currentRegistration}
+      setTab={setTab}
+      isSaved={isSaved}
+      setIsSaved={setIsSaved}
+    />
   ) : (
     <RegistrationEdit
       registration={currentRegistration}
       setCurrentRegistration={setCurrentRegistration}
       setTab={setTab}
+      setIsSaved={setIsSaved}
     />
   );
 }

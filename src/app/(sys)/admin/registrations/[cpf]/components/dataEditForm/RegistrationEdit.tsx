@@ -8,22 +8,19 @@ import { useRouter } from 'next/navigation';
 
 import DriverData from './form-steps/DriverData';
 import DriverAddress from './form-steps/DriverAddress';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { AiOutlineLoading3Quarters, AiFillCloseCircle } from 'react-icons/ai';
+import { BiArrowBack } from 'react-icons/bi';
 import { FaRegSave, FaUserEdit } from 'react-icons/fa';
 import VehicleData from './form-steps/VehicleData';
 import { Registration } from 'RegistrationsTypes';
-import { newRegistration } from '@/lib/registrations/newRegistrations';
-import { format } from 'path';
-import {
-  formatCPFCNPJ,
-  formatPhone,
-  formatPlate,
-  formatZipCode,
-} from '@/lib/utils/utils';
+
+import { formatPhone, formatPlate, formatZipCode } from '@/lib/utils/utils';
+import { alterRegistration } from '@/lib/registrations/alterRegistrations';
 
 type DataType = {
   registration: Registration;
   setCurrentRegistration: React.Dispatch<React.SetStateAction<any>>;
+  setIsSaved: React.Dispatch<React.SetStateAction<boolean>>;
   setTab: React.Dispatch<React.SetStateAction<'data' | 'edit'>>;
 };
 
@@ -31,6 +28,7 @@ export default function RegistrationEdit({
   registration,
   setCurrentRegistration,
   setTab,
+  setIsSaved,
 }: DataType) {
   const [isLoading, setIsLoading] = useState(false);
   const [saveError, setSaveError] = useState('');
@@ -66,18 +64,25 @@ export default function RegistrationEdit({
 
   const onSubmit = (data: Registration) => {
     setIsLoading(true);
-    const dataNew: Registration = {
-      ...data,
-    };
 
-    // newRegistration(dataNew).then((data: ApiReturn<Driver>) => {
-    //   if (data.return == 'error') {
-    //     setSaveError(data.message || 'Erro. Contate o administrador!');
-    //     setIsLoading(false);
-    //   } else {
-    //     router.replace(`/admin/registrations/${data.data?.driver_cpf_cnpj}`);
-    //   }
-    // });
+    alterRegistration(registration.driver_cpf_cnpj as string, data)
+      .then((data: ApiReturn<Driver>) => {
+        setIsLoading(false);
+
+        if (data.return == 'error') {
+          throw new Error(data.message || 'Erro. Contate o administrador!');
+        } else {
+          setCurrentRegistration(data.data);
+          setTab('data');
+          setIsSaved(true);
+          // router.push(`/admin/registrations/${data.data?.driver_cpf_cnpj}`);
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setIsSaved(false);
+        setSaveError(error.message || 'Erro. Contate o administrador!');
+      });
   };
 
   return (
@@ -112,38 +117,47 @@ export default function RegistrationEdit({
       </div>
 
       <div className="flex justify-between">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className={
-            `inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-4 text-white hover:bg-rede-green-400 dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900` +
-            (isLoading ? ' bg-rede-gray-400' : ' bg-rede-green')
-          }
-        >
-          {isLoading ? (
-            <AiOutlineLoading3Quarters className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900 animate-spin " />
-          ) : (
-            <FaRegSave className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900" />
-          )}
-          <span>SALVAR</span>
-        </button>
+        <div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={
+              `mr-2 inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-4 text-white hover:bg-rede-green-400 dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900` +
+              (isLoading ? ' bg-rede-gray-400' : ' bg-rede-green')
+            }
+          >
+            {isLoading ? (
+              <AiOutlineLoading3Quarters className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900 animate-spin " />
+            ) : (
+              <FaRegSave className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900" />
+            )}
+            <span>SALVAR</span>
+          </button>
 
-        <button
-          type="button"
-          onClick={() => setTab('data')}
-          disabled={isLoading}
-          className={
-            `inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-6 text-white hover:bg-rede-red-600 dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900 ` +
-            (isLoading ? ' bg-rede-gray-400' : ' bg-rede-red-500')
-          }
-        >
-          {isLoading ? (
-            <AiOutlineLoading3Quarters className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900 animate-spin " />
-          ) : (
-            <FaUserEdit className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900" />
+          {!isLoading && (
+            <button
+              type="button"
+              onClick={() => setTab('data')}
+              className={`inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-6 text-white hover:bg-rede-blue-400 dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900 bg-rede-blue`}
+            >
+              <BiArrowBack className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900" />
+              <span>VOLTAR</span>
+            </button>
           )}
-          <span>CANCELAR</span>
-        </button>
+        </div>
+
+        <div>
+          {!isLoading && (
+            <button
+              type="button"
+              onClick={() => setTab('data')}
+              className={`inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-6 text-white hover:bg-rede-red-600 dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900 bg-rede-red-500`}
+            >
+              <AiFillCloseCircle className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900" />
+              <span>EXCLUIR PRÉ-CADASTRO</span>
+            </button>
+          )}
+        </div>
       </div>
     </form>
   );

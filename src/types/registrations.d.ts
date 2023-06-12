@@ -2,7 +2,7 @@ declare module 'RegistrationsTypes' {
   export interface Registration {
     registration_id?: number;
     driver_name: string;
-    driver_cpf_cnpj: string;
+    driver_cpf_cnpj?: string;
     driver_telephone: string;
     driver_email: string;
     vehicle_license_plate: string;

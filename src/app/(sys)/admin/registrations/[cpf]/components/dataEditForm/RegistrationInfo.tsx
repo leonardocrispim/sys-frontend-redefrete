@@ -1,3 +1,4 @@
+import FeedbackSuccess from '@/components/utils/feedbacks/FeedbackSuccess';
 import {
   formatCPFCNPJ,
   formatPhone,
@@ -10,15 +11,24 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaUserEdit } from 'react-icons/fa';
 
 type DataType = {
+  isSaved: boolean;
   registration: Registration;
   setTab: React.Dispatch<React.SetStateAction<'data' | 'edit'>>;
+  setIsSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function RegistrationInfo({ registration, setTab }: DataType) {
+export default function RegistrationInfo({
+  registration,
+  setTab,
+  isSaved,
+  setIsSaved,
+}: DataType) {
   const isLoading = false;
 
   return (
     <>
+      {isSaved && <FeedbackSuccess text="Dados salvos com sucesso!" />}
+
       <div className="border rounded-md p-4 mb-6 bg-white">
         <div className="mb-6">
           <h2 className="font-semibold text-gray-800 text-xl underline-offset-8 underline">
@@ -37,7 +47,7 @@ export default function RegistrationInfo({ registration, setTab }: DataType) {
               CPF/CNPJ
             </div>
             <div className="text-sm font-medium  text-rede-gray-200">
-              {formatCPFCNPJ(registration.driver_cpf_cnpj)}
+              {formatCPFCNPJ(registration.driver_cpf_cnpj as string)}
             </div>
           </div>
           <div>
@@ -146,7 +156,10 @@ export default function RegistrationInfo({ registration, setTab }: DataType) {
       <div className="flex justify-end">
         <button
           type="button"
-          onClick={() => setTab('edit')}
+          onClick={() => {
+            setTab('edit');
+            setIsSaved(false);
+          }}
           disabled={isLoading}
           className={
             `inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-6 text-white hover:bg-rede-yellow dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900 ` +
