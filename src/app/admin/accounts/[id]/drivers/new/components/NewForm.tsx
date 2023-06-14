@@ -11,10 +11,7 @@ import { Driver } from 'DriversTypes';
 import FeedbackError from '@/components/utils/feedbacks/FeedbackError';
 import { ApiReturn } from 'UtilsTypes';
 import { useRouter } from 'next/navigation';
-import {
-  AiOutlineCheckSquare,
-  AiOutlineLoading3Quarters,
-} from 'react-icons/ai';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 type FormValues = {
   driver_name: string;
@@ -23,7 +20,11 @@ type FormValues = {
   driver_telephone: string;
 };
 
-export default function newForm() {
+type PropsType = {
+  account_id: number;
+};
+
+export default function newForm({ account_id }: PropsType) {
   const [isLoading, setIsLoading] = useState(false);
   const [saveError, setSaveError] = useState('');
 
@@ -41,8 +42,9 @@ export default function newForm() {
     setIsLoading(true);
     const dataNew: Driver = {
       ...data,
-      driver_status: 'APROVADO',
-      driver_status_gr: 'APROVADO',
+      account_id: account_id,
+      driver_status: 'NOVO_CADASTRO',
+      driver_status_gr: 'NAO_ENVIADO',
       created_by: session?.userdata.user_id,
     };
     newDriver(dataNew).then((data: ApiReturn<Driver>) => {
@@ -50,7 +52,9 @@ export default function newForm() {
         setSaveError(data.message || 'Erro. Contate o administrador!');
         setIsLoading(false);
       } else {
-        router.replace(`/admin/drivers/${data.data?.driver_cpf_cnpj}`);
+        router.push(
+          `/admin/accounts/${account_id}/drivers/${data.data?.driver_cpf_cnpj}`
+        );
       }
     });
   };
@@ -60,7 +64,7 @@ export default function newForm() {
       <div className="border rounded-md p-4">
         {saveError.length > 0 && <FeedbackError text={saveError} />}
 
-        <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-6">
+        <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-4">
           <div className="sm:col-span-2">
             <label className="block text-sm font-medium leading-6 text-gray-900">
               Nome Completo<sup className="text-red-700">*</sup>
@@ -90,7 +94,7 @@ export default function newForm() {
             )}
           </div>
 
-          <div>
+          <div className="sm:col-span-2">
             <CpfMaskedInput
               setValue={setValue}
               name="driver_cpf_cnpj"
@@ -98,7 +102,7 @@ export default function newForm() {
               errors={errors}
             />
           </div>
-          <div>
+          <div className="sm:col-span-2">
             <TelephoneMaskedInput
               setValue={setValue}
               name="driver_telephone"
@@ -134,7 +138,7 @@ export default function newForm() {
               )}
             </div>
           </div>
-          <div>
+          <div className="pt-4">
             <button
               type="submit"
               disabled={isLoading}

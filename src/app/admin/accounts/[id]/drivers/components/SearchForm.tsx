@@ -1,16 +1,6 @@
-'use client';
-
 import { AiOutlineSearch } from 'react-icons/ai';
 
-import {
-  useState,
-  useEffect,
-  useCallback,
-  Dispatch,
-  SetStateAction,
-} from 'react';
-
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { Dispatch, SetStateAction } from 'react';
 
 import { useForm } from 'react-hook-form';
 
@@ -27,7 +17,6 @@ export default function SearchForm({ search, setSearch }: DataType) {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<FormData>();
 
@@ -38,7 +27,7 @@ export default function SearchForm({ search, setSearch }: DataType) {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
           <div className="sm:col-span-3">
             <input
               {...register('s')}

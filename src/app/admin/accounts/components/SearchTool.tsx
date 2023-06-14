@@ -1,21 +1,19 @@
 'use client';
-import { Driver, DriversSearchData } from 'DriversTypes';
-import LineDriver from './LineDriver';
-import { ApiReturn } from 'UtilsTypes';
-import Paginate from '@/components/utils/Paginate';
-import FeedbackInfo from '@/components/utils/feedbacks/FeedbackInfo';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { getDrivers } from '@/lib/drivers/getDrivers';
 import { useEffect, useState } from 'react';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import SearchForm from './SearchForm';
+import SearchListTable from './SearchListTable';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { getRegistrations } from '@/lib/registrations/getRegistrations';
+import { ApiReturn } from 'UtilsTypes';
+import FeedbackInfo from '@/components/utils/feedbacks/FeedbackInfo';
 import FeedbackError from '@/components/utils/feedbacks/FeedbackError';
+import Paginate from '@/components/utils/Paginate';
+import { Account } from 'AccountsTypes';
+import { getAccounts } from '@/lib/accounts/getAccounts';
 
-type DataProps = {
-  //  drivers: ApiReturn<Driver[]>;
-};
+export default function SearchTool() {
+  const [isLoading, setIsLoading] = useState(false);
 
-export default function ListTable() {
   const itemsPerPage = 20;
 
   const searchParams = useSearchParams();
@@ -24,8 +22,7 @@ export default function ListTable() {
   const [totalItems, setTotalItems] = useState<number>(0);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [drivers, setDrivers] = useState<Driver[] | undefined | null>();
+  const [accounts, setAccounts] = useState<Account[] | undefined | null>();
 
   const pathname = usePathname();
 
@@ -38,25 +35,27 @@ export default function ListTable() {
     searchParams.get('s') || ''
   );
 
-  function searchDrivers() {
-    setDrivers(null);
+  function searchAccounts() {
+    setAccounts(null);
     setIsError(false);
     setIsEmpty(false);
     setIsLoading(true);
 
-    getDrivers({
+    getAccounts({
       s: search,
       skip: currentPage * itemsPerPage,
       take: itemsPerPage,
     })
-      .then((data: ApiReturn<Driver[]>) => {
+      .then((data: ApiReturn<Account[]>) => {
+        console.log(data);
+
         if (data.return == 'success') {
           if (data.data && data.data.length == 0) {
             setIsEmpty(true);
             setTotalItems(0);
           } else {
             setTotalItems(Number(data.count_total));
-            setDrivers(data.data);
+            setAccounts(data.data);
           }
         } else {
           setTotalItems(0);
@@ -65,6 +64,9 @@ export default function ListTable() {
 
         route.push(pathname + `?s=${search}&page=${currentPage}`);
       })
+      .catch(() => {
+        setIsError(true);
+      })
       .finally(() => {
         setIsLoading(false);
       });
@@ -72,42 +74,42 @@ export default function ListTable() {
 
   useEffect(() => {
     if (search == searchBack) {
-      searchDrivers();
+      searchAccounts();
     }
   }, [currentPage]);
 
   useEffect(() => {
     setCurrentPage(0);
     setSearchBack(search);
-    searchDrivers();
+    searchAccounts();
   }, [search]);
 
   return (
-    <div>
-      <div className="mb-4">
-        <SearchForm search={search} setSearch={setSearch} />
+    <>
+      <div className="mb-6">
+        <SearchForm
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          search={search}
+          setSearch={setSearch}
+        />
       </div>
 
-      {isLoading && (
-        <p className="p-2 rounded-md border text-xl flex items-center text-rede-gray-400 bg-rede-gray-800 border-rede-gray-700 mb-4">
-          <AiOutlineLoading3Quarters className="mr-1 animate-spin h-4 w-4 text-rede-gray-400" />{' '}
-          Carregando...
-        </p>
-      )}
-      {drivers &&
-        drivers.map((driver: Driver) => (
-          <LineDriver key={driver.driver_cpf_cnpj} driver={driver} />
-        ))}
-
       {isEmpty && (
-        <FeedbackInfo text="Nenhum motorista encontrado, por favor refaça a busca!" />
+        <FeedbackInfo text="Nenhum pré cadastro encontrado, por favor refaça a busca!" />
       )}
 
       {isError && (
         <FeedbackError text="Houve um erro de conexão, por favor tente mais tarde!" />
       )}
 
-      {!isLoading && (
+      <SearchListTable
+        accounts={accounts}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+      />
+
+      {!isLoading && !isError && !isEmpty && (
         <div className="flex justify-end mt-4 pb-20">
           <Paginate
             currentPage={currentPage}
@@ -117,6 +119,6 @@ export default function ListTable() {
           />
         </div>
       )}
-    </div>
+    </>
   );
 }

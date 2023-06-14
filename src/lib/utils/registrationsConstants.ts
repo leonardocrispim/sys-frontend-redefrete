@@ -7,19 +7,19 @@ export const tabsPages = [
     name: 'Dados do Motorista',
     href: '',
     icon: BiUser,
-    current: true,
+    current: 'data',
   },
   {
     name: 'Documentos',
     href: '/documents',
     icon: BsPersonVcard,
-    current: false,
+    current: 'documents',
   },
   {
     name: 'Histórico',
     href: '/history',
     icon: AiOutlineUnorderedList,
-    current: false,
+    current: 'history',
   },
 ];
 

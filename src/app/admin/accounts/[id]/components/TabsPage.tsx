@@ -1,34 +1,42 @@
-import { BsPersonVcard } from 'react-icons/bs';
-import { BiUser } from 'react-icons/bi';
-import { AiOutlineUnorderedList } from 'react-icons/ai';
-import { tabsPages } from '@utils/registrationsConstants';
+'use client';
+import { classNames } from '@/lib/utils/utils';
+import { tabsPages } from '@utils/accountsConstants';
 import Link from 'next/link';
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
+import { useRouter } from 'next/navigation';
 
 type PropsType = {
-  cpf_cnpj: string;
+  account_id: number;
+  current: string;
 };
 
-export default function TabsPage({ cpf_cnpj }: PropsType) {
+export default function TabsPage({ account_id, current }: PropsType) {
+  const router = useRouter();
+
+  const currentPage = tabsPages.find((tab) => tab.current == current);
+
+  const currentLink = currentPage
+    ? `/admin/accounts/${account_id}${currentPage.href}`
+    : '';
+
   return (
     <div>
       <div className="sm:hidden">
-        <label htmlFor="tabs" className="sr-only">
-          Selecione um Menu
-        </label>
-        {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
         <select
           id="tabs"
           name="tabs"
-          className="block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-          //@ts-ignore
-          defaultValue={tabsPages.find((tab) => tab.current).name}
+          className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
+          onChange={(e) => {
+            router.push(e.target.value);
+          }}
+          defaultValue={currentLink}
         >
           {tabsPages.map((tab) => (
-            <option key={tab.name}>{tab.name}</option>
+            <option
+              key={tab.name}
+              value={`/admin/accounts/${account_id}${tab.href}`}
+            >
+              {tab.name}
+            </option>
           ))}
         </select>
       </div>
@@ -39,10 +47,10 @@ export default function TabsPage({ cpf_cnpj }: PropsType) {
               return (
                 <Link
                   key={tab.name}
-                  href={`/admin/registrations/${cpf_cnpj}${tab.href}`}
+                  href={`/admin/accounts/${account_id}${tab.href}`}
                   className={classNames(
-                    tab.current
-                      ? 'border-indigo-500 text-indigo-600'
+                    tab.current == current
+                      ? 'border-rede-red-300 text-rede-red-300'
                       : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
                     'group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium'
                   )}
@@ -50,8 +58,8 @@ export default function TabsPage({ cpf_cnpj }: PropsType) {
                 >
                   <tab.icon
                     className={classNames(
-                      tab.current
-                        ? 'text-indigo-500'
+                      tab.current == current
+                        ? 'text-rede-red-300'
                         : 'text-gray-400 group-hover:text-gray-500',
                       '-ml-0.5 mr-2 h-5 w-5'
                     )}

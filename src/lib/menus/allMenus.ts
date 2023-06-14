@@ -1,10 +1,13 @@
 import { MdCarRepair } from 'react-icons/md';
 import {
-  FaCarSide,
+  FaLayerGroup,
   FaClipboardList,
   FaUserClock,
   FaUserPlus,
 } from 'react-icons/fa';
+
+import { MdAccountBalance } from 'react-icons/md';
+
 import { BsPersonVcard, BsCardChecklist } from 'react-icons/bs';
 
 export const AllMenus = [
@@ -17,6 +20,24 @@ export const AllMenus = [
         href: '/admin/routes',
         icon: BsCardChecklist,
         permission: ['ADMIN', 'DISPATCHER', 'OPERADOR'],
+      },
+    ],
+  },
+  {
+    name: 'Contas',
+    permission: ['ADMIN'],
+    menu: [
+      {
+        name: 'Nova Conta',
+        href: '/admin/accounts/new',
+        icon: MdAccountBalance,
+        permission: ['ADMIN'],
+      },
+      {
+        name: 'Lista de Contas',
+        href: '/admin/accounts',
+        icon: FaLayerGroup,
+        permission: ['ADMIN'],
       },
     ],
   },
@@ -35,48 +56,6 @@ export const AllMenus = [
         href: '/admin/registrations',
         icon: FaClipboardList,
         permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
-      },
-    ],
-  },
-  {
-    name: 'Motoristas',
-    permission: ['ADMIN'],
-    menu: [
-      {
-        name: 'Novo Motorista',
-        href: '/admin/drivers/new',
-        icon: FaUserPlus,
-        permission: ['ADMIN'],
-      },
-      {
-        name: 'Motoristas Cadastrados',
-        href: '/admin/drivers',
-        icon: BsPersonVcard,
-        permission: ['ADMIN'],
-      },
-    ],
-  },
-  {
-    name: 'Veículos',
-    permission: [],
-    menu: [
-      // {
-      //   name: 'Pré Cadastro',
-      //   href: '#',
-      //   icon: FaUserClock,
-      //   permission: ['ADMIN'],
-      // },
-      {
-        name: 'Novo Veículo',
-        href: '#',
-        icon: MdCarRepair,
-        permission: ['ADMIN'],
-      },
-      {
-        name: 'Veículos Cadastrados',
-        href: '#',
-        icon: FaCarSide,
-        permission: ['ADMIN'],
       },
     ],
   },
