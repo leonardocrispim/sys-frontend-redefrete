@@ -1,11 +1,8 @@
-import { MdCarRepair } from 'react-icons/md';
-import {
-  FaCarSide,
-  FaClipboardList,
-  FaUserClock,
-  FaUserPlus,
-} from 'react-icons/fa';
-import { BsPersonVcard, BsCardChecklist } from 'react-icons/bs';
+import { FaLayerGroup, FaClipboardList, FaUserClock } from 'react-icons/fa';
+
+import { MdAccountBalance } from 'react-icons/md';
+
+import { BsCardChecklist } from 'react-icons/bs';
 
 export const AllMenus = [
   {
@@ -20,64 +17,40 @@ export const AllMenus = [
       },
     ],
   },
-  {
-    name: 'Pré Cadastros',
-    permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
-    menu: [
-      {
-        name: 'Novo Cadastro',
-        href: '/admin/registrations/new',
-        icon: FaUserClock,
-        permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
-      },
-      {
-        name: 'Lista de Cadastros',
-        href: '/admin/registrations',
-        icon: FaClipboardList,
-        permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
-      },
-    ],
-  },
-  {
-    name: 'Motoristas',
-    permission: ['ADMIN'],
-    menu: [
-      {
-        name: 'Novo Motorista',
-        href: '/admin/drivers/new',
-        icon: FaUserPlus,
-        permission: ['ADMIN'],
-      },
-      {
-        name: 'Motoristas Cadastrados',
-        href: '/admin/drivers',
-        icon: BsPersonVcard,
-        permission: ['ADMIN'],
-      },
-    ],
-  },
-  {
-    name: 'Veículos',
-    permission: [],
-    menu: [
-      // {
-      //   name: 'Pré Cadastro',
-      //   href: '#',
-      //   icon: FaUserClock,
-      //   permission: ['ADMIN'],
-      // },
-      {
-        name: 'Novo Veículo',
-        href: '#',
-        icon: MdCarRepair,
-        permission: ['ADMIN'],
-      },
-      {
-        name: 'Veículos Cadastrados',
-        href: '#',
-        icon: FaCarSide,
-        permission: ['ADMIN'],
-      },
-    ],
-  },
+  // {
+  //   name: 'Contas',
+  //   permission: ['ADMIN'],
+  //   menu: [
+  //     {
+  //       name: 'Nova Conta',
+  //       href: '/admin/accounts/new',
+  //       icon: MdAccountBalance,
+  //       permission: ['ADMIN'],
+  //     },
+  //     {
+  //       name: 'Lista de Contas',
+  //       href: '/admin/accounts',
+  //       icon: FaLayerGroup,
+  //       permission: ['ADMIN'],
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'Pré Cadastros',
+  //   permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
+  //   menu: [
+  //     {
+  //       name: 'Novo Cadastro',
+  //       href: '/admin/registrations/new',
+  //       icon: FaUserClock,
+  //       permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
+  //     },
+  //     {
+  //       name: 'Lista de Cadastros',
+  //       href: '/admin/registrations',
+  //       icon: FaClipboardList,
+  //       permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
+  //     },
+  //   ],
+  // },
 ];

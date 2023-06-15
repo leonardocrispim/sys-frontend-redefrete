@@ -176,3 +176,7 @@ export function isValidEmail(value: string): boolean {
   }
   return true;
 }
+
+export function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ');
+}

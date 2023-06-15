@@ -12,10 +12,12 @@ declare module 'DriversTypes' {
 
   export interface Driver {
     driver_id?: number;
+    account_id?: number | null;
     driver_name: string;
     driver_cpf_cnpj: string;
     driver_photo?: string | null;
     driver_telephone?: string | null;
+    driver_whatsapp?: string | null;
     driver_email?: string | null;
     driver_status: string;
     driver_status_gr: string;
@@ -26,6 +28,7 @@ declare module 'DriversTypes' {
   }
 
   export interface DriversSearchData {
+    account_id: number;
     driver_status?: string;
     driver_status_gr?: string;
     take?: number;
