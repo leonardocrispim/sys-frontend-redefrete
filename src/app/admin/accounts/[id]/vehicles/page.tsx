@@ -14,7 +14,9 @@ type DataType = {
 };
 
 export default async function accountsDriversPage({ params }: DataType) {
-  const account: ApiReturn<Account> = await getAccount(params.id)
+  const account_id = Number(params.id);
+
+  const account: ApiReturn<Account> = await getAccount(account_id)
     .then((data) => {
       if (!data.data?.account_id) {
         throw new Error('Account not found');
@@ -40,7 +42,7 @@ export default async function accountsDriversPage({ params }: DataType) {
     <div>
       <AccountHeader account={account.data as Account} />
 
-      <TabsPage current="vehicles" account_id={params.id} />
+      <TabsPage current="vehicles" account_id={account_id} />
 
       <div className="pb-10 pt-5 bg-rede-gray-800">VEÍCULOS</div>
     </div>
