@@ -12,6 +12,7 @@ import { Account } from 'AccountsTypes';
 import { getAccounts } from '@/lib/accounts/getAccounts';
 
 export default function SearchTool() {
+  //
   const [isLoading, setIsLoading] = useState(false);
 
   const itemsPerPage = 20;
