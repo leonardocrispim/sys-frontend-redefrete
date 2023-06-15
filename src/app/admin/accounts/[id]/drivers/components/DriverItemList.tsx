@@ -33,9 +33,21 @@ export default function DriverItemList({ driver }: DataProps) {
             <div className="text-sm text-rede-gray-300">
               {formatCPFCNPJ(driver.driver_cpf_cnpj)}
             </div>
-            <div className="text-xs text-rede-gray-500">
-              {driver.driver_telephone && formatPhone(driver.driver_telephone)}
-            </div>
+
+            {driver.driver_telephone && (
+              <div className="text-xs text-rede-gray-500">
+                Tel:{' '}
+                {driver.driver_telephone &&
+                  formatPhone(driver.driver_telephone)}
+              </div>
+            )}
+
+            {driver.driver_whatsapp && (
+              <div className="text-xs text-rede-gray-500">
+                Whats:{' '}
+                {driver.driver_whatsapp && formatPhone(driver.driver_whatsapp)}
+              </div>
+            )}
           </>
         ) : (
           <div className="font-medium text-rede-red-400/80">NÃO VINCULADO</div>

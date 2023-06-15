@@ -96,7 +96,7 @@ export default function SearchTool() {
       </div>
 
       {isEmpty && (
-        <FeedbackInfo text="Nenhum pré cadastro encontrado, por favor refaça a busca!" />
+        <FeedbackInfo text="Nenhuma conta encontrada, por favor refaça a busca!" />
       )}
 
       {isError && (

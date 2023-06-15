@@ -97,7 +97,11 @@ export default function ListTable({ account_id }: DataProps) {
       )}
       {drivers &&
         drivers.map((driver: Driver) => (
-          <LineDriver key={driver.driver_cpf_cnpj} driver={driver} />
+          <LineDriver
+            key={driver.driver_cpf_cnpj}
+            driver={driver}
+            account_id={account_id}
+          />
         ))}
 
       {isEmpty && (

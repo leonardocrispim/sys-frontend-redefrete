@@ -1,42 +1,56 @@
-import { getDriver } from '@/lib/drivers/getDrivers';
-
-import { Driver } from 'DriversTypes';
-
-import DriverData from './components/DriverData';
-import VehiclesData from './components/VehiclesData';
+import { ApiReturn } from 'UtilsTypes';
+import { Account } from 'AccountsTypes';
+import { getAccount } from '@/lib/accounts/getAccounts';
 import FeedbackError from '@/components/utils/feedbacks/FeedbackError';
-
-export const dynamic = 'force-dynamic';
+import AccountHeader from '../../components/AccountHeader';
+import TabsPage from '../../components/TabsPage';
+import DriversMenu from '../components/DriversMenu';
 
 type DataType = {
   params: {
-    cpf: string;
+    id: string;
   };
 };
 
-export default async function DriverPage({ params }: DataType) {
-  const driver: Driver = await getDriver(params.cpf);
+export default async function accountsPage({ params }: DataType) {
+  const accountId = Number(params.id);
 
-  if (driver?.driver_id == undefined) {
+  const account: ApiReturn<Account> = await getAccount(accountId)
+    .then((data) => {
+      if (!data.data?.account_id) {
+        throw new Error('Account not found');
+      }
+      return data;
+    })
+    .catch((error) => {
+      return {
+        data: undefined,
+        return: 'error',
+      };
+    });
+
+  if (account.return == 'error') {
     return (
       <div className="mb-10">
-        <FeedbackError text="Link inválido!" />
+        w
+        <FeedbackError text="Não foi possível carregar esta conta!" />
       </div>
     );
   }
-
   return (
-    <div>
-      <div className="mb-10">
-        <DriverData driver={driver} />
-      </div>
+    <>
+      <AccountHeader account={account.data as Account} />
 
-      <div>
-        <VehiclesData
-          driverId={driver.driver_id as number}
-          driverVehicles={driver.rd_vin_drivers_vehicles}
-        />
+      <TabsPage current="drivers" account_id={accountId} />
+
+      <div className="px-4 py-6 border rounded-b-md">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
+          <div className="col-span-3">
+            <DriversMenu current="list" account_id={accountId} />
+          </div>
+          <div className="col-span-9"></div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

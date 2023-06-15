@@ -1,14 +1,8 @@
-import { MdCarRepair } from 'react-icons/md';
-import {
-  FaLayerGroup,
-  FaClipboardList,
-  FaUserClock,
-  FaUserPlus,
-} from 'react-icons/fa';
+import { FaLayerGroup, FaClipboardList, FaUserClock } from 'react-icons/fa';
 
 import { MdAccountBalance } from 'react-icons/md';
 
-import { BsPersonVcard, BsCardChecklist } from 'react-icons/bs';
+import { BsCardChecklist } from 'react-icons/bs';
 
 export const AllMenus = [
   {

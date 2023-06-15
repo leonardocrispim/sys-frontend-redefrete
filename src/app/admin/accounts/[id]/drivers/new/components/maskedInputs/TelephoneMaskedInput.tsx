@@ -7,6 +7,7 @@ type DataType = {
   name: string;
   errors: any;
   setValue: any;
+  title: string;
 };
 
 export default function TelephoneMaskedInput({
@@ -14,6 +15,7 @@ export default function TelephoneMaskedInput({
   name,
   errors,
   setValue,
+  title,
 }: DataType) {
   const [mask, setMask] = useState('(99) 9999-99999');
 
@@ -30,7 +32,7 @@ export default function TelephoneMaskedInput({
   return (
     <>
       <label className="block text-sm font-medium leading-6 text-gray-900">
-        Telefone
+        {title}
       </label>
 
       <div className="mt-1">
@@ -38,7 +40,7 @@ export default function TelephoneMaskedInput({
           {...register(name, {
             validate: (value: string) => {
               if (value.length > 0 && value.length < 14) {
-                return 'Insira um telefone válido';
+                return 'Insira um número válido';
               }
               return true;
             },

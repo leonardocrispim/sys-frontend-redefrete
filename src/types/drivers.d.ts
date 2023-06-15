@@ -17,6 +17,7 @@ declare module 'DriversTypes' {
     driver_cpf_cnpj: string;
     driver_photo?: string | null;
     driver_telephone?: string | null;
+    driver_whatsapp?: string | null;
     driver_email?: string | null;
     driver_status: string;
     driver_status_gr: string;

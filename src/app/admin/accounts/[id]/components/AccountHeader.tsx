@@ -1,8 +1,6 @@
 import TagStatus from '@/components/drivers/TagStatus';
 import PageTitle from '@/components/utils/PageTitle';
 import {
-  driversStatusGR,
-  driversStatusGRKeys,
   driversStatusRF,
   driversStatusRFKeys,
 } from '@/lib/utils/driversConstants';

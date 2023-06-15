@@ -102,12 +102,22 @@ export default function newForm({ account_id }: PropsType) {
               errors={errors}
             />
           </div>
-          <div className="sm:col-span-2">
+          <div>
             <TelephoneMaskedInput
               setValue={setValue}
               name="driver_telephone"
               register={register}
               errors={errors}
+              title="Telefone"
+            />
+          </div>
+          <div>
+            <TelephoneMaskedInput
+              setValue={setValue}
+              name="driver_whatsapp"
+              register={register}
+              errors={errors}
+              title="Whatsapp"
             />
           </div>
           <div className="sm:col-span-2">
