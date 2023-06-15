@@ -17,40 +17,40 @@ export const AllMenus = [
       },
     ],
   },
-  {
-    name: 'Contas',
-    permission: ['ADMIN'],
-    menu: [
-      {
-        name: 'Nova Conta',
-        href: '/admin/accounts/new',
-        icon: MdAccountBalance,
-        permission: ['ADMIN'],
-      },
-      {
-        name: 'Lista de Contas',
-        href: '/admin/accounts',
-        icon: FaLayerGroup,
-        permission: ['ADMIN'],
-      },
-    ],
-  },
-  {
-    name: 'Pré Cadastros',
-    permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
-    menu: [
-      {
-        name: 'Novo Cadastro',
-        href: '/admin/registrations/new',
-        icon: FaUserClock,
-        permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
-      },
-      {
-        name: 'Lista de Cadastros',
-        href: '/admin/registrations',
-        icon: FaClipboardList,
-        permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
-      },
-    ],
-  },
+  // {
+  //   name: 'Contas',
+  //   permission: ['ADMIN'],
+  //   menu: [
+  //     {
+  //       name: 'Nova Conta',
+  //       href: '/admin/accounts/new',
+  //       icon: MdAccountBalance,
+  //       permission: ['ADMIN'],
+  //     },
+  //     {
+  //       name: 'Lista de Contas',
+  //       href: '/admin/accounts',
+  //       icon: FaLayerGroup,
+  //       permission: ['ADMIN'],
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'Pré Cadastros',
+  //   permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
+  //   menu: [
+  //     {
+  //       name: 'Novo Cadastro',
+  //       href: '/admin/registrations/new',
+  //       icon: FaUserClock,
+  //       permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
+  //     },
+  //     {
+  //       name: 'Lista de Cadastros',
+  //       href: '/admin/registrations',
+  //       icon: FaClipboardList,
+  //       permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
+  //     },
+  //   ],
+  // },
 ];
