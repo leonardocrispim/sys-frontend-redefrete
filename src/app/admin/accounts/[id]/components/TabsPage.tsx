@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 type PropsType = {
-  account_id: number;
+  account_id?: number;
   current: string;
 };
 
@@ -15,7 +15,7 @@ export default function TabsPage({ account_id, current }: PropsType) {
   const currentPage = tabsPages.find((tab) => tab.current == current);
 
   const currentLink = currentPage
-    ? `/admin/accounts/${account_id}${currentPage.href}`
+    ? `/admin/accounts/${account_id || 0}${currentPage.href}`
     : '';
 
   return (

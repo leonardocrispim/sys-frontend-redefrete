@@ -13,40 +13,14 @@ type DataType = {
 };
 
 export default async function accountsPage({ params }: DataType) {
-  const accountId = Number(params.id);
-
-  const account: ApiReturn<Account> = await getAccount(accountId)
-    .then((data) => {
-      if (!data.data?.account_id) {
-        throw new Error('Account not found');
-      }
-      return data;
-    })
-    .catch((error) => {
-      return {
-        data: undefined,
-        return: 'error',
-      };
-    });
-
-  if (account.return == 'error') {
-    return (
-      <div className="mb-10">
-        w
-        <FeedbackError text="Não foi possível carregar esta conta!" />
-      </div>
-    );
-  }
   return (
     <>
-      <AccountHeader account={account.data as Account} />
-
-      <TabsPage current="drivers" account_id={accountId} />
+      {/* <TabsPage current="drivers" account_id={accountId} /> */}
 
       <div className="px-4 py-6 border rounded-b-md">
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
           <div className="col-span-3">
-            <DriversMenu current="list" account_id={accountId} />
+            {/* <DriversMenu current="list" account_id={accountId} /> */}
           </div>
           <div className="col-span-9"></div>
         </div>

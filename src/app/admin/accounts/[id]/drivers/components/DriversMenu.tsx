@@ -20,7 +20,7 @@ const menu = [
 
 type PropsType = {
   current: string;
-  account_id: number;
+  account_id?: number;
 };
 
 export default function DriversMenu({ current, account_id }: PropsType) {
@@ -29,7 +29,7 @@ export default function DriversMenu({ current, account_id }: PropsType) {
       {menu.map((item) => (
         <Link
           key={item.name}
-          href={`/admin/accounts/${account_id}/${item.href}`}
+          href={`/admin/accounts/${account_id || 0}/${item.href}`}
           className={classNames(
             item.current == current
               ? 'text-rede-red-300'

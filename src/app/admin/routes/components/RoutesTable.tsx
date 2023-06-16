@@ -126,9 +126,6 @@ export default function RoutesListPage() {
       ?.split(',')
       .map((v) => Number(v)) || [];
 
-  // console.log('ID: ', hub_id);
-  // console.log('Selected: ', selected);
-
   return (
     <div>
       <div className="mb-4">
