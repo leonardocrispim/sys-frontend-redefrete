@@ -1,9 +1,5 @@
 import ListTable from './components/ListTable';
-import { ApiReturn } from 'UtilsTypes';
-import { Account } from 'AccountsTypes';
-import { getAccount } from '@/lib/accounts/getAccounts';
-import FeedbackError from '@/components/utils/feedbacks/FeedbackError';
-import AccountHeader from '../components/AccountHeader';
+
 import TabsPage from '../components/TabsPage';
 import DriversMenu from './components/DriversMenu';
 
@@ -14,7 +10,7 @@ type DataType = {
 };
 
 export default async function accountsPage({ params }: DataType) {
-  const accountId = 5;
+  const accountId = Number(params.id);
 
   return (
     <>

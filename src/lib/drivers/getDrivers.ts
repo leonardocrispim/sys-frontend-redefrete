@@ -1,11 +1,12 @@
 import querystring from 'querystring';
 
 import { URL_BACKEND } from '@utils/utils';
-import { DriversSearchData } from 'DriversTypes';
+import { Driver, DriversSearchData } from 'DriversTypes';
+import { ApiReturn } from 'UtilsTypes';
 
 //
 
-export async function getDriver(cpf_cnpj: string) {
+export async function getDriver(cpf_cnpj: string): Promise<Driver> {
   try {
     const response = await fetch(`${URL_BACKEND}/drivers/${cpf_cnpj}`, {
       cache: 'no-cache',

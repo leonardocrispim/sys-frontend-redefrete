@@ -29,7 +29,7 @@ export default async function accountsPage({ params }: DataType) {
 
   return (
     <>
-      <TabsPage current="data" account_id={5} />
+      <TabsPage current="data" account_id={account_id} />
       <div className="pb-10 pt-5 bg-rede-gray-800">
         <AccountData account={account.data as Account} />
       </div>
