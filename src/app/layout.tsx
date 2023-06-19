@@ -1,7 +1,7 @@
 import { ThemeTypeProvider } from '@/contexts/ThemeContext';
 import { GlobalsTypeProvider } from '@/contexts/GlobalsContext';
 
-import "./globals.css";
+import './globals.css';
 
 export const metadata = {
   title: 'Sistema de Gerenciamento - Redefrete',

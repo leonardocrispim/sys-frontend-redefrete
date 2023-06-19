@@ -43,7 +43,6 @@ export default function FormHubsOptions({
           setSelected(thisHub);
         }
       }
-      // console.log(dispHub);
     } else {
       getHubs().then((hubs: Hub[]) => {
         setHubsList(hubs);

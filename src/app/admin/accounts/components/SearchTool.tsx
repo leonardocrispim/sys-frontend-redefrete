@@ -47,8 +47,6 @@ export default function SearchTool() {
       take: itemsPerPage,
     })
       .then((data: ApiReturn<Account[]>) => {
-        console.log(data);
-
         if (data.return == 'success') {
           if (data.data && data.data.length == 0) {
             setIsEmpty(true);
