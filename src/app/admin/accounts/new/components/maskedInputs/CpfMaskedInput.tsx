@@ -55,6 +55,7 @@ export default function CpfMaskedInput({
           name={name}
           id={name}
           mask={mask}
+          
           onChange={handleChange}
           onBlur={handleBlur}
           maskChar=""
