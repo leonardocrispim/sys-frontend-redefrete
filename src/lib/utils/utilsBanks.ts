@@ -18,4 +18,9 @@ export const banks = [
     { bankNumber: "001", bankName: "Banco do Brasil S.A." },
     { bankNumber: "341", bankName: "Banco Itaú" },
     { bankNumber: "479", bankName: "Banco ItauBank S.A." },
+    { bankNumber: "029", bankName: "Banco Itaú Consignado S.A." },
+    { bankNumber: "336", bankName: "Banco C6 S.A – C6 Bank" },
+    { bankNumber: "473", bankName: "Banco Caixa Geral – Brasil S.A." },
+    { bankNumber: "104", bankName: "Banco Caixa Econômica Federal" },
+    { bankNumber: "745", bankName: "Banco Citibank S.A." },
 ]

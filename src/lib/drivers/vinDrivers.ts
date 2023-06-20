@@ -10,6 +10,7 @@ type TypeVinDriverVehicle = {
   driver_id: number;
   license_plate: string;
   vehicle_type?: string;
+  account_id: number;
 };
 
 export async function vinDriverVehicle(data: TypeVinDriverVehicle) {
@@ -19,6 +20,7 @@ export async function vinDriverVehicle(data: TypeVinDriverVehicle) {
       const nVehicle = await newVehicle({
         license_plate: data.license_plate,
         vehicle_type: data.vehicle_type as string,
+        account_id: data.account_id
       });
 
       vehicle = nVehicle.data;

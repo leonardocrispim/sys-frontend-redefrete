@@ -29,6 +29,7 @@ type DataType = {
   driverId: number;
   vehicles: DriverVinVehicles[] | undefined;
   setVehicles: Dispatch<SetStateAction<DriverVinVehicles[] | undefined>>;
+  account_id: number;
 };
 
 export default function ModalVehicles({
@@ -37,6 +38,7 @@ export default function ModalVehicles({
   driverId,
   vehicles,
   setVehicles,
+  account_id
 }: DataType) {
   const [isLoading, setIsLoading] = useState(false);
   const [hasVehicleType, setHasVehicleType] = useState(false);
@@ -54,6 +56,7 @@ export default function ModalVehicles({
       driver_id: driverId,
       license_plate: data.license_plate,
       vehicle_type: data.vehicle_type,
+      account_id: account_id
     })
       .then((data) => {
         if (vehicles) {

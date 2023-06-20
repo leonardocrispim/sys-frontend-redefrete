@@ -3,6 +3,7 @@ import { DbError, DbErrorKeys } from '@utils/dberror';
 import { Vehicle } from 'VehiclesTypes';
 
 export async function newVehicle(data: Vehicle) {
+  console.log("criar veicul", data)
   try {
     const response = await fetch(`${URL_BACKEND}/vehicles/new`, {
       method: 'POST',

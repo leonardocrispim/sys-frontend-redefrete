@@ -24,7 +24,6 @@ export async function getDriver(cpf_cnpj: string): Promise<Driver> {
 export async function getDrivers(data?: DriversSearchData) {
   try {
     let queryString = '';
-
     if (data && Object.keys(data).length > 0) {
       //@ts-expect-error
       const searchParams = new URLSearchParams(data);

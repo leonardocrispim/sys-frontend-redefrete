@@ -10,9 +10,10 @@ import ModalVehicles from './ModalVehicles';
 type DataType = {
   driverVehicles: DriverVinVehicles[] | undefined;
   driverId: number;
+  account_id: number;
 };
 
-export default function VehiclesData({ driverVehicles, driverId }: DataType) {
+export default function VehiclesData({ driverVehicles, driverId, account_id }: DataType) {
   const [vehicles, setVehicles] = useState(driverVehicles);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const isLoading = false;
@@ -84,6 +85,7 @@ export default function VehiclesData({ driverVehicles, driverId }: DataType) {
           driverId={driverId}
           vehicles={vehicles}
           setVehicles={setVehicles}
+          account_id={account_id}
         />
       </div>
     </>
