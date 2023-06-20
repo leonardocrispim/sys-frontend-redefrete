@@ -13,5 +13,6 @@ export async function getUserLogin(username: string, password: string) {
     }),
   });
 
-  return await response.json();
+  const ret = await response.json();
+  return ret;
 }
