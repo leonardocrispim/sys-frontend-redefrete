@@ -1,21 +1,21 @@
-import type { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import type { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { getUserLogin } from "@lib/users/getUsers";
+import { getUserLogin } from '@lib/users/getUsers';
 
 //
 
 export const authOptions: NextAuthOptions = {
   pages: {
-    signIn: "/",
+    signIn: '/',
   },
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'credentials',
 
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" },
+        username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         const user = await getUserLogin(
