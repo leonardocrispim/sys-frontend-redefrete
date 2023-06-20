@@ -14,5 +14,6 @@ export async function getUserLogin(username: string, password: string) {
   });
 
   const ret = await response.json();
+  console.log(ret);
   return ret;
 }
