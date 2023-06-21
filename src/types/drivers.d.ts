@@ -35,4 +35,21 @@ declare module 'DriversTypes' {
     skip?: number;
     s?: string;
   }
+
+  export type rd_vin_drivers_vehicles_info = {
+    driver_id: number
+    vehicle_id: number
+    rd_drivers: {
+      driver_id: number,
+      driver_name: string,
+      driver_whatsapp: string | null,
+      driver_cpf_cnpj: string
+    }
+    rd_vehicles: {
+      vehicle_id: number,
+      vehicle_type: string,
+      license_plate: string,
+      created_at: Date
+    }
+  }
 }

@@ -5,7 +5,6 @@ type DataType = {
 }
 
 export async function getVehiclesByAccountId({ account_id }: DataType) {
-    console.log("requisição", account_id)
     try {
         const response = await fetch(`${URL_BACKEND}/vehicles/by/${ account_id }`, {
             method: 'GET',
