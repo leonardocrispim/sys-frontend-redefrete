@@ -1,4 +1,5 @@
 import TabsPage from '../components/TabsPage';
+import ListVehicles from './components/ListVehicles';
 
 import VehiclesMenu from './components/VehiclesMenu';
 
@@ -14,7 +15,7 @@ export default async function accountsDriversPage({ params }: DataType) {
   const account_id = Number(params.id);
 
   return (
-    <div>
+    <>
       <TabsPage current="vehicles" account_id={account_id} />
 
       <div className="px-4 py-6 border rounded-b-md">
@@ -22,8 +23,11 @@ export default async function accountsDriversPage({ params }: DataType) {
           <div className="col-span-3">
             <VehiclesMenu current='List' account_id={account_id} />
           </div>
+          <div className="col-span-9">
+            <ListVehicles account_id={account_id} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
