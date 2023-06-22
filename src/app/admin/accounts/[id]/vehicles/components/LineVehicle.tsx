@@ -63,8 +63,8 @@ export default function LineVehicle({ vehicle, account_id }: DataProps) {
             )}
             
             {drivers && (
-                <div className="grid grid-cols-1 sm:grid-cols-10 mb-2 border rounded-md p-2">
-                    <div className="flex items-center gap-2 justify-evenly col-span-6">
+                <div className="grid grid-cols-1 sm:grid-cols-10 gap-2 mb-2 border rounded-md p-2">
+                    <div className=" w-full sm:col-span-6 flex items-center justify-evenly">
                         <div>
                             <p className="text-xs text-center font-bold mb-1">
                                 Placa
@@ -73,7 +73,7 @@ export default function LineVehicle({ vehicle, account_id }: DataProps) {
                                 </span>
                             </p>
                         </div>
-                        
+
                         <div>
                             <p className="text-xs text-center font-bold mb-1">
                                 Tipo de Veículo
@@ -83,17 +83,21 @@ export default function LineVehicle({ vehicle, account_id }: DataProps) {
                             </p>
                         </div>
 
-                        <div className="w-40 flex justify-center">
+                        <div>
                             <p className="text-xs text-center font-bold mb-1">
                                 Motoristas vinculados
-                                <span  className={`block w-full text-center items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ring-rede-gray-300/90 ${drivers.length === 0 ? 'text-red-500' : 'text-rede-gray-200/90'} bg-rede-gray-600`}>
-                                    <p>{drivers.length == 0 ? 'Sem Vínculo' : drivers.length}</p>
+                                <span
+                                    className={`block w-full text-center items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ring-rede-gray-300/90 ${
+                                        drivers.length === 0 ? 'text-red-500' : 'text-rede-gray-200/90'
+                                    } bg-rede-gray-600`}
+                                >
+                                    <p>{drivers.length === 0 ? 'Sem Vínculo' : drivers.length}</p>
                                 </span>
                             </p>
                         </div>
                     </div>
 
-                    <div className=" w-56 flex items-center justify-end">
+                    <div className=" lg:w-60 sm:w-40 w-full flex items-center justify-end">
                         <Link
                             href={`/admin/accounts/${account_id}/vehicles/${vehicle.license_plate}`}
                             title='Ver Veículo'

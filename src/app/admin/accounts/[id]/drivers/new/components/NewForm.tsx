@@ -210,7 +210,7 @@ export default function newForm({ account_id }: PropsType) {
                   <>
                     {isEmpty ? (
                       <option value={""}>
-                        -- Sem Veículos cadastrados --
+                        -- Nenhum veículo cadastrado nesta conta --
                       </option>
                     ) : (
                       
