@@ -1,4 +1,3 @@
-
 'use client';
 import PageTitle from "@/components/utils/PageTitle";
 import { Vin_drivers } from "DriversTypes";

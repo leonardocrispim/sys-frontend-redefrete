@@ -1,7 +1,7 @@
 import { URL_BACKEND } from '@utils/utils';
 import { DbError, DbErrorKeys } from '@utils/dberror';
 import { getVehicle } from '../vehicles/getVehicles';
-import { Vehicle } from 'VehiclesTypes';
+import { NewVehicle, Vehicle } from 'VehiclesTypes';
 import { newVehicle } from '../vehicles/newVehicles';
 import { ApiReturn } from 'UtilsTypes';
 import { DriverVinVehicles } from 'DriversTypes';
@@ -17,10 +17,14 @@ export async function vinDriverVehicle(data: TypeVinDriverVehicle) {
   try {
     let vehicle: Vehicle = await getVehicle(data.license_plate);
     if (!vehicle) {
-      const nVehicle = await newVehicle({
+      
+      const newVehicleData: NewVehicle = {
         license_plate: data.license_plate,
-        vehicle_type: data.vehicle_type as string,
-        account_id: data.account_id
+        vehicle_type: data.vehicle_type
+      }
+      
+      const nVehicle = await newVehicle({
+        vehicle: newVehicleData, account_id: data.account_id
       });
 
       vehicle = nVehicle.data;
