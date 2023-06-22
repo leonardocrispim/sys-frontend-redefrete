@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CpfMaskedInput from './maskedInputs/CpfMaskedInput';
 import TelephoneMaskedInput from './maskedInputs/TelephoneMaskedInput';
 import { FaRegSave } from 'react-icons/fa';
@@ -12,19 +12,37 @@ import FeedbackError from '@/components/utils/feedbacks/FeedbackError';
 import { ApiReturn } from 'UtilsTypes';
 import { useRouter } from 'next/navigation';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { getVehiclesByAccountId } from '@/lib/vehicles/getVehiclesByAccountId';
+import { Vehicle } from 'VehiclesTypes';
 
 type FormValues = {
   driver_name: string;
   driver_email: string;
   driver_cpf_cnpj: string;
   driver_telephone: string;
+  license_plate: string;
 };
+
+type DataNewType = {
+  account_id: number
+  driver_name: string;
+  driver_cpf_cnpj: string;
+  driver_telephone?: string | null;
+  driver_whatsapp?: string | null;
+  driver_email?: string | null;
+  driver_status: string;
+  driver_status_gr: string;
+  created_by?: number | null;
+  license_plate: string;
+}
 
 type PropsType = {
   account_id: number;
 };
 
 export default function newForm({ account_id }: PropsType) {
+  const [vehicles, setVehicles] = useState<Vehicle[] | null | undefined>(null)
+  const [isEmpty, setIsEmpty] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false);
   const [saveError, setSaveError] = useState('');
 
@@ -35,12 +53,41 @@ export default function newForm({ account_id }: PropsType) {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<FormValues>();
 
+  async function searchVehicles() {
+    setIsLoading(true)
+    setVehicles(null)
+
+    try {
+      const data: Vehicle[] = await getVehiclesByAccountId({
+        account_id: account_id
+      })
+
+      if (data && data.length == 0) {
+        setIsEmpty(true)
+      } else {
+        setVehicles(data)
+      }
+    
+    } catch (error) {
+      console.log("erro para buscar veículos na criação de novo motorista", error)
+      setIsLoading(false)
+    
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    searchVehicles()
+  }, [])
+
   const onSubmit = (data: FormValues) => {
     setIsLoading(true);
-    const dataNew: Driver = {
+    const dataNew: DataNewType = {
       ...data,
       account_id: account_id,
       driver_status: 'NOVO_CADASTRO',
@@ -146,6 +193,42 @@ export default function newForm({ account_id }: PropsType) {
                   {errors.driver_email.message}
                 </p>
               )}
+            </div>
+          </div>
+          <div className="sm:col-span-4">
+            <label className="block text-sm font-medium leading-6 text-gray-900">
+              Relacionar motorista com veículo (opcional)
+            </label>
+            <div className="mt-1">
+              
+              <select
+                {...register('license_plate')}
+                className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
+                name='license_plate'
+                id='license_plate'
+              >
+                  <>
+                    {isEmpty ? (
+                      <option value={""}>
+                        -- Sem Veículos cadastrados --
+                      </option>
+                    ) : (
+                      
+                      <option value={""}>-- Selecione a placa --</option>
+                    )}
+      
+                      {vehicles ? (
+                        vehicles.map((vehicle) => (
+                          <option value={vehicle.license_plate} key={vehicle.vehicle_id}>
+                            {vehicle.license_plate}
+                          </option>
+                      ))
+                    ) : (
+                      <></>
+                    )}
+                  </>
+
+              </select>
             </div>
           </div>
           <div className="pt-4">
