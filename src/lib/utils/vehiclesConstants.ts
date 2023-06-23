@@ -10,4 +10,16 @@ export const VehiclesConstants = {
   VUC: 'VUC',
 };
 
+export const vehiclesMap = [
+  {value: "", type: "-- Selecione o tipo de veículo --"},
+  {value: "3/4", type: "3/4"},
+  {value: "ELÉTRICO", type: "ELÉTRICO"},
+  {value: "HR", type: "HR"},
+  {value: "MOTO", type: "MOTO"},
+  {value: "RENTAL", type: "RENTAL"},
+  {value: "UTILITARIO", type: "UTILITARIO"},
+  {value: "VAN", type: "VAN"},
+  {value: "VUC", type: "VUC"},
+]
+
 export type VehiclesConstantsKeys = keyof typeof VehiclesConstants;

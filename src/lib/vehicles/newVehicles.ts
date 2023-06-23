@@ -2,13 +2,15 @@ import { URL_BACKEND } from '@utils/utils';
 import { DbError, DbErrorKeys } from '@utils/dberror';
 import { NewVehicle } from 'VehiclesTypes';
 import { newVinAccountVehicle } from './newVinAccountVehicle';
+import { vinDriverVehicle } from '../drivers/vinDrivers';
 
 type DataType = {
   vehicle: NewVehicle;
   account_id: number;
+  driver_id?: number
 }
 
-export async function newVehicle({ vehicle, account_id }: DataType) {
+export async function newVehicle({ vehicle, account_id, driver_id }: DataType) {
   try {
     const response = await fetch(`${URL_BACKEND}/vehicles/new`, {
       method: 'POST',
@@ -22,6 +24,15 @@ export async function newVehicle({ vehicle, account_id }: DataType) {
 
     if (ret.return == 'success') {
       if (ret.data) {
+
+        if(driver_id) {
+          await vinDriverVehicle({
+            driver_id: Number(driver_id),
+            license_plate: vehicle.license_plate,
+            account_id: account_id
+          })
+        }
+
         await newVinAccountVehicle({
           account_id: account_id, vehicle_id: ret.data.vehicle_id
         })
