@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { getVehiclesByAccountId } from '@/lib/vehicles/getVehiclesByAccountId';
 import { Vehicle } from 'VehiclesTypes';
+import { RdVehicles } from '../../../vehicles/components/ListVehicles';
 
 type FormValues = {
   driver_name: string;
@@ -41,10 +42,12 @@ type PropsType = {
 };
 
 export default function newForm({ account_id }: PropsType) {
-  const [vehicles, setVehicles] = useState<Vehicle[] | null | undefined>(null)
+  const [vehicles, setVehicles] = useState<RdVehicles[] | null | undefined>(null)
   const [isEmpty, setIsEmpty] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false);
   const [saveError, setSaveError] = useState('');
+
+  console.log("VEHICLES", vehicles)
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -62,7 +65,7 @@ export default function newForm({ account_id }: PropsType) {
     setVehicles(null)
 
     try {
-      const data: Vehicle[] = await getVehiclesByAccountId({
+      const data = await getVehiclesByAccountId({
         account_id: account_id
       })
 
@@ -218,9 +221,9 @@ export default function newForm({ account_id }: PropsType) {
                     )}
       
                       {vehicles ? (
-                        vehicles.map((vehicle) => (
-                          <option value={vehicle.license_plate} key={vehicle.vehicle_id}>
-                            {vehicle.license_plate}
+                        vehicles.map((vehicle: RdVehicles) => (
+                          <option value={vehicle.rd_vehicles.license_plate} key={vehicle.rd_vehicles.vehicle_id}>
+                            {vehicle.rd_vehicles.license_plate}
                           </option>
                       ))
                     ) : (

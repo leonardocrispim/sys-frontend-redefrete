@@ -13,7 +13,7 @@ type DataProps = {
     account_id: number;
 };
 
-type RdVehicles = {
+export type RdVehicles = {
     rd_vehicles: Vehicle
 }
 
