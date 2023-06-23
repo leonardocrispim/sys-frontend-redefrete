@@ -13,6 +13,10 @@ type DataProps = {
     account_id: number;
 };
 
+type RdVehicles = {
+    rd_vehicles: Vehicle
+}
+
 export default function ListVehicles({ account_id }: DataProps) {
     const itemsPerPage = 20;
 
@@ -23,7 +27,7 @@ export default function ListVehicles({ account_id }: DataProps) {
     const [isEmpty, setIsEmpty] = useState<boolean>(false)
     const [isError, setIsError] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [vehicles, setVehicles] = useState<Vehicle[] | undefined | null>()
+    const [vehicles, setVehicles] = useState<RdVehicles[] | undefined | null>()
 
     const pathName = usePathname()
 
@@ -41,7 +45,7 @@ export default function ListVehicles({ account_id }: DataProps) {
         setIsLoading(true)
 
         try {
-            const data: Vehicle[] = await getVehiclesByAccountId({
+            const data = await getVehiclesByAccountId({
                 account_id: account_id
             })
 
@@ -75,11 +79,11 @@ export default function ListVehicles({ account_id }: DataProps) {
 
             {
                 vehicles && (
-                    vehicles.map((vehicle: Vehicle) => {
+                    vehicles.map((vehicle: RdVehicles) => {
                         return (
                             <LineVehicle
-                                key={vehicle.vehicle_id}
-                                vehicle={vehicle}
+                                key={vehicle.rd_vehicles.vehicle_id}
+                                vehicle={vehicle.rd_vehicles}
                                 account_id={account_id}
                             />
                         )

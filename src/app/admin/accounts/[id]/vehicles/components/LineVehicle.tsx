@@ -1,11 +1,13 @@
-import { getDriversByVehicleId } from "@/lib/drivers/getDriversByVehiclesId"
+import { useEffect, useState } from "react"
+import Link from "next/link"
+
 import { rd_vin_drivers_vehicles_info } from "DriversTypes"
 import { ApiReturn } from "UtilsTypes"
 import { Vehicle } from "VehiclesTypes"
-import { useEffect, useState } from "react"
+
+import { getDriversByVehicleId } from "@/lib/drivers/getDriversByVehiclesId"
 
 import { AiOutlineLoading3Quarters, AiFillEye } from 'react-icons/ai';
-import Link from "next/link"
 
 type DataProps = {
     vehicle: Vehicle,
@@ -15,7 +17,6 @@ type DataProps = {
 export default function LineVehicle({ vehicle, account_id }: DataProps) {
     const [drivers, setDrivers] = useState<rd_vin_drivers_vehicles_info[] | null | undefined>(null)
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [isEmpty, setIsEmpty] = useState<boolean>(false)
 
     async function searchDrivers() {
         setDrivers(null)
@@ -26,11 +27,7 @@ export default function LineVehicle({ vehicle, account_id }: DataProps) {
                 vehicle_id: vehicle.vehicle_id
             })
 
-            if (data.data && data.data.length == 0) {
-                setIsEmpty(true)
-            } else {
-                setDrivers(data.data)
-            }
+            setDrivers(data.data)
         } catch (error) {
             console.log("erro lineVehicles", error)
             setIsLoading(false)
@@ -66,25 +63,25 @@ export default function LineVehicle({ vehicle, account_id }: DataProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-10 gap-2 mb-2 border rounded-md p-2">
                     <div className=" w-full sm:col-span-6 flex items-center justify-evenly">
                         <div>
-                            <p className="text-xs text-center font-bold mb-1">
+                            <div className="text-xs text-center font-bold mb-1">
                                 Placa
                                 <span className="block w-full text-center items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ring-rede-blue-300/90 text-rede-blue-300 bg-rede-blue-800">
                                     <p>{plateFormated}</p>
                                 </span>
-                            </p>
+                            </div>
                         </div>
 
                         <div>
-                            <p className="text-xs text-center font-bold mb-1">
+                            <div className="text-xs text-center font-bold mb-1">
                                 Tipo de Veículo
                                 <span className="block w-full text-center items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ring-rede-gray-300/90 text-rede-gray-200/90 bg-rede-gray-600">
                                     <p>{vehicle.vehicle_type}</p>
                                 </span>
-                            </p>
+                            </div>
                         </div>
 
                         <div>
-                            <p className="text-xs text-center font-bold mb-1">
+                            <div className="text-xs text-center font-bold mb-1">
                                 Motoristas vinculados
                                 <span
                                     className={`block w-full text-center items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ring-rede-gray-300/90 ${
@@ -93,7 +90,7 @@ export default function LineVehicle({ vehicle, account_id }: DataProps) {
                                 >
                                     <p>{drivers.length === 0 ? 'Sem Vínculo' : drivers.length}</p>
                                 </span>
-                            </p>
+                            </div>
                         </div>
                     </div>
 
