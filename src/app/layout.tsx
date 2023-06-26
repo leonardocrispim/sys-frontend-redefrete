@@ -21,7 +21,7 @@ export default function RootLayout({
   //
   return (
     <html lang="pt-br" className="h-full">
-      <body className="font-sans antialiased  text-gray-600 min-h-full h-full flex flex-col [overflow-anchor:none]">
+      <body className="font-sans antialiased bg-white text-gray-600 min-h-full h-full flex flex-col [overflow-anchor:none]">
         <ThemeTypeProvider>
           <GlobalsTypeProvider>{children}</GlobalsTypeProvider>
         </ThemeTypeProvider>

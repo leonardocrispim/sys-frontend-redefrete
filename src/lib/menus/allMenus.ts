@@ -17,7 +17,7 @@ export const AllMenus = [
       },
     ],
   },
-  /*{
+  {
     name: 'Contas',
     permission: ['ADMIN'],
     menu: [
@@ -52,5 +52,5 @@ export const AllMenus = [
         permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
       },
     ],
-  },*/
+  },
 ];

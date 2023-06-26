@@ -105,7 +105,7 @@ export default function ListTable({ account_id }: DataProps) {
         ))}
 
       {isEmpty && (
-        <FeedbackInfo text="Nenhum motorista encontrado, por favor refaça a busca!" />
+        <FeedbackInfo text="Nenhum motorista encontrado, por favor refaça a busca ou cadastre motoristas!" />
       )}
 
       {isError && (

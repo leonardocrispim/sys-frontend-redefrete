@@ -45,6 +45,7 @@ export default async function accountsPage({ params }: DataType) {
           driverId={driver.driver_id as number}
           // @ts-ignore
           driverVehicles={driver.rd_vin_drivers_vehicles}
+          account_id={accountId}
         />
       </div>
     </>

@@ -1,4 +1,7 @@
 import TabsPage from '../components/TabsPage';
+import ListVehicles from './components/ListVehicles';
+
+import VehiclesMenu from './components/VehiclesMenu';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,10 +15,19 @@ export default async function accountsDriversPage({ params }: DataType) {
   const account_id = Number(params.id);
 
   return (
-    <div>
+    <>
       <TabsPage current="vehicles" account_id={account_id} />
 
-      <div className="pb-10 pt-5 bg-rede-gray-800">VEÍCULOS</div>
-    </div>
+      <div className="px-4 py-6 border rounded-b-md">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
+          <div className="col-span-3">
+            <VehiclesMenu current='List' account_id={account_id} />
+          </div>
+          <div className="col-span-9">
+            <ListVehicles account_id={account_id} />
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

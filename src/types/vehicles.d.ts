@@ -6,4 +6,9 @@ declare module 'VehiclesTypes' {
     created_at?: Date;
     updated_at?: Date;
   }
+
+  export interface NewVehicle {
+    license_plate: string;
+    vehicle_type?: string;
+  }
 }

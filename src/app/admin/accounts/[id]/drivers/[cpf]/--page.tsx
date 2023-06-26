@@ -11,10 +11,12 @@ export const dynamic = 'force-dynamic';
 type DataType = {
   params: {
     cpf: string;
+    id: string;
   };
 };
 
 export default async function DriverPage({ params }: DataType) {
+  const account_id = Number(params.id)
   const driver: Driver = await getDriver(params.cpf);
 
   if (driver?.driver_id == undefined) {
@@ -35,6 +37,7 @@ export default async function DriverPage({ params }: DataType) {
         <VehiclesData
           driverId={driver.driver_id as number}
           driverVehicles={driver.rd_vin_drivers_vehicles}
+          account_id={account_id}
         />
       </div>
     </div>
