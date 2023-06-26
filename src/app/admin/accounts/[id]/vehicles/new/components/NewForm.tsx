@@ -55,11 +55,8 @@ export default function newForm({ account_id }: PropsType) {
         register,
         handleSubmit,
         setValue,
-        watch,
         formState: { errors },
     } = useForm<FormValues>()
-
-    console.log("watch", watch('driver_id'))
 
     async function searchVehicles() {
         setVehicles([])

@@ -2,12 +2,12 @@ import PageTitle from "@/components/utils/PageTitle"
 import { Vehicle } from "VehiclesTypes"
 
 type DataType = {
-    vehicle: any
+    vehicle: Vehicle
 }
 
 export default function VehicleData({ vehicle }: DataType) {
 
-    function formatData(data: Date) {
+    function formatDate(data: Date) {
         const dataObj = new Date(data);
         const dia = dataObj.getUTCDate();
         const mes = dataObj.getUTCMonth() + 1; // Os meses em JavaScript são indexados a partir de zero
@@ -21,7 +21,18 @@ export default function VehicleData({ vehicle }: DataType) {
         return dataFormatada;
     }
 
-    const date = formatData(vehicle.created_at)
+    function formatPlate(plate: string) {
+        if (plate.length >= 4) {
+            return plate.slice(0, 3) + "-" + plate.slice(3)
+        } else {
+            return plate
+        }
+    }
+
+    let date = ""
+    vehicle.created_at !== undefined ? date = formatDate(vehicle.created_at) : null
+    
+    const plate = formatPlate(vehicle.license_plate)
 
 
     return (
@@ -36,7 +47,7 @@ export default function VehicleData({ vehicle }: DataType) {
                         <div className="sm:col-span-2">
                             <div className="text-xs font-medium text-rede-gray-400">Placa</div>
                             <div className="text-md font-medium  text-rede-gray-200">
-                                {vehicle.license_plate}
+                                {plate}
                             </div>
                         </div>
                         <div>

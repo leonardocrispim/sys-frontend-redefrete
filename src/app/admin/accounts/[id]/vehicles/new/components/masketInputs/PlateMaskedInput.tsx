@@ -75,7 +75,7 @@ export default function PlateMaskedInput({
                         }
 
                         //Arrumar: Não está entrando na validação
-                        if(license_plates?.includes(plate.replace('-', '').trim())) {
+                        if(license_plates?.includes(plate.replace('-', ''))) {
                             return 'Placa já registrada nesta conta'
                         }
 

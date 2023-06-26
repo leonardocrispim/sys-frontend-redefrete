@@ -65,6 +65,14 @@ export default function DriversData({ drivers, account_id }: DataType) {
                     );
                 })
             )}
+
+            {driversData && driversData.length == 0 && (
+              <div className="border rounded-md p-4 mb-2">
+                <div className="text-rede-red-400 text-lg">
+                  Não há motoristas vinculados a este veículo
+                </div>
+              </div>
+            )}
         </>
     )
 }
