@@ -107,7 +107,7 @@ export default function newForm() {
         return;
       }
 
-      if (!(data.account_bank_account.length < 4)) {
+      if (data.account_bank_account.length < 5) {
         setError('account_bank_account', {
           message: 'Digite os dados da conta',
         });
@@ -318,9 +318,7 @@ export default function newForm() {
             </label>
             <div className="mt-1">
               <input
-                {...register('account_bank_account', {
-                  required: 'Conta bancária obrigatório',
-                })}
+                {...register('account_bank_account')}
                 className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
                 name="account_bank_account"
                 id="account_bank_account"

@@ -25,7 +25,7 @@ type FormValues = {
 };
 
 type DataNewType = {
-  account_id: number
+  account_id: number;
   driver_name: string;
   driver_cpf_cnpj: string;
   driver_telephone?: string | null;
@@ -35,19 +35,19 @@ type DataNewType = {
   driver_status_gr: string;
   created_by?: number | null;
   license_plate: string;
-}
+};
 
 type PropsType = {
   account_id: number;
 };
 
 export default function newForm({ account_id }: PropsType) {
-  const [vehicles, setVehicles] = useState<RdVehicles[] | null | undefined>(null)
-  const [isEmpty, setIsEmpty] = useState<boolean>(false)
+  const [vehicles, setVehicles] = useState<RdVehicles[] | null | undefined>(
+    null
+  );
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [saveError, setSaveError] = useState('');
-
-  console.log("VEHICLES", vehicles)
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -61,32 +61,29 @@ export default function newForm({ account_id }: PropsType) {
   } = useForm<FormValues>();
 
   async function searchVehicles() {
-    setIsLoading(true)
-    setVehicles(null)
+    setIsLoading(true);
+    setVehicles(null);
 
     try {
       const data = await getVehiclesByAccountId({
-        account_id: account_id
-      })
+        account_id: account_id,
+      });
 
       if (data && data.length == 0) {
-        setIsEmpty(true)
+        setIsEmpty(true);
       } else {
-        setVehicles(data)
+        setVehicles(data);
       }
-    
     } catch (error) {
-      console.log("erro para buscar veículos na criação de novo motorista", error)
-      setIsLoading(false)
-    
+      setIsLoading(false);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
   useEffect(() => {
-    searchVehicles()
-  }, [])
+    searchVehicles();
+  }, []);
 
   const onSubmit = (data: FormValues) => {
     setIsLoading(true);
@@ -203,34 +200,34 @@ export default function newForm({ account_id }: PropsType) {
               Relacionar motorista com veículo (opcional)
             </label>
             <div className="mt-1">
-              
               <select
                 {...register('license_plate')}
                 className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
-                name='license_plate'
-                id='license_plate'
+                name="license_plate"
+                id="license_plate"
               >
-                  <>
-                    {isEmpty ? (
-                      <option value={""}>
-                        -- Nenhum veículo cadastrado nesta conta --
-                      </option>
-                    ) : (
-                      
-                      <option value={""}>-- Selecione a placa --</option>
-                    )}
-      
-                      {vehicles ? (
-                        vehicles.map((vehicle: RdVehicles) => (
-                          <option value={vehicle.rd_vehicles.license_plate} key={vehicle.rd_vehicles.vehicle_id}>
-                            {vehicle.rd_vehicles.license_plate}
-                          </option>
-                      ))
-                    ) : (
-                      <></>
-                    )}
-                  </>
+                <>
+                  {isEmpty ? (
+                    <option value={''}>
+                      -- Nenhum veículo cadastrado nesta conta --
+                    </option>
+                  ) : (
+                    <option value={''}>-- Selecione a placa --</option>
+                  )}
 
+                  {vehicles ? (
+                    vehicles.map((vehicle: RdVehicles) => (
+                      <option
+                        value={vehicle.rd_vehicles.license_plate}
+                        key={vehicle.rd_vehicles.vehicle_id}
+                      >
+                        {vehicle.rd_vehicles.license_plate}
+                      </option>
+                    ))
+                  ) : (
+                    <></>
+                  )}
+                </>
               </select>
             </div>
           </div>
