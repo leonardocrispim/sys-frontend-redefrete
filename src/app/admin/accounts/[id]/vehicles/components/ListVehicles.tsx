@@ -8,6 +8,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 import { getVehiclesByAccountId } from "@/lib/vehicles/getVehiclesByAccountId";
 import LineVehicle from "./LineVehicle";
+import FeedbackInfo from "@/components/utils/feedbacks/FeedbackInfo";
 
 type DataProps = {
     account_id: number;
@@ -90,6 +91,10 @@ export default function ListVehicles({ account_id }: DataProps) {
                     })
                 )
             }
+
+            {isEmpty && (
+                <FeedbackInfo text="Nenhum veículo encontrado, por favor refaça a busca ou cadastre veículos!" />
+            )}
         </>
     )
 }
