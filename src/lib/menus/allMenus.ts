@@ -35,7 +35,7 @@ export const AllMenus = [
       },
     ],
   },
-  {
+  /* {
     name: 'Pré Cadastros',
     permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
     menu: [
@@ -52,5 +52,5 @@ export const AllMenus = [
         permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
       },
     ],
-  },
+  },*/
 ];
