@@ -2,7 +2,7 @@ import PageTitle from "@/components/utils/PageTitle"
 import { Vehicle } from "VehiclesTypes"
 
 type DataType = {
-    vehicle: Vehicle
+    vehicle: Vehicle | any
 }
 
 export default function VehicleData({ vehicle }: DataType) {
