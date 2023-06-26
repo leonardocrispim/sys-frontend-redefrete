@@ -3,6 +3,7 @@ import { DbError, DbErrorKeys } from '@utils/dberror';
 import { Account } from 'AccountsTypes';
 
 export async function newAccount(data: Account) {
+  console.log(data);
   try {
     const response = await fetch(`${URL_BACKEND}/accounts/new`, {
       cache: 'no-store',
