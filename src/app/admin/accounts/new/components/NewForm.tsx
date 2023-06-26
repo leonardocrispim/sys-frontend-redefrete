@@ -30,23 +30,24 @@ export default function newForm() {
     handleSubmit,
     setValue,
     setFocus,
+    setError,
     formState: { errors },
   } = useForm<Account>();
 
   //Formatação input do número da agência bancária
   const handleBankAgencyInput = (e: any) => {
-    let value = e.target.value
+    let value = e.target.value;
 
-    value = value.replace(/\D/g, '')
-    
+    value = value.replace(/\D/g, '');
+
     if (value.length > 5) {
-        value = value.slice(0, 6)
-        e.target.value = value
-        setFocus('account_bank_account')
+      value = value.slice(0, 6);
+      e.target.value = value;
+      setFocus('account_bank_account');
     }
 
-    setValue('account_bank_agency', value)
-  }
+    setValue('account_bank_agency', value);
+  };
 
   //Formatação input do número da conta bancária
   const formatBankAccountNumber = (input: any) => {
@@ -59,39 +60,62 @@ export default function newForm() {
 
       return `${firstPart}-${lastDigit}`;
     } else {
-    return value;
+      return value;
     }
-  }
+  };
 
   //Formatação input do número da conta bancária
   const handleBankAccountInput = (event: any) => {
     const formattedValue = formatBankAccountNumber(event.target.value);
     event.target.value = formattedValue;
-  }
+  };
 
   const getAccountNumbers = (data: string) => {
     const indexHifen = data.indexOf('-');
-    
+
     if (indexHifen === -1) {
-      return data
+      return data;
     }
 
-    return data.slice(0, indexHifen)
-  }
+    return data.slice(0, indexHifen);
+  };
 
   const getAccountDigit = (data: string) => {
-    const indexHifen = data.indexOf('-')
+    const indexHifen = data.indexOf('-');
 
     if (indexHifen === -1) {
-      return ''
+      return '';
     }
 
-    return data.slice(indexHifen + 1)
-  }
+    return data.slice(indexHifen + 1);
+  };
 
-  function submitForm (data: Account) {
+  function submitForm(data: Account) {
     setIsLoading(true);
-    
+
+    if (data.account_bank_number != '') {
+      if (
+        !(
+          data.account_bank_agency.length == 4 ||
+          data.account_bank_agency.length == 6
+        )
+      ) {
+        setError('account_bank_agency', {
+          message: 'Digite os dados da agência',
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      if (!(data.account_bank_account.length < 4)) {
+        setError('account_bank_account', {
+          message: 'Digite os dados da conta',
+        });
+        setIsLoading(false);
+        return;
+      }
+    }
+
     newAccount(data)
       .then((data: ApiReturn<Account>) => {
         if (data.return == 'error') {
@@ -104,27 +128,30 @@ export default function newForm() {
         setSaveError(error.message || 'Erro. Contate o administrador!');
         setIsLoading(false);
       });
-  };
+  }
 
   return (
-    <form onSubmit={handleSubmit((data: Account) => {
-      
-      const dataFormat: Account = {
-        ...data,
-        account_bank_account: getAccountNumbers(data.account_bank_account),
-        account_bank_account_digit: getAccountDigit(data.account_bank_account),
-        created_by: session?.userdata.user_id
-      }
+    <form
+      onSubmit={handleSubmit((data: Account) => {
+        const dataFormat: Account = {
+          ...data,
+          account_bank_account: getAccountNumbers(data.account_bank_account),
+          account_bank_account_digit: getAccountDigit(
+            data.account_bank_account
+          ),
+          created_by: session?.userdata.user_id,
+        };
 
-      submitForm(dataFormat)
-    })}>
+        submitForm(dataFormat);
+      })}
+    >
       <div className="border rounded-md p-4">
         {saveError.length > 0 && <FeedbackError text={saveError} />}
 
         <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-6">
           <div className="mb-2 sm:col-span-6">
             <h2 className="font-semibold text-gray-800 text-xl underline-offset-8 underline">
-            Dados da Conta
+              Dados da Conta
             </h2>
           </div>
           <div className="sm:col-span-2">
@@ -172,7 +199,7 @@ export default function newForm() {
             <div className="mt-1">
               <input
                 {...register('account_email', {
-                  required: "E-mail obrigatório",
+                  required: 'E-mail obrigatório',
                   validate: (value: string) => {
                     if (value.length == 0 || isValidEmail(value)) {
                       return true;
@@ -216,106 +243,100 @@ export default function newForm() {
       </div>
 
       <div className=" mt-6 border rounded-md p-4">
-            <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-6">
-            <div className="mb-2 sm:col-span-6">
-              <h2 className="font-semibold text-gray-800 text-xl underline-offset-8 underline">
-                Dados Bancários
-              </h2>
+        <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-6">
+          <div className="mb-2 sm:col-span-6">
+            <h2 className="font-semibold text-gray-800 text-xl underline-offset-8 underline">
+              Dados Bancários
+            </h2>
+          </div>
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium leading-6 text-gray-900">
+              Selecione o Banco
+            </label>
+            <div className="mt-1">
+              <select
+                {...register('account_bank_number')}
+                className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
+                name="account_bank_number"
+                id="account_bank_number"
+              >
+                <>
+                  {banks.map((bank) => {
+                    return (
+                      <option value={bank.bankNumber} key={bank.bankName}>
+                        {bank.bankName}
+                      </option>
+                    );
+                  })}
+                </>
+              </select>
+              {errors?.account_name && (
+                <p className=" text-red-700 text-xs mt-1">
+                  {errors.account_bank_number?.message}
+                </p>
+              )}
             </div>
-                <div className="sm:col-span-2">
-                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                        Selecione o Banco
-                    </label>
-                        <div className="mt-1">
-                            <select
-                               {...register('account_bank_number', {
-                                required: "Banco obrigatório",
-                               })}
-                               className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
-                               name="account_bank_number"
-                               id="account_bank_number"
-                            >
-                              
-                              <>
-                              {
-                                banks.map((bank) => {
-                                  return (
-                                    <option value={bank.bankNumber} key={bank.bankName}>
-                                      {bank.bankName}
-                                    </option>
-                                  )
-                                })
-                              }
-                              </>
-                          
-                            </select>
-                            {errors?.account_name && (
-                            <p className=" text-red-700 text-xs mt-1">
-                                {errors.account_bank_number?.message}
-                            </p>
-                            )}
-                        </div>
-                </div>
+          </div>
 
-                <div className="sm:col-span-2">
-                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                        Agência bancária
-                    </label>
-                        <div className="mt-1">
-                            <input
-                                {...register('account_bank_agency', {
-                                    required: "Agência obrigatório",
-                                    maxLength: {
-                                        value: 6,
-                                        message: "Máximo de 6 dígitos"
-                                    },
-                                    minLength: {
-                                        value: 4,
-                                        message: "Mínimo 4 dígitos necessário"
-                                    }
-                                })}
-                                className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
-                                name="account_bank_agency"
-                                id="account_bank_agency"
-                                type='text'
-                                placeholder="0000"
-                                onInput={handleBankAgencyInput}
-                            >
-                            </input>
-                            {errors.account_bank_agency && (
-                              <p className=" text-red-700 text-xs mt-1">
-                                {errors.account_bank_agency.message}
-                              </p>
-                            )}
-                        </div>
-                </div>
-
-                <div className="sm:col-span-2">
-                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                        Conta Bancária
-                    </label>
-                        <div className="mt-1">
-                            <input
-                                {...register('account_bank_account', {
-                                    required: "Conta bancária obrigatório",
-                                })}
-                                className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
-                                name="account_bank_account"
-                                id="account_bank_account"
-                                type='text'
-                                placeholder="00000000-0"
-                                onInput={handleBankAccountInput}
-                            >
-                            </input>
-                            {errors.account_bank_account && (
-                              <p className=" text-red-700 text-xs mt-1">
-                                {errors.account_bank_account.message}
-                              </p>
-                            )}
-                        </div>
-                </div>
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium leading-6 text-gray-900">
+              Agência bancária
+            </label>
+            <div className="mt-1">
+              <input
+                {...register(
+                  'account_bank_agency' /*, {
+                  required: 'Agência obrigatório',
+                  maxLength: {
+                    value: 6,
+                    message: 'Máximo de 6 dígitos',
+                  },
+                  minLength: {
+                    value: 4,
+                    message: 'Mínimo 4 dígitos necessário',
+                  },
+                }*/
+                )}
+                className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
+                name="account_bank_agency"
+                id="account_bank_agency"
+                type="text"
+                placeholder="0000"
+                onInput={handleBankAgencyInput}
+              ></input>
+              {errors.account_bank_agency && (
+                <p className=" text-red-700 text-xs mt-1">
+                  {errors.account_bank_agency.message}
+                </p>
+              )}
             </div>
+          </div>
+
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium leading-6 text-gray-900">
+              Conta Bancária
+            </label>
+            <div className="mt-1">
+              <input
+                {...register('account_bank_account', {
+                  required: 'Conta bancária obrigatório',
+                })}
+                className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
+                name="account_bank_account"
+                id="account_bank_account"
+                type="text"
+                placeholder="00000000-0"
+                onInput={handleBankAccountInput}
+              ></input>
+              {errors.account_bank_account && (
+                <p className=" text-red-700 text-xs mt-1">
+                  {errors.account_bank_account.message}
+                </p>
+              )}
+            </div>
+          </div>
         </div>
+      </div>
 
       <div className="mt-4">
         <button
@@ -331,10 +352,10 @@ export default function newForm() {
           ) : (
             <FaRegSave className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900" />
           )}
-          
+
           <span>CADASTRAR</span>
         </button>
-      </div>                        
+      </div>
     </form>
   );
 }
