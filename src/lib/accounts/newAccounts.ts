@@ -15,6 +15,8 @@ export async function newAccount(data: Account) {
 
     const ret = await response.json();
 
+    console.log(ret);
+
     if (ret.return == 'success') {
       return ret;
     } else {
