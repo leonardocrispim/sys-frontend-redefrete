@@ -14,6 +14,7 @@ import { Account } from 'AccountsTypes';
 import { getAccount } from '@/lib/accounts/getAccounts';
 import DriverAddress from './form-steps/DriverAddress';
 import { DriverInfo } from './form-steps/DriverInfos';
+import { VinculateVehicle } from './form-steps/VinculateVehicle';
 
 type FormValues = {
   driver_name: string;
@@ -106,12 +107,12 @@ export default function newForm({ account_id }: PropsType) {
 
     if(isCheckedAddress) {
       setIsCheckedAddress(true)
-      setValue('address_zip_code', account?.address_zip_code ? account.address_zip_code : "25665442")
-      setValue('address_street', account?.address_street ? account.address_street : "Rua tal tal")
-      setValue('address_number', account?.address_number ? account.address_number : "10")
-      setValue('address_complement', account?.address_complement ? account.address_complement : "Apto 301")
-      setValue('address_city', account?.address_city ? account.address_city : "Petrópolis")
-      setValue('address_state', account?.address_state ? account.address_state : "RJ")
+      setValue('address_zip_code', account?.address_zip_code ? account.address_zip_code : "")
+      setValue('address_street', account?.address_street ? account.address_street : "")
+      setValue('address_number', account?.address_number ? account.address_number : "")
+      setValue('address_complement', account?.address_complement ? account.address_complement : "")
+      setValue('address_city', account?.address_city ? account.address_city : "")
+      setValue('address_state', account?.address_state ? account.address_state : "")
     } else {
       setIsCheckedAddress(false)
       setValue('address_zip_code', "")
@@ -166,7 +167,7 @@ export default function newForm({ account_id }: PropsType) {
   }, []);
 
   const onSubmit = (data: FormValues) => {
-    setIsLoading(true);
+    //setIsLoading(true);
     
     const dataNew: DataNewType = {
       ...data,
@@ -210,53 +211,18 @@ export default function newForm({ account_id }: PropsType) {
         handleCheckAddress={handleCheckAddress}
         checkBoxAddressRef={checkBoxAddressRef}
         isCheckedAddress={isCheckedAddress}
+        account={account}
       />
           
-      <div className="border rounded-md p-4 mt-4">
-        <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-4">
-          <div className="mb-2 sm:col-span-6">
-            <h2 className="font-semibold text-gray-800 text-lg underline-offset-8 underline">
-              Vínculo com Motorista
-            </h2>
-          </div>
-          <div className="sm:col-span-4">
-              <label className="block text-sm font-medium leading-6 text-gray-900">
-                Relacionar motorista com veículo (opcional)
-              </label>
-              <div className="mt-1">
-                <select
-                  {...register('license_plate')}
-                  className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
-                  name="license_plate"
-                  id="license_plate"
-                >
-                  <>
-                    {isEmpty ? (
-                      <option value={''}>
-                        -- Nenhum veículo cadastrado nesta conta --
-                      </option>
-                    ) : (
-                      <option value={''}>-- Selecione a placa --</option>
-                    )}
-
-                    {vehicles ? (
-                      vehicles.map((vehicle: RdVehicles) => (
-                        <option
-                          value={vehicle.rd_vehicles.license_plate}
-                          key={vehicle.rd_vehicles.vehicle_id}
-                        >
-                          {vehicle.rd_vehicles.license_plate}
-                        </option>
-                      ))
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                </select>
-              </div>
-            </div>
-        </div>
-      </div>
+      {!isEmpty ? (
+        <VinculateVehicle 
+          register={register}
+          vehicles={vehicles}
+          isEmpty={isEmpty}
+        />
+      ) : (
+        <></>
+      )}
 
       <div className="pt-4">
         <button
