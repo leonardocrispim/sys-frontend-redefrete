@@ -29,7 +29,7 @@ export const AllMenus = [
       },
       {
         name: 'Lista de Contas',
-        href: '/admin/accounts',
+        href: '/admin/accounts?s=&page=0',
         icon: FaLayerGroup,
         permission: ['ADMIN'],
       },
