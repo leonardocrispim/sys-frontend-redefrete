@@ -6,6 +6,7 @@ import VehicleData from "./components/VehicleData";
 import { getDriversByPlate } from "@/lib/drivers/getDrivers";
 import DriversData from "./components/DriversData";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { Driver } from "DriversTypes";
 
 type DataType = {
     params: {
@@ -30,8 +31,8 @@ export default async function VehiclePage({ params }: DataType) {
             return <FeedbackError text={err.message} />
         })
 
-    const drivers = await getDriversByPlate(params.plate)
-        .then((res: any) => {
+    const drivers = await getDriversByPlate({ license_plate: params.plate, account_id: account_id })
+        .then((res) => {
             if(res) {
                 isLoading = false
                 return res
@@ -42,6 +43,8 @@ export default async function VehiclePage({ params }: DataType) {
         .catch((err) => {
             return <FeedbackError text={err.message} />
         }) 
+
+    console.log("DRIVERS", drivers)
 
     return (
         <>
@@ -58,7 +61,7 @@ export default async function VehiclePage({ params }: DataType) {
                 <div className="px-4 py-6 border rounded-b-md">
                 <VehicleData vehicle={vehicle} />
 
-                <DriversData account_id={account_id} drivers={drivers.rd_vin_drivers_vehicles} />
+                <DriversData account_id={account_id} drivers={drivers} />
             </div>
             )}
         </>

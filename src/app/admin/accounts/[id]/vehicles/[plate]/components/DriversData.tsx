@@ -20,7 +20,7 @@ type DataType = {
 }
 
 export default function DriversData({ drivers, account_id }: DataType) {
-    const [driversData, setDriversData] = useState(drivers)
+    const [driversData, setDriversData] = useState<Vin_drivers[]>(drivers)
     
     return (
         <>

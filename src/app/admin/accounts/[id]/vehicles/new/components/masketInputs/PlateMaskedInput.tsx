@@ -38,6 +38,7 @@ export default function PlateMaskedInput({
             setValue(name, plate)
             setHasVehicleType(false)
             setIsCastrated(true)
+            setValue('vehicle_type', "")
 
             if(plate.length >= 8) {
                 setIsLoading(true)
@@ -45,12 +46,18 @@ export default function PlateMaskedInput({
                 getVehicle(plate)
                     .then((vehicle: Vehicle | null) => {
                         if(vehicle) {
-                            setIsCastrated(true)
-                            setVehicleRegistered(true)
-                            setTimeout(() => {
+                            if (!license_plates?.includes(vehicle.license_plate)) {
+                                setValue('vehicle_type', vehicle.vehicle_type)
+                                setHasVehicleType(true)
+                                setIsCastrated(false)
                                 setVehicleRegistered(false)
-                                setPlate("")
+                            } else {
+                                setIsCastrated(true)
+                                setVehicleRegistered(true)
+                                setTimeout(() => {
+                                setVehicleRegistered(false)
                             }, 2000)
+                            }
                         } else {
                             setHasVehicleType(true)
                             setIsCastrated(false)

@@ -1,4 +1,4 @@
-import CepMaskedInput from './maskedInputs/CepMaskedInput';
+import CepMaskedInput from '../maskedInputs/CepMaskedInput';
 import { brazilStates } from '@/lib/utils/utilsConstants';
 import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
@@ -7,18 +7,40 @@ type DataProps = {
   errors: any;
   register: any;
   setValue: any;
+  handleCheckAddress: any
+  checkBoxAddressRef: any
+  isCheckedAddress: boolean
 };
 
 export default function DriverAddress({
   errors,
   register,
   setValue,
+  handleCheckAddress,
+  checkBoxAddressRef,
+  isCheckedAddress
 }: DataProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
       <div className="border rounded-md p-4 mt-4">
+        <div className="sm:col-span-4 flex border-b mb-2 pb-2">
+          <div className="mt-1">
+            <input
+              type='checkbox'
+              className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+              onClick={handleCheckAddress}
+              ref={checkBoxAddressRef}
+            >
+            </input>
+          </div>
+
+          <label className="block text-sm font-medium leading-6 text-gray-900 ml-2 mt-[3px]">
+            Preencher com os dados da conta
+          </label>
+        </div>
+        
         <div className="mb-6 flex items-center">
           <h2 className="font-semibold text-gray-800 text-lg underline-offset-8 underline mr-4">
             Endereço do Motorista{' '}
@@ -37,6 +59,7 @@ export default function DriverAddress({
               errors={errors}
               isLoading={isLoading}
               setIsLoading={setIsLoading}
+              isCheckedAddress={isCheckedAddress}
             />
           </div>
 
@@ -46,15 +69,15 @@ export default function DriverAddress({
             </label>
             <div className="mt-1">
               <input
-                readOnly={isLoading}
                 {...register('address_street', {
                   required: 'Logradouro é obrigatório',
                 })}
+                readOnly={isLoading || isCheckedAddress}
                 type="text"
                 name="address_street"
                 id="address_street"
                 placeholder="Rua Um Dois Três"
-                className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
+                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`}`} 
               />
             </div>
             {errors?.address_street && (
@@ -70,15 +93,15 @@ export default function DriverAddress({
             </label>
             <div className="mt-1">
               <input
-                readOnly={isLoading}
                 {...register('address_number', {
                   required: 'Número é obrigatório',
                 })}
+                readOnly={isLoading || isCheckedAddress}
                 type="text"
                 name="address_number"
                 id="address_number"
                 placeholder="20"
-                className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
+                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`}`} 
               />
             </div>
             {errors?.address_number && (
@@ -94,13 +117,13 @@ export default function DriverAddress({
             </label>
             <div className="mt-1">
               <input
-                readOnly={isLoading}
                 {...register('address_complement')}
+                readOnly={isLoading || isCheckedAddress}
                 type="text"
                 name="address_complement"
                 id="address_complement"
                 placeholder="casa 1"
-                className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
+                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`}`} 
               />
             </div>
           </div>
@@ -111,15 +134,15 @@ export default function DriverAddress({
             </label>
             <div className="mt-1">
               <input
-                readOnly={isLoading}
                 {...register('address_city', {
                   required: 'Logradouro é obrigatório',
                 })}
+                readOnly={isLoading || isCheckedAddress}
                 type="text"
                 name="address_city"
                 id="address_city"
                 placeholder="Rua Um Dois Três"
-                className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
+                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`}`} 
               />
             </div>
             {errors?.address_city && (
@@ -135,13 +158,13 @@ export default function DriverAddress({
             </label>
             <div className="mt-1">
               <select
-                readOnly={isLoading}
                 {...register('address_state', {
                   required: 'Estado é obrigatório',
                 })}
+                readOnly={isLoading || isCheckedAddress}
                 name="address_state"
                 id="address_state"
-                className="block bg-white w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm"
+                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`}`} 
               >
                 <option value="">Selecione</option>
                 {Object.entries(brazilStates).map(([uf, state]) => (

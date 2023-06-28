@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-import { rd_vin_drivers_vehicles_info } from 'DriversTypes';
+import { Vin_drivers, rd_vin_drivers_vehicles_info } from 'DriversTypes';
 import { ApiReturn } from 'UtilsTypes';
 import { Vehicle } from 'VehiclesTypes';
 
 import { getDriversByVehicleId } from '@/lib/drivers/getDriversByVehiclesId';
 
 import { AiOutlineLoading3Quarters, AiFillEye } from 'react-icons/ai';
+import { getDriversByPlate } from '@/lib/drivers/getDrivers';
 
 type DataProps = {
   vehicle: Vehicle;
@@ -16,7 +17,7 @@ type DataProps = {
 
 export default function LineVehicle({ vehicle, account_id }: DataProps) {
   const [drivers, setDrivers] = useState<
-    rd_vin_drivers_vehicles_info[] | null | undefined
+    Vin_drivers[] | null | undefined
   >(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -25,12 +26,12 @@ export default function LineVehicle({ vehicle, account_id }: DataProps) {
     setIsLoading(true);
 
     try {
-      const data: ApiReturn<rd_vin_drivers_vehicles_info[]> =
-        await getDriversByVehicleId({
-          vehicle_id: vehicle.vehicle_id,
+      const data: Vin_drivers[] | null | undefined =
+        await getDriversByPlate({
+          license_plate: vehicle.license_plate, account_id: account_id
         });
 
-      setDrivers(data.data);
+      setDrivers(data);
     } catch (error) {
       setIsLoading(false);
     } finally {
