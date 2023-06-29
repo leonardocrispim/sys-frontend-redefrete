@@ -167,7 +167,7 @@ export default function newForm({ account_id }: PropsType) {
   }, []);
 
   const onSubmit = (data: FormValues) => {
-    //setIsLoading(true);
+    setIsLoading(true);
     
     const dataNew: DataNewType = {
       ...data,
@@ -179,16 +179,16 @@ export default function newForm({ account_id }: PropsType) {
 
     console.log("DataNew", dataNew)
     
-    // newDriver(dataNew).then((data: ApiReturn<Driver>) => {
-    //   if (data.return == 'error') {
-    //     setSaveError(data.message || 'Erro. Contate o administrador!');
-    //     setIsLoading(false);
-    //   } else {
-    //     router.push(
-    //       `/admin/accounts/${account_id}/drivers/${data.data?.driver_cpf_cnpj}`
-    //     );
-    //   }
-    // });
+    newDriver(dataNew).then((data: ApiReturn<Driver>) => {
+      if (data.return == 'error') {
+        setSaveError(data.message || 'Erro. Contate o administrador!');
+        setIsLoading(false);
+      } else {
+        router.push(
+          `/admin/accounts/${account_id}/drivers/${data.data?.driver_cpf_cnpj}`
+        );
+      }
+    });
   };
 
   return (

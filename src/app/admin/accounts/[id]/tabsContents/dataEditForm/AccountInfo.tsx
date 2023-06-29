@@ -1,11 +1,11 @@
 import FeedbackSuccess from '@/components/utils/feedbacks/FeedbackSuccess';
 import { formatCPFCNPJ, formatPhone } from '@/lib/utils/utils';
-import { Account } from 'AccountsTypes';
+import { Account, Account_Address } from 'AccountsTypes';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaUserEdit } from 'react-icons/fa';
 
 type DataType = {
-  account: Account;
+  account: Account_Address;
   isSaved: boolean;
   setTab: React.Dispatch<React.SetStateAction<'data' | 'edit'>>;
   setIsSaved: React.Dispatch<React.SetStateAction<boolean>>;
