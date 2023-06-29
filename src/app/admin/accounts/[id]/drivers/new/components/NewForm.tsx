@@ -12,7 +12,7 @@ import { getVehiclesByAccountId } from '@/lib/vehicles/getVehiclesByAccountId';
 import { RdVehicles } from '../../../vehicles/components/ListVehicles';
 import { Account } from 'AccountsTypes';
 import { getAccount } from '@/lib/accounts/getAccounts';
-import DriverAddress from './form-steps/DriverAddress';
+import AddressForm from './form-steps/AddressForm';
 import { DriverInfo } from './form-steps/DriverInfos';
 import { VinculateVehicle } from './form-steps/VinculateVehicle';
 
@@ -204,7 +204,7 @@ export default function newForm({ account_id }: PropsType) {
         saveError={saveError}
       />
 
-      <DriverAddress 
+      <AddressForm 
         register={register}
         errors={errors}
         setValue={setValue}

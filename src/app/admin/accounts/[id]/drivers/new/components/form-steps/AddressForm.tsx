@@ -1,3 +1,4 @@
+import FormTitle from '@/components/forms/FormTitle';
 import CepMaskedInput from '../maskedInputs/CepMaskedInput';
 import { brazilStates } from '@/lib/utils/utilsConstants';
 import { Account } from 'AccountsTypes';
@@ -8,13 +9,13 @@ type DataProps = {
   errors: any;
   register: any;
   setValue: any;
-  handleCheckAddress: any
-  checkBoxAddressRef: any
-  isCheckedAddress: boolean
-  account: Account | null | undefined
+  handleCheckAddress?: any;
+  checkBoxAddressRef?: any;
+  isCheckedAddress?: boolean;
+  account?: Account | null | undefined;
 };
 
-export default function DriverAddress({
+export default function AddressForm({
   errors,
   register,
   setValue,
@@ -52,9 +53,7 @@ export default function DriverAddress({
         }
         
         <div className="mb-6 flex items-center">
-          <h2 className="font-semibold text-gray-800 text-lg underline-offset-8 underline mr-4">
-            Endereço do Motorista{' '}
-          </h2>
+          <FormTitle content={isCheckedAddress == true || isCheckedAddress == false ? 'Endereço do Motorista' : 'Endereço da Conta'} />
           {isLoading && (
             <AiOutlineLoading3Quarters className=" -ml-1 mr-2 h-5 w-5 text-dark dark:text-slate-900 animate-spin " />
           )}
