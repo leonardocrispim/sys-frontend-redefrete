@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { getVehiclesByAccountId } from '@/lib/vehicles/getVehiclesByAccountId';
 import { RdVehicles } from '../../../vehicles/components/ListVehicles';
-import { Account } from 'AccountsTypes';
+import { Account, Account_Address } from 'AccountsTypes';
 import { getAccount } from '@/lib/accounts/getAccounts';
 import AddressForm from './form-steps/AddressForm';
 import { DriverInfo } from './form-steps/DriverInfos';
@@ -58,7 +58,7 @@ type PropsType = {
 
 export default function newForm({ account_id }: PropsType) {
   const [vehicles, setVehicles] = useState<RdVehicles[] | null | undefined>(null);
-  const [account, setAccount] = useState<Account | null | undefined>(null)
+  const [account, setAccount] = useState<Account_Address | null | undefined>(null)
   
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -107,12 +107,12 @@ export default function newForm({ account_id }: PropsType) {
 
     if(isCheckedAddress) {
       setIsCheckedAddress(true)
-      setValue('address_zip_code', account?.address_zip_code ? account.address_zip_code : "")
-      setValue('address_street', account?.address_street ? account.address_street : "")
-      setValue('address_number', account?.address_number ? account.address_number : "")
-      setValue('address_complement', account?.address_complement ? account.address_complement : "")
-      setValue('address_city', account?.address_city ? account.address_city : "")
-      setValue('address_state', account?.address_state ? account.address_state : "")
+      setValue('address_zip_code', account?.rd_account_meta.address_zip_code ? account.rd_account_meta.address_zip_code : "")
+      setValue('address_street', account?.rd_account_meta.address_street ? account.rd_account_meta.address_street : "")
+      setValue('address_number', account?.rd_account_meta.address_number ? account.rd_account_meta.address_number : "")
+      setValue('address_complement', account?.rd_account_meta.address_complement ? account.rd_account_meta.address_complement : "")
+      setValue('address_city', account?.rd_account_meta.address_city ? account.rd_account_meta.address_city : "")
+      setValue('address_state', account?.rd_account_meta.address_state ? account.rd_account_meta.address_state : "")
     } else {
       setIsCheckedAddress(false)
       setValue('address_zip_code', "")

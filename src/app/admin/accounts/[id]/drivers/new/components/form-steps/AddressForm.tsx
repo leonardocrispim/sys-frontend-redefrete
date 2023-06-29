@@ -1,7 +1,7 @@
 import FormTitle from '@/components/forms/FormTitle';
 import CepMaskedInput from '../maskedInputs/CepMaskedInput';
 import { brazilStates } from '@/lib/utils/utilsConstants';
-import { Account } from 'AccountsTypes';
+import { Account, Account_Address } from 'AccountsTypes';
 import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
@@ -12,7 +12,7 @@ type DataProps = {
   handleCheckAddress?: any;
   checkBoxAddressRef?: any;
   isCheckedAddress?: boolean;
-  account?: Account | null | undefined;
+  account?: Account_Address | null | undefined;
 };
 
 export default function AddressForm({
@@ -31,7 +31,7 @@ export default function AddressForm({
       <div className="border rounded-md p-4 mt-4">
         
         {
-          account?.address_zip_code ? (
+          account?.rd_account_meta.address_zip_code ? (
             <div className="sm:col-span-4 flex border-b mb-2 pb-2">
               <div className="mt-1">
                 <input

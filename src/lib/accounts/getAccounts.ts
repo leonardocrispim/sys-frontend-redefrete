@@ -1,8 +1,8 @@
 import { URL_BACKEND } from '@utils/utils';
-import { Account, AccountsSearchData } from 'AccountsTypes';
+import { Account, Account_Address, AccountsSearchData } from 'AccountsTypes';
 import { ApiReturn } from 'UtilsTypes';
 
-export async function getAccount(id: number): Promise<ApiReturn<Account>> {
+export async function getAccount(id: number): Promise<ApiReturn<Account_Address>> {
   try {
     const response = await fetch(`${URL_BACKEND}/accounts/${id}`, {
       cache: 'no-cache',

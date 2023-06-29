@@ -15,17 +15,6 @@ import AddressForm from '../../[id]/drivers/new/components/form-steps/AddressFor
 import AccountInfos from './form-steps/AccountInfos';
 import BankInfos from './form-steps/BankInfos';
 
-type FormValues = {
-
-  address_zip_code: string;
-  address_street: string;
-  address_number: string;
-  address_complement: string;
-  address_district: string;
-  address_city: string;
-  address_state: string;
-}
-
 export default function newForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [saveError, setSaveError] = useState('');
@@ -123,8 +112,6 @@ export default function newForm() {
         return;
       }
     }
-
-    console.log("DATAFORM", data)
 
     newAccount(data)
       .then((data: ApiReturn<Account>) => {
