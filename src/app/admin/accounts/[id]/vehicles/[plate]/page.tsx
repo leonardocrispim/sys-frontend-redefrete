@@ -3,7 +3,7 @@ import TabsPage from "../../components/TabsPage";
 import { getVehicle } from "@/lib/vehicles/getVehicles";
 import FeedbackError from "@/components/utils/feedbacks/FeedbackError";
 import VehicleData from "./components/VehicleData";
-import { getDriversByPlate } from "@/lib/drivers/getDrivers";
+import { getDriversByPlate, getDriversByPlateAndAccount } from "@/lib/drivers/getDrivers";
 import DriversData from "./components/DriversData";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Driver } from "DriversTypes";
@@ -31,7 +31,7 @@ export default async function VehiclePage({ params }: DataType) {
             return <FeedbackError text={err.message} />
         })
 
-    const drivers = await getDriversByPlate({ license_plate: params.plate, account_id: account_id })
+    const drivers = await getDriversByPlateAndAccount({ license_plate: params.plate, account_id: account_id })
         .then((res) => {
             if(res) {
                 isLoading = false

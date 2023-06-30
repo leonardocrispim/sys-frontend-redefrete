@@ -44,12 +44,27 @@ export async function getDrivers(data?: DriversSearchData) {
 
 type DataProps = {
   license_plate: string;
-  account_id: number
+  account_id: number;
 }
 
-export async function getDriversByPlate({ license_plate, account_id }: DataProps) {
+export async function getDriversByPlateAndAccount({ license_plate, account_id }: DataProps) {
   try {
     const response = await fetch(`${URL_BACKEND}/drivers/plate/${license_plate}/${account_id}`, {
+      cache: 'no-cache',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
+  } catch {
+    throw new Error('Erro de conexão com backend');
+  }
+}
+
+export async function getDriversByPlate(license_plate: string) {
+  try {
+    const response = await fetch(`${URL_BACKEND}/drivers/plate/${license_plate}`, {
       cache: 'no-cache',
       method: 'GET',
       headers: {

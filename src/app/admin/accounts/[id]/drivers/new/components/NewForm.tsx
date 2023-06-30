@@ -176,8 +176,6 @@ export default function newForm({ account_id }: PropsType) {
       driver_status_gr: 'NAO_ENVIADO',
       created_by: session?.userdata.user_id,
     };
-
-    console.log("DataNew", dataNew)
     
     newDriver(dataNew).then((data: ApiReturn<Driver>) => {
       if (data.return == 'error') {

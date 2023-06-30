@@ -12,6 +12,13 @@ type DataType = {
   driver_email?: string | null;
   driver_status: string;
   driver_status_gr: string;
+  address_zip_code?: string | null;
+  address_street?: string | null;
+  address_number?: string | null;
+  address_complement?: string | null;
+  address_district?: string | null;
+  address_city?: string | null;
+  address_state?: string | null;
   created_by?: number | null;
   license_plate: string;
 }

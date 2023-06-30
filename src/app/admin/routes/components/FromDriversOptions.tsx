@@ -10,7 +10,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import React from 'react';
 import InputMask from 'react-input-mask';
 
-import { getDriversByPlate } from '@lib/drivers/getDrivers';
+import { getDriversByPlate } from '@/lib/drivers/getDrivers';
 
 import DriverItemList from './DriverItemList';
 

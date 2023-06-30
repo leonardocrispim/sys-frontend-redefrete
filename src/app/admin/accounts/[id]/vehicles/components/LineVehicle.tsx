@@ -8,7 +8,7 @@ import { Vehicle } from 'VehiclesTypes';
 import { getDriversByVehicleId } from '@/lib/drivers/getDriversByVehiclesId';
 
 import { AiOutlineLoading3Quarters, AiFillEye } from 'react-icons/ai';
-import { getDriversByPlate } from '@/lib/drivers/getDrivers';
+import { getDriversByPlate, getDriversByPlateAndAccount } from '@/lib/drivers/getDrivers';
 
 type DataProps = {
   vehicle: Vehicle;
@@ -27,7 +27,7 @@ export default function LineVehicle({ vehicle, account_id }: DataProps) {
 
     try {
       const data: Vin_drivers[] | null | undefined =
-        await getDriversByPlate({
+        await getDriversByPlateAndAccount({
           license_plate: vehicle.license_plate, account_id: account_id
         });
 
