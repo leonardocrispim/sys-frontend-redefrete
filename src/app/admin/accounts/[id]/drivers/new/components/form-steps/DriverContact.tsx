@@ -24,7 +24,7 @@ export function DriverContact({
                 </h2>
             </div>
 
-            <div>
+            <div className="sm:col-span-2">
                 <TelephoneMaskedInput
                     setValue={setValue}
                     name="driver_telephone"
@@ -34,7 +34,7 @@ export function DriverContact({
                     isChecked={isChecked}
                 />
             </div>
-            <div>
+            <div className="sm:col-span-2">
                 <TelephoneMaskedInput
                     setValue={setValue}
                     name="driver_whatsapp"

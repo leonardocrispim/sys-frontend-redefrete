@@ -15,13 +15,27 @@ import { getAccount } from '@/lib/accounts/getAccounts';
 import AddressForm from './form-steps/AddressForm';
 import { DriverInfo } from './form-steps/DriverInfos';
 import { VinculateVehicle } from './form-steps/VinculateVehicle';
+import DriverCnh from './form-steps/DriverCnh';
 
 type FormValues = {
   driver_name: string;
   driver_email: string;
   driver_cpf_cnpj: string;
   driver_telephone: string;
-  driver_whatsapp: string
+  driver_whatsapp: string;
+  driver_birth_date: string;
+  driver_sex: string;
+  driver_rg: string;
+  driver_rg_uf: string;
+  driver_rg_date: string;
+  driver_father_name: string;
+  driver_mother_name: string;
+  driver_cnh_number: string;
+  driver_cnh_first_license: string;
+  driver_cnh_validate: string;
+  driver_cnh_uf: string;
+  driver_cnh_safety_code: string;
+  driver_cnh_category: string
   license_plate: string;
   address_zip_code: string;
   address_street: string;
@@ -39,6 +53,19 @@ type DataNewType = {
   driver_telephone?: string | null;
   driver_whatsapp?: string | null;
   driver_email?: string | null;
+  driver_birth_date?: string | null;
+  driver_sex?: string | null;
+  driver_rg?: string | null;
+  driver_rg_uf?: string | null;
+  driver_rg_date?: string | null;
+  driver_father_name?: string | null;
+  driver_mother_name?: string | null;
+  driver_cnh_number?: string | null;
+  driver_cnh_first_license?: string | null;
+  driver_cnh_validate?: string | null;
+  driver_cnh_uf?: string | null;
+  driver_cnh_safety_code?: string | null;
+  driver_cnh_category?: string | null;
   driver_status: string;
   driver_status_gr: string;
   created_by?: number | null;
@@ -74,6 +101,7 @@ export default function newForm({ account_id }: PropsType) {
     register,
     handleSubmit,
     setValue,
+    setError,
     watch,
     formState: { errors },
   } = useForm<FormValues>();
@@ -166,16 +194,92 @@ export default function newForm({ account_id }: PropsType) {
     searchAccountInfo();
   }, []);
 
+  function formatDate(data: string) {
+    let splited = data.split('/')
+    let day = splited[0]
+    let month = splited[1]
+    let year = splited[2]
+
+    const dateFormated = year + '-' + month + '-' + day
+
+    return dateFormated
+  }
+
   const onSubmit = (data: FormValues) => {
     setIsLoading(true);
     
     const dataNew: DataNewType = {
       ...data,
+      driver_birth_date: data.driver_birth_date ? formatDate(data.driver_birth_date) : "",
+      driver_rg_date: data.driver_rg_date ? formatDate(data.driver_rg_date) : "",
+      driver_cnh_first_license: data.driver_cnh_first_license ? formatDate(data.driver_cnh_first_license) : "",
+      driver_cnh_validate: data.driver_cnh_validate ? formatDate(data.driver_cnh_validate) : "",
       account_id: account_id,
       driver_status: 'NOVO_CADASTRO',
       driver_status_gr: 'NAO_ENVIADO',
       created_by: session?.userdata.user_id,
     };
+
+    if(dataNew.driver_rg !== '' && dataNew.driver_rg?.length !== 12) {
+      setError('driver_rg', {
+        message: 'Digite um rg válido!'
+      })
+      setIsLoading(false)
+    }
+
+    if(dataNew.driver_rg !== '' && dataNew.driver_rg?.length == 12) {
+      
+      if(dataNew.driver_rg_date?.length !== 10) {
+        setError('driver_rg_date', {
+          message: 'Digite uma data válida!'
+        })
+        setIsLoading(false)
+      }
+
+      if(dataNew.driver_rg_uf == 'selecionado') {
+        setError('driver_rg_uf', {
+          message: 'Selecione o Estado de emissão!'
+        })
+      } 
+    }
+
+    if(dataNew.driver_cnh_number !== '' && dataNew.driver_cnh_number?.length !== 11) {
+      setError('driver_cnh_number', {
+        message: "Digite uma cnh válida"
+      })
+    }
+
+    if(dataNew.driver_cnh_number !== '' && dataNew.driver_cnh_number?.length == 11) {
+      if(dataNew.driver_cnh_uf == '') {
+        setError('driver_cnh_uf', {
+          message: 'Selecione o Estado de expedição'
+        })
+      }
+
+      if(dataNew.driver_cnh_first_license?.length !== 10) {
+        setError('driver_cnh_first_license', {
+          message: "Data inválida"
+        })
+      }
+
+      if(dataNew.driver_cnh_validate?.length !== 10) {
+        setError('driver_cnh_validate', {
+          message: "Data inválida"
+        })
+      }
+
+      if(dataNew.driver_cnh_safety_code?.length !== 11) {
+        setError('driver_cnh_safety_code', {
+          message: 'Código de segurança inválida'
+        })
+      }
+
+      if(dataNew.driver_cnh_category == '') {
+        setError('driver_cnh_category', {
+          message: 'Selecione a categoria da CNH'
+        })
+      }
+    }
     
     newDriver(dataNew).then((data: ApiReturn<Driver>) => {
       if (data.return == 'error') {
@@ -210,6 +314,12 @@ export default function newForm({ account_id }: PropsType) {
         checkBoxAddressRef={checkBoxAddressRef}
         isCheckedAddress={isCheckedAddress}
         account={account}
+      />
+
+      <DriverCnh 
+        register={register}
+        errors={errors}
+        setValue={setValue}
       />
           
       {!isEmpty ? (
