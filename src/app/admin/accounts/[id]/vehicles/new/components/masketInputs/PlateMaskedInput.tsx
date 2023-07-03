@@ -39,6 +39,7 @@ export default function PlateMaskedInput({
             setHasVehicleType(false)
             setIsCastrated(true)
             setValue('vehicle_type', "")
+            setValue('vehicle_renavam', "")
 
             if(plate.length >= 8) {
                 setIsLoading(true)
@@ -48,6 +49,7 @@ export default function PlateMaskedInput({
                         if(vehicle) {
                             if (!license_plates?.includes(vehicle.license_plate)) {
                                 setValue('vehicle_type', vehicle.vehicle_type)
+                                setValue('vehicle_renavam', vehicle.vehicle_renavam ? vehicle.vehicle_renavam : null)
                                 setHasVehicleType(true)
                                 setIsCastrated(false)
                                 setVehicleRegistered(false)
@@ -98,7 +100,7 @@ export default function PlateMaskedInput({
                 type='text'
                 value={plate}
                 onChange={(event: any) => setPlate(event.target.value.toUpperCase())}
-                className="w-full bg-white py-2 pl-3 pr-10 text-sm leading-5 rounded-md text-rede-gray-300 border focus:outline-none border-rede-gray-400 focus:border-rede-blue/50 "
+                className="w-full bg-white py-2 pl-3 pr-10 text-sm leading-5 rounded-md text-rede-gray-300 border focus:outline-none focus:border-rede-blue/50 "
             />
             {isLoading && (
                 <p className="p-1 rounded-md border text-xl flex items-center text-rede-gray-400 bg-rede-gray-800 border-rede-gray-700">

@@ -67,7 +67,6 @@ type DataNewType = {
   driver_cnh_safety_code?: string | null;
   driver_cnh_category?: string | null;
   driver_status: string;
-  driver_status_gr: string;
   created_by?: number | null;
   license_plate: string;
   address_zip_code: string;
@@ -216,7 +215,6 @@ export default function newForm({ account_id }: PropsType) {
       driver_cnh_validate: data.driver_cnh_validate ? formatDate(data.driver_cnh_validate) : "",
       account_id: account_id,
       driver_status: 'NOVO_CADASTRO',
-      driver_status_gr: 'NAO_ENVIADO',
       created_by: session?.userdata.user_id,
     };
 

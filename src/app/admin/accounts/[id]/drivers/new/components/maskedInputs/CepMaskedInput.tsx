@@ -64,9 +64,11 @@ export default function CepMaskedInput({
             validate: (value: string) => {
               if (isCheckedAddress == true) {
                 return true
+              } else if (value == '') {
+                return true;
               } else if (value.length !== 9) {
                 return 'CEP inválido';
-              }
+              } 
               return true
             },
           })}

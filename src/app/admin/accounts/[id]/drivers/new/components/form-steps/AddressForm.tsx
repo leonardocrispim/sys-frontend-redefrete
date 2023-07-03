@@ -78,9 +78,7 @@ export default function AddressForm({
             </label>
             <div className="mt-1">
               <input
-                {...register('address_street', {
-                  required: 'Logradouro é obrigatório',
-                })}
+                {...register('address_street')}
                 readOnly={isLoading || isCheckedAddress}
                 type="text"
                 name="address_street"
@@ -102,9 +100,7 @@ export default function AddressForm({
             </label>
             <div className="mt-1">
               <input
-                {...register('address_number', {
-                  required: 'Número é obrigatório',
-                })}
+                {...register('address_number')}
                 readOnly={isLoading || isCheckedAddress}
                 type="text"
                 name="address_number"
@@ -143,9 +139,7 @@ export default function AddressForm({
             </label>
             <div className="mt-1">
               <input
-                {...register('address_city', {
-                  required: 'Logradouro é obrigatório',
-                })}
+                {...register('address_city')}
                 readOnly={isLoading || isCheckedAddress}
                 type="text"
                 name="address_city"
@@ -167,9 +161,7 @@ export default function AddressForm({
             </label>
             <div className="mt-1">
               <select
-                {...register('address_state', {
-                  required: 'Estado é obrigatório',
-                })}
+                {...register('address_state')}
                 readOnly={isLoading || isCheckedAddress}
                 name="address_state"
                 id="address_state"

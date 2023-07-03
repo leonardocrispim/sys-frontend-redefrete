@@ -24,7 +24,6 @@ type DataType = {
   driver_cnh_safety_code?: string | null;
   driver_cnh_category?: string | null;
   driver_status: string;
-  driver_status_gr: string;
   address_zip_code?: string | null;
   address_street?: string | null;
   address_number?: string | null;

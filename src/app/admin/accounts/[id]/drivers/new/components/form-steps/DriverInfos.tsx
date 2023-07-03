@@ -120,7 +120,6 @@ export function DriverInfo({
 
                     <div className="sm:col-span-2">
                         <RgMaskedInput 
-                            setValue={setValue}
                             name="driver_rg"
                             register={register}
                             errors={errors}
@@ -148,7 +147,7 @@ export function DriverInfo({
                                 id="driver_rg_uf"
                                 className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm bg-white`} 
                             >
-                                <option value="selecionado">Selecione</option>
+                                <option value="">Selecione</option>
                                 {Object.entries(brazilStates).map(([uf, state]) => (
                                     <option key={uf} value={uf}>
                                         {state}

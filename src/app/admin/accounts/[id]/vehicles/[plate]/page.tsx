@@ -44,8 +44,6 @@ export default async function VehiclePage({ params }: DataType) {
             return <FeedbackError text={err.message} />
         }) 
 
-    console.log("DRIVERS", drivers)
-
     return (
         <>
             <TabsPage current="vehicles" account_id={account_id} />

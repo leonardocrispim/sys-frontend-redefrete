@@ -33,7 +33,6 @@ export async function newAccount({ account, createDriver }: DataProps) {
           driver_whatsapp: account.account_whatsapp ? account.account_whatsapp : "",
           driver_email: account.account_email ? account.account_email : "",
           driver_status: 'NOVO_CADASTRO',
-          driver_status_gr: 'NAO_ENVIADO',
           address_zip_code: account.address_zip_code ? account.address_zip_code : "",
           address_city: account.address_city ? account.address_city : "",
           address_district: account.address_district ? account.address_district : "",
