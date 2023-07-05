@@ -24,6 +24,28 @@ declare module 'DriversTypes' {
     created_by?: number | null;
     created_at?: Date;
     updated_at?: Date;
+    rd_driver_meta: {
+      driver_sex: string | null,
+      driver_rg_uf: string | null,
+      driver_father_name: string | null,
+      driver_mother_name: string | null,
+      driver_birth_date: string | null,
+      driver_rg: string | null,
+      driver_rg_date: string | null,
+      address_street: string | null,
+      address_number: string | null,
+      address_complement: string | null,
+      address_city: string | null,
+      address_state: string | null,
+      address_zip_code: string | null,
+      address_district: string | null,
+      driver_cnh_uf: string | null,
+      driver_cnh_category: string | null,
+      driver_cnh_number: string | null,
+      driver_cnh_first_license: string | null,
+      driver_cnh_validate: string | null,
+      driver_cnh_safety_code: string | null,
+    }
     rd_vin_drivers_vehicles?: DriverVinVehicles[];
   }
 
@@ -80,6 +102,7 @@ declare module 'DriversTypes' {
     vin_id: number,
     driver_id: number,
     vehicle_id: number,
+    status_gr: string,
     created_at: Date,
     updated_at: Date,
     rd_drivers: {
@@ -92,7 +115,6 @@ declare module 'DriversTypes' {
       driver_whatsapp?: string | null,
       driver_email?: string | null,
       driver_status: string,
-      driver_status_gr: string,
       created_by?: number | null,
       created_at: Date,
       updated_at: Date

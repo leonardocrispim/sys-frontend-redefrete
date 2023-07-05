@@ -14,9 +14,9 @@ type DataType = {
 export async function newVehicle({ vehicle, account_id, driver_id }: DataType) {
   const vehicleExist: Vehicle = await getVehicle(vehicle.license_plate)
   console.log("Veículo existe", vehicleExist)
+  console.log("VEHICLE REQUISIÇÃO", vehicle)
   try {
-
-    if (vehicleExist) {
+    if (vehicleExist.license_plate) {
       if(driver_id) {
         await vinDriverVehicle({
           driver_id: Number(driver_id),
@@ -38,6 +38,7 @@ export async function newVehicle({ vehicle, account_id, driver_id }: DataType) {
     
     
     } else {
+      console.log("ENTROU NO ELSE")
       const response = await fetch(`${URL_BACKEND}/vehicles/new`, {
         method: 'POST',
         headers: {

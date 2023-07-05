@@ -22,12 +22,12 @@ export default function LineDriver({ driver, account_id }: DataProps) {
         <DriverItemList driver={driver} />
       </div>
       <div className="flex items-center gap-2 justify-center col-span-4">
-        <div className="">
+        {/* <div className="">
           <p className="text-xs text-center font-bold mb-1">G. de Risco</p>
           <TagStatus status={driver.driver_status_gr}>
             {driversStatusGR[driver.driver_status_gr as driversStatusGRKeys]}
           </TagStatus>
-        </div>
+        </div> */}
 
         <div className="">
           <p className="text-xs text-center font-bold mb-1">Redefrete</p>

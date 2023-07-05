@@ -48,8 +48,9 @@ export default function PlateMaskedInput({
                     .then((vehicle: Vehicle | null) => {
                         if(vehicle) {
                             if (!license_plates?.includes(vehicle.license_plate)) {
+                                console.log("VEHICLE", vehicle.vehicle_renavam)
                                 setValue('vehicle_type', vehicle.vehicle_type)
-                                setValue('vehicle_renavam', vehicle.vehicle_renavam ? vehicle.vehicle_renavam : null)
+                                setValue('vehicle_renavam', vehicle.vehicle_renavam !== "" ? vehicle.vehicle_renavam : null)
                                 setHasVehicleType(true)
                                 setIsCastrated(false)
                                 setVehicleRegistered(false)

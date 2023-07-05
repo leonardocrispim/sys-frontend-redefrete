@@ -140,6 +140,7 @@ export default function newForm({ account_id }: PropsType) {
       setValue('address_complement', account?.rd_account_meta.address_complement ? account.rd_account_meta.address_complement : "")
       setValue('address_city', account?.rd_account_meta.address_city ? account.rd_account_meta.address_city : "")
       setValue('address_state', account?.rd_account_meta.address_state ? account.rd_account_meta.address_state : "")
+      setValue('address_district', account?.rd_account_meta.address_district ? account.rd_account_meta.address_district : "")
     } else {
       setIsCheckedAddress(false)
       setValue('address_zip_code', "")
@@ -148,6 +149,7 @@ export default function newForm({ account_id }: PropsType) {
       setValue('address_complement', "")
       setValue('address_city', "")
       setValue('address_state', "")
+      setValue('address_district', "")
     }
   }
 
