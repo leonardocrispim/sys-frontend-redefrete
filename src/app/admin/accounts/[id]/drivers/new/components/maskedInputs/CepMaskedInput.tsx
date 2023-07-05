@@ -10,7 +10,7 @@ type DataType = {
   setValue: any;
   isLoading?: boolean;
   setIsLoading?: any;
-  isCheckedAddress?: boolean
+  isCheckedAddress?: boolean;
 };
 
 export default function CepMaskedInput({
@@ -20,7 +20,7 @@ export default function CepMaskedInput({
   setValue,
   isLoading,
   setIsLoading,
-  isCheckedAddress
+  isCheckedAddress,
 }: DataType) {
   const [mask, setMask] = useState('99999-999');
 
@@ -63,16 +63,18 @@ export default function CepMaskedInput({
           {...register(name, {
             validate: (value: string) => {
               if (isCheckedAddress == true) {
-                return true
+                return true;
               } else if (value == '') {
                 return true;
               } else if (value.length !== 9) {
                 return 'CEP inválido';
-              } 
-              return true
+              }
+              return true;
             },
           })}
-          readOnly={isCheckedAddress ? isCheckedAddress || isLoading : isLoading}
+          readOnly={
+            isCheckedAddress ? isCheckedAddress || isLoading : isLoading
+          }
           name={name}
           id={name}
           mask={mask}
@@ -80,7 +82,9 @@ export default function CepMaskedInput({
           maskChar=""
           placeholder="00000-000"
           type="text"
-          className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`}`} 
+          className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${
+            isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`
+          }`}
         />
         {errors[name] && (
           <p className=" text-red-700 text-xs mt-1">{errors[name].message}</p>

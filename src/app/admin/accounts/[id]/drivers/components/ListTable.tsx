@@ -4,7 +4,7 @@ import LineDriver from './LineDriver';
 import { ApiReturn } from 'UtilsTypes';
 import Paginate from '@/components/utils/Paginate';
 import FeedbackInfo from '@/components/utils/feedbacks/FeedbackInfo';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useSearchParams /*useRouter, usePathname*/ } from 'next/navigation';
 import { getDrivers } from '@/lib/drivers/getDrivers';
 import { useEffect, useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
@@ -16,10 +16,10 @@ type DataProps = {
 };
 
 export default function ListTable({ account_id }: DataProps) {
-  const itemsPerPage = 20;
+  const itemsPerPage = 10;
 
   const searchParams = useSearchParams();
-  const route = useRouter();
+  // const route = useRouter();
 
   const [totalItems, setTotalItems] = useState<number>(0);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
@@ -27,10 +27,10 @@ export default function ListTable({ account_id }: DataProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [drivers, setDrivers] = useState<Driver[] | undefined | null>();
 
-  const pathname = usePathname();
+  // const pathname = usePathname();
 
   const [currentPage, setCurrentPage] = useState<number>(
-    Number(searchParams.get('page'))
+    Number(searchParams.get('page')) || 0
   );
 
   const [search, setSearch] = useState<string>(searchParams.get('s') || '');
@@ -51,8 +51,10 @@ export default function ListTable({ account_id }: DataProps) {
       take: itemsPerPage,
     })
       .then((data: ApiReturn<Driver[]>) => {
+        console.log(data);
+
         if (data.return == 'success') {
-          if (data.data && data.data.length == 0) {
+          if (data.data && Number(data.count_items) == 0) {
             setIsEmpty(true);
             setTotalItems(0);
           } else {
@@ -64,10 +66,14 @@ export default function ListTable({ account_id }: DataProps) {
           setIsError(true);
         }
 
-        route.push(pathname + `?s=${search}&page=${currentPage}`);
+        // route.push(pathname + `?s=${search}&page=${currentPage}`);
       })
       .finally(() => {
         setIsLoading(false);
+
+        console.log('currentPage', currentPage);
+        console.log('totalItems', totalItems);
+        console.log('itemsPerPage', itemsPerPage);
       });
   }
 

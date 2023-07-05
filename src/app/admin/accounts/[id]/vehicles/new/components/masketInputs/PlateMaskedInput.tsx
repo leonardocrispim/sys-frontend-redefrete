@@ -11,6 +11,7 @@ type DataType = {
   setHasVehicleType: Dispatch<SetStateAction<boolean>>;
   setIsCastrated: Dispatch<SetStateAction<boolean | null>>;
   setVehicleRegistered: Dispatch<SetStateAction<boolean>>;
+  setExistingVehicle: Dispatch<SetStateAction<Vehicle>>;
   register: any;
   setValue: any;
   name: string;
@@ -21,6 +22,7 @@ export default function PlateMaskedInput({
   setHasVehicleType,
   setIsCastrated,
   setVehicleRegistered,
+  setExistingVehicle,
   register,
   setValue,
   name,
@@ -47,14 +49,10 @@ export default function PlateMaskedInput({
         getVehicle(plate)
           .then((vehicle: Vehicle | null) => {
             if (vehicle) {
+              setExistingVehicle(vehicle);
               if (!license_plates?.includes(vehicle.license_plate)) {
                 setValue('vehicle_type', vehicle.vehicle_type);
-                setValue(
-                  'vehicle_renavam',
-                  vehicle.vehicle_renavam !== ''
-                    ? vehicle.vehicle_renavam
-                    : null
-                );
+                setValue('vehicle_renavam', vehicle.vehicle_renavam);
                 setHasVehicleType(true);
                 setIsCastrated(false);
                 setVehicleRegistered(false);

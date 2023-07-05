@@ -35,7 +35,7 @@ type FormValues = {
   driver_cnh_validate: string;
   driver_cnh_uf: string;
   driver_cnh_safety_code: string;
-  driver_cnh_category: string
+  driver_cnh_category: string;
   license_plate: string;
   address_zip_code: string;
   address_street: string;
@@ -83,15 +83,19 @@ type PropsType = {
 };
 
 export default function newForm({ account_id }: PropsType) {
-  const [vehicles, setVehicles] = useState<RdVehicles[] | null | undefined>(null);
-  const [account, setAccount] = useState<Account_Address | null | undefined>(null)
-  
+  const [vehicles, setVehicles] = useState<RdVehicles[] | null | undefined>(
+    null
+  );
+  const [account, setAccount] = useState<Account_Address | null | undefined>(
+    null
+  );
+
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [saveError, setSaveError] = useState('');
 
-  const [isChecked, setIsChecked] = useState<boolean>(false)
-  const [isCheckedAddress, setIsCheckedAddress] = useState<boolean>(false)
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isCheckedAddress, setIsCheckedAddress] = useState<boolean>(false);
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -106,50 +110,100 @@ export default function newForm({ account_id }: PropsType) {
   } = useForm<FormValues>();
 
   const checkBoxRef = useRef<HTMLInputElement>(null);
-  
-  function handleCheck(): void {
-    const isChecked = checkBoxRef.current?.checked
 
-    if(isChecked) {
-      setIsChecked(true)
-      setValue('driver_name', account?.account_name ? account.account_name : "")
-      setValue('driver_cpf_cnpj', account?.account_cpf_cnpj ? account.account_cpf_cnpj : "")
-      setValue('driver_telephone', account?.account_telephone ? account.account_telephone : "")
-      setValue('driver_email', account?.account_email ? account.account_email : "")
-      setValue('driver_whatsapp', account?.account_whatsapp ? account.account_whatsapp : "")
+  function handleCheck(): void {
+    const isChecked = checkBoxRef.current?.checked;
+
+    if (isChecked) {
+      setIsChecked(true);
+      setValue(
+        'driver_name',
+        account?.account_name ? account.account_name : ''
+      );
+      setValue(
+        'driver_cpf_cnpj',
+        account?.account_cpf_cnpj ? account.account_cpf_cnpj : ''
+      );
+      setValue(
+        'driver_telephone',
+        account?.account_telephone ? account.account_telephone : ''
+      );
+      setValue(
+        'driver_email',
+        account?.account_email ? account.account_email : ''
+      );
+      setValue(
+        'driver_whatsapp',
+        account?.account_whatsapp ? account.account_whatsapp : ''
+      );
     } else {
-      setIsChecked(false)
-      setValue('driver_name', "")
-      setValue('driver_cpf_cnpj', "")
-      setValue('driver_telephone', "")
-      setValue('driver_email', "")
-      setValue('driver_whatsapp', "")
+      setIsChecked(false);
+      setValue('driver_name', '');
+      setValue('driver_cpf_cnpj', '');
+      setValue('driver_telephone', '');
+      setValue('driver_email', '');
+      setValue('driver_whatsapp', '');
     }
   }
 
-  const checkBoxAddressRef = useRef<HTMLInputElement>(null)
+  const checkBoxAddressRef = useRef<HTMLInputElement>(null);
 
   function handleCheckAddress(): void {
-    const isCheckedAddress = checkBoxAddressRef.current?.checked
+    const isCheckedAddress = checkBoxAddressRef.current?.checked;
 
-    if(isCheckedAddress) {
-      setIsCheckedAddress(true)
-      setValue('address_zip_code', account?.rd_account_meta.address_zip_code ? account.rd_account_meta.address_zip_code : "")
-      setValue('address_street', account?.rd_account_meta.address_street ? account.rd_account_meta.address_street : "")
-      setValue('address_number', account?.rd_account_meta.address_number ? account.rd_account_meta.address_number : "")
-      setValue('address_complement', account?.rd_account_meta.address_complement ? account.rd_account_meta.address_complement : "")
-      setValue('address_city', account?.rd_account_meta.address_city ? account.rd_account_meta.address_city : "")
-      setValue('address_state', account?.rd_account_meta.address_state ? account.rd_account_meta.address_state : "")
-      setValue('address_district', account?.rd_account_meta.address_district ? account.rd_account_meta.address_district : "")
+    if (isCheckedAddress) {
+      setIsCheckedAddress(true);
+      setValue(
+        'address_zip_code',
+        account?.rd_account_meta.address_zip_code
+          ? account.rd_account_meta.address_zip_code
+          : ''
+      );
+      setValue(
+        'address_street',
+        account?.rd_account_meta.address_street
+          ? account.rd_account_meta.address_street
+          : ''
+      );
+      setValue(
+        'address_number',
+        account?.rd_account_meta.address_number
+          ? account.rd_account_meta.address_number
+          : ''
+      );
+      setValue(
+        'address_complement',
+        account?.rd_account_meta.address_complement
+          ? account.rd_account_meta.address_complement
+          : ''
+      );
+      setValue(
+        'address_city',
+        account?.rd_account_meta.address_city
+          ? account.rd_account_meta.address_city
+          : ''
+      );
+      setValue(
+        'address_state',
+        account?.rd_account_meta.address_state
+          ? account.rd_account_meta.address_state
+          : ''
+      );
+      setValue(
+        'address_district',
+        account?.rd_account_meta.address_district
+          ? account.rd_account_meta.address_district
+          : ''
+      );
     } else {
-      setIsCheckedAddress(false)
-      setValue('address_zip_code', "")
-      setValue('address_street', "")
-      setValue('address_number', "")
-      setValue('address_complement', "")
-      setValue('address_city', "")
-      setValue('address_state', "")
-      setValue('address_district', "")
+      setIsCheckedAddress(false);
+      setValue('address_zip_code', '');
+      setValue('address_street', '');
+      setValue('address_number', '');
+      setValue('address_complement', '');
+      setValue('address_city', '');
+      setValue('address_state', '');
+      setValue('address_district', '');
     }
   }
 
@@ -175,19 +229,18 @@ export default function newForm({ account_id }: PropsType) {
   }
 
   async function searchAccountInfo() {
-    setIsLoading(true)
-    setAccount(null)
+    setIsLoading(true);
+    setAccount(null);
 
     try {
-      const data = await getAccount(account_id)
+      const data = await getAccount(account_id);
 
-      setAccount(data.data)
+      setAccount(data.data);
     } catch (error) {
-      setIsLoading(false)
+      setIsLoading(false);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-    
   }
 
   useEffect(() => {
@@ -196,91 +249,104 @@ export default function newForm({ account_id }: PropsType) {
   }, []);
 
   function formatDate(data: string) {
-    let splited = data.split('/')
-    let day = splited[0]
-    let month = splited[1]
-    let year = splited[2]
+    let splited = data.split('/');
+    let day = splited[0];
+    let month = splited[1];
+    let year = splited[2];
 
-    const dateFormated = year + '-' + month + '-' + day
+    const dateFormated = year + '-' + month + '-' + day;
 
-    return dateFormated
+    return dateFormated;
   }
 
   const onSubmit = (data: FormValues) => {
     setIsLoading(true);
-    
+
     const dataNew: DataNewType = {
       ...data,
-      driver_birth_date: data.driver_birth_date ? formatDate(data.driver_birth_date) : "",
-      driver_rg_date: data.driver_rg_date ? formatDate(data.driver_rg_date) : "",
-      driver_cnh_first_license: data.driver_cnh_first_license ? formatDate(data.driver_cnh_first_license) : "",
-      driver_cnh_validate: data.driver_cnh_validate ? formatDate(data.driver_cnh_validate) : "",
+      driver_birth_date: data.driver_birth_date
+        ? formatDate(data.driver_birth_date)
+        : '',
+      driver_rg_date: data.driver_rg_date
+        ? formatDate(data.driver_rg_date)
+        : '',
+      driver_cnh_first_license: data.driver_cnh_first_license
+        ? formatDate(data.driver_cnh_first_license)
+        : '',
+      driver_cnh_validate: data.driver_cnh_validate
+        ? formatDate(data.driver_cnh_validate)
+        : '',
       account_id: account_id,
       driver_status: 'NOVO_CADASTRO',
       created_by: session?.userdata.user_id,
     };
 
-    if(dataNew.driver_rg !== '' && dataNew.driver_rg?.length !== 12) {
+    if (dataNew.driver_rg !== '' && dataNew.driver_rg?.length !== 12) {
       setError('driver_rg', {
-        message: 'Digite um rg válido!'
-      })
-      setIsLoading(false)
+        message: 'Digite um rg válido!',
+      });
+      setIsLoading(false);
     }
 
-    if(dataNew.driver_rg !== '' && dataNew.driver_rg?.length == 12) {
-      
-      if(dataNew.driver_rg_date?.length !== 10) {
+    if (dataNew.driver_rg !== '' && dataNew.driver_rg?.length == 12) {
+      if (dataNew.driver_rg_date?.length !== 10) {
         setError('driver_rg_date', {
-          message: 'Digite uma data válida!'
-        })
-        setIsLoading(false)
+          message: 'Digite uma data válida!',
+        });
+        setIsLoading(false);
       }
 
-      if(dataNew.driver_rg_uf == 'selecionado') {
+      if (dataNew.driver_rg_uf == 'selecionado') {
         setError('driver_rg_uf', {
-          message: 'Selecione o Estado de emissão!'
-        })
-      } 
+          message: 'Selecione o Estado de emissão!',
+        });
+      }
     }
 
-    if(dataNew.driver_cnh_number !== '' && dataNew.driver_cnh_number?.length !== 11) {
+    if (
+      dataNew.driver_cnh_number !== '' &&
+      dataNew.driver_cnh_number?.length !== 11
+    ) {
       setError('driver_cnh_number', {
-        message: "Digite uma cnh válida"
-      })
+        message: 'Digite uma cnh válida',
+      });
     }
 
-    if(dataNew.driver_cnh_number !== '' && dataNew.driver_cnh_number?.length == 11) {
-      if(dataNew.driver_cnh_uf == '') {
+    if (
+      dataNew.driver_cnh_number !== '' &&
+      dataNew.driver_cnh_number?.length == 11
+    ) {
+      if (dataNew.driver_cnh_uf == '') {
         setError('driver_cnh_uf', {
-          message: 'Selecione o Estado de expedição'
-        })
+          message: 'Selecione o Estado de expedição',
+        });
       }
 
-      if(dataNew.driver_cnh_first_license?.length !== 10) {
+      if (dataNew.driver_cnh_first_license?.length !== 10) {
         setError('driver_cnh_first_license', {
-          message: "Data inválida"
-        })
+          message: 'Data inválida',
+        });
       }
 
-      if(dataNew.driver_cnh_validate?.length !== 10) {
+      if (dataNew.driver_cnh_validate?.length !== 10) {
         setError('driver_cnh_validate', {
-          message: "Data inválida"
-        })
+          message: 'Data inválida',
+        });
       }
 
-      if(dataNew.driver_cnh_safety_code?.length !== 11) {
+      if (dataNew.driver_cnh_safety_code?.length !== 11) {
         setError('driver_cnh_safety_code', {
-          message: 'Código de segurança inválida'
-        })
+          message: 'Código de segurança inválida',
+        });
       }
 
-      if(dataNew.driver_cnh_category == '') {
+      if (dataNew.driver_cnh_category == '') {
         setError('driver_cnh_category', {
-          message: 'Selecione a categoria da CNH'
-        })
+          message: 'Selecione a categoria da CNH',
+        });
       }
     }
-    
+
     newDriver(dataNew).then((data: ApiReturn<Driver>) => {
       if (data.return == 'error') {
         setSaveError(data.message || 'Erro. Contate o administrador!');
@@ -295,8 +361,7 @@ export default function newForm({ account_id }: PropsType) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-    
-      <DriverInfo 
+      <DriverInfo
         errors={errors}
         register={register}
         setValue={setValue}
@@ -306,7 +371,7 @@ export default function newForm({ account_id }: PropsType) {
         saveError={saveError}
       />
 
-      <AddressForm 
+      <AddressForm
         register={register}
         errors={errors}
         setValue={setValue}
@@ -316,40 +381,37 @@ export default function newForm({ account_id }: PropsType) {
         account={account}
       />
 
-      <DriverCnh 
-        register={register}
-        errors={errors}
-        setValue={setValue}
-      />
-          
-      {!isEmpty ? (
-        <VinculateVehicle 
+      <DriverCnh register={register} errors={errors} setValue={setValue} />
+
+      {!isEmpty && (
+        <VinculateVehicle
           register={register}
           vehicles={vehicles}
           isEmpty={isEmpty}
         />
-      ) : (
-        <></>
       )}
 
-      <div className="pt-4">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className={
-            `inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-4 text-white hover:bg-rede-green-400 dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900 w-full` +
-            (isLoading ? ' bg-rede-gray-400' : ' bg-rede-green')
-          }
-        >
-          {isLoading ? (
-            <AiOutlineLoading3Quarters className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900 animate-spin " />
+      <div className="grid grid-cols-1 sm:grid-cols-4 mt-4">
+        <div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={
+              `inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-4 text-white  dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900 w-full` +
+              (isLoading
+                ? ' bg-rede-gray-400'
+                : ' bg-rede-green hover:bg-rede-green-400')
+            }
+          >
+            {isLoading ? (
+              <AiOutlineLoading3Quarters className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900 animate-spin " />
             ) : (
-            <FaRegSave className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900" />
+              <FaRegSave className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900" />
             )}
             <span>CADASTRAR</span>
-        </button>
-      </div>     
-    
+          </button>
+        </div>
+      </div>
     </form>
   );
 }
