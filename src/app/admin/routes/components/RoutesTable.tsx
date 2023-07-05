@@ -111,9 +111,9 @@ export default function RoutesListPage() {
           setIsError(true);
         }
 
-        route.push(
-          pathname + `?s=${search}&page=${currentPage}&hub_id=${hubIds}`
-        );
+        // route.push(
+        //   pathname + `?s=${search}&page=${currentPage}&hub_id=${hubIds}`
+        // );
       })
       .catch(() => {
         setIsError(true);
