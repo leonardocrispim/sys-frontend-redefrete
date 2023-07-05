@@ -9,6 +9,16 @@ declare module 'RoutesTypes' {
     FINALIZADO = 'FINALIZADO',
   }
 
+  export interface Package {
+    package_id?: number;
+    route_id?: number;
+    tracknumber: string;
+    package_status: string;
+    package_client_status: string;
+    created_at: string;
+    updated_at: string;
+  }
+
   export interface Route {
     route_id: number;
     route_code: string;
@@ -23,10 +33,11 @@ declare module 'RoutesTypes' {
     kms: number;
     on_hold: number;
     status: RouteStatus;
-    created_at: Date;
-    updated_at: Date;
+    created_at: string;
+    updated_at: string;
     rd_drivers?: Driver;
     rd_vehicles?: Vehicle;
     rd_hubs?: Hub;
+    rd_packages?: Package[];
   }
 }

@@ -16,6 +16,9 @@ import Paginate from '@components/utils/Paginate';
 import FormHubsOptions from './FormHubsOptions';
 import { useForm } from 'react-hook-form';
 import { Hub } from 'HubsTypes';
+import { ApiReturn } from 'UtilsTypes';
+import FeedbackInfo from '@/components/utils/feedbacks/FeedbackInfo';
+import FeedbackError from '@/components/utils/feedbacks/FeedbackError';
 
 function routesPaginate(page: number, routeList: Route[]): Route[] {
   if (routeList.length < 1) {
@@ -32,7 +35,7 @@ function routesPaginate(page: number, routeList: Route[]): Route[] {
 
 type FormData = {
   s: string;
-  hub_id: number[];
+  hub_id: string;
 };
 
 export default function RoutesListPage() {
@@ -43,88 +46,114 @@ export default function RoutesListPage() {
     formState: { errors },
   } = useForm<FormData>();
 
-  const searchParams = useSearchParams()!;
-
-  const createQueryString = useCallback(
-    (paramsObject: Object) => {
-      //@ts-expect-error
-      const params = new URLSearchParams(searchParams);
-
-      Object.entries(paramsObject).forEach(([key, value]) => {
-        params.set(key, value);
-      });
-
-      return params.toString();
-    },
-    [searchParams]
-  );
-
-  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [routeList, setRouteList] = useState([]);
+  const itemsPerPage = 20;
 
-  const [courrentRoutesList, setCourrentRoutesList] = useState<Route[]>([]);
-  const [atualPage, setAtualPage] = useState(0);
-
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const [selected, setSelected] = useState<Hub[]>([]);
+  const searchParams = useSearchParams();
+  const route = useRouter();
 
   const { data: session, status } = useSession();
 
-  useEffect(() => {
+  const [totalItems, setTotalItems] = useState<number>(0);
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [routes, setRoutes] = useState<Route[] | undefined | null>();
+
+  const pathname = usePathname();
+
+  const [currentPage, setCurrentPage] = useState<number>(
+    Number(searchParams.get('page'))
+  );
+
+  const [search, setSearch] = useState<string>(searchParams.get('s') || '');
+  const [searchBack, setSearchBack] = useState<string>(
+    searchParams.get('s') || ''
+  );
+
+  const [hubIds, setHubIds] = useState<string>(
+    searchParams.get('hub_id') || ''
+  );
+
+  const [hubs, setHubs] = useState<Hub[]>([]);
+
+  function searchRoutes() {
     if (!session) {
       return;
     }
-    setError(null);
+
+    setRoutes(null);
+    setIsError(false);
+    setIsEmpty(false);
     setIsLoading(true);
 
-    const dataSearch = {
-      s: searchParams.get('s'),
-      hub_id: searchParams.get('hub_id'),
-    };
+    console.log({
+      hub_id: hubIds,
+      s: search,
+      skip: currentPage * itemsPerPage,
+      take: itemsPerPage,
+    });
 
-    getRoutesSearch(dataSearch, session?.userdata)
-      .then((list) => {
-        if (list.length <= 0) {
-          throw new Error('Nenhum item encontrado');
+    getRoutesSearch(
+      {
+        hub_id: hubIds,
+        s: search,
+        skip: currentPage * itemsPerPage,
+        take: itemsPerPage,
+      },
+      session?.userdata
+    )
+      .then((data: ApiReturn<Route[]>) => {
+        console.log(data);
+        if (data.return == 'success') {
+          if (data.data && data.data.length == 0) {
+            setIsEmpty(true);
+            setTotalItems(0);
+          } else {
+            setIsEmpty(false);
+            setTotalItems(Number(data.count_total));
+            setRoutes(data.data);
+          }
+        } else {
+          setTotalItems(0);
+          setIsError(true);
         }
 
-        setRouteList(list);
-
-        setCourrentRoutesList(routesPaginate(0, list));
+        route.push(
+          pathname + `?s=${search}&page=${currentPage}&hub_id=${hubIds}`
+        );
       })
-      .catch((error) => {
-        setError(error.message);
+      .catch(() => {
+        setIsError(true);
       })
       .finally(() => {
-        setAtualPage(0);
         setIsLoading(false);
       });
+  }
+
+  useEffect(() => {
+    searchRoutes();
+  }, [currentPage]);
+
+  useEffect(() => {
+    searchRoutes();
   }, [session]);
 
   useEffect(() => {
-    setCourrentRoutesList(routesPaginate(atualPage, routeList));
-  }, [atualPage]);
+    setCurrentPage(0);
+    setSearchBack(search);
+    searchRoutes();
+  }, [search, hubIds]);
 
   useEffect(() => {
-    setValue(
-      'hub_id',
-      selected.map((sel) => sel.hub_id)
-    );
-  }, [selected]);
+    const ids = hubs.map((h) => h.hub_id).join(',');
+    setValue('hub_id', ids);
+  }, [hubs]);
 
   async function onSubmit(data: FormData) {
-    window.location.href = `${pathname}?${createQueryString(data)}`;
+    setSearch(data.s);
+    setHubIds(data.hub_id);
   }
-
-  const hub_id =
-    searchParams
-      .get('hub_id')
-      ?.split(',')
-      .map((v) => Number(v)) || [];
 
   return (
     <div>
@@ -145,11 +174,7 @@ export default function RoutesListPage() {
             </div>
 
             <div className="sm:col-span-2">
-              <FormHubsOptions
-                hub_id={hub_id}
-                selected={selected}
-                setSelected={setSelected}
-              />
+              <FormHubsOptions hubs={hubs} setHubs={setHubs} />
             </div>
 
             <div className="">
@@ -176,13 +201,15 @@ export default function RoutesListPage() {
         </p>
       )}
 
-      {error && (
-        <p className="p-2 rounded-md border text-xl flex items-center text-rede-gray-400 bg-rede-gray-800 border-rede-gray-700 mb-4">
-          {error}
-        </p>
+      {isEmpty && (
+        <FeedbackInfo text="Nenhuma conta encontrada, por favor refaça a busca!" />
       )}
 
-      {courrentRoutesList.length > 0 && (
+      {isError && (
+        <FeedbackError text="Houve um erro de conexão, por favor tente mais tarde!" />
+      )}
+
+      {routes && routes.length > 0 && (
         <div className="border rounded-md">
           <div className=" overflow-x-auto min-w-full align-middle">
             <table className="min-w-full divide-y divide-gray-300">
@@ -226,7 +253,7 @@ export default function RoutesListPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {courrentRoutesList.map((route: Route) => (
+                {routes.map((route: Route) => (
                   <LineRoute key={route.route_id} route={route} />
                 ))}
               </tbody>
@@ -238,19 +265,22 @@ export default function RoutesListPage() {
               <div>
                 <p className="text-sm text-gray-700">
                   Mostrando de{' '}
-                  <span className="font-medium">{atualPage * 10 + 1}</span> a{' '}
                   <span className="font-medium">
-                    {Math.min((atualPage + 1) * 10, routeList.length)}
+                    {currentPage * itemsPerPage + 1}
                   </span>{' '}
-                  de <span className="font-medium">{routeList.length}</span>{' '}
+                  a{' '}
+                  <span className="font-medium">
+                    {currentPage * itemsPerPage + routes.length}
+                  </span>{' '}
+                  de <span className="font-medium">{totalItems}</span>{' '}
                   resultados
                 </p>
               </div>
               <Paginate
-                currentPage={atualPage}
-                totalItems={routeList.length}
-                itemsPerPage={10}
-                hook={setAtualPage}
+                currentPage={currentPage}
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                hook={setCurrentPage}
               />
             </div>
           </div>

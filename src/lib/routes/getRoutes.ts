@@ -1,10 +1,11 @@
 import { URL_BACKEND } from '@utils/utils';
 
 import { User } from 'UsersTypes';
-import querystring from 'querystring';
 
 export async function getRoutesSearch(data: any, user?: User) {
   try {
+    let queryString = '';
+
     if (user?.user_type == 'DISPATCHER') {
       const hubsDis = user?.rd_vin_users_hubs?.map((hub) => hub.hub_id);
 
@@ -19,33 +20,25 @@ export async function getRoutesSearch(data: any, user?: User) {
       }
     }
 
-    const queryParams = querystring.stringify(data);
+    if (data && Object.keys(data).length > 0) {
+      const searchParams = new URLSearchParams(data);
+      queryString = searchParams.toString();
+    }
+
     const response = await fetch(
-      `${URL_BACKEND}/routes/search?${queryParams}`,
+      `${URL_BACKEND}/routes/search?${queryString}`,
       {
+        cache: 'no-cache',
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       }
     );
-    return await response.json();
-  } catch (error: any) {
-    throw new Error(error.message);
+    const ret = await response.json();
+
+    return ret;
+  } catch {
+    throw new Error('Erro de conexão com backend');
   }
 }
-
-// export async function teste(code: string) {
-//   try {
-//     const response = await fetch(`${URL_BACKEND}/routes/teste`, {
-//       method: 'POST',
-//       body: JSON.stringify({ code: code }),
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     });
-//     return await response.json();
-//   } catch (error: any) {
-//     throw new Error(error.message);
-//   }
-// }

@@ -9,16 +9,25 @@ import { Listbox, Transition } from '@headlessui/react';
 import { Hub } from 'HubsTypes';
 import { UserHubsVin } from 'UsersTypes';
 
-import React, { Fragment, useState, useEffect, ForwardedRef } from 'react';
+import React, {
+  Fragment,
+  useState,
+  useEffect,
+  ForwardedRef,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 
-export default function FormHubsOptions({
-  selected,
-  setSelected,
-  hub_id,
-}: any) {
+type DataProps = {
+  hubs: Hub[];
+  setHubs: Dispatch<SetStateAction<Hub[]>>;
+};
+
+export default function FormHubsOptions({ hubs, setHubs }: DataProps) {
   const { data: session, status } = useSession();
 
   const [hubsList, setHubsList] = useState<Hub[]>([]);
+  const hubs_ids = hubs.length <= 0 ? [] : hubs.map((hub) => hub.hub_id);
 
   useEffect(() => {
     setHubsList([]);
@@ -36,24 +45,16 @@ export default function FormHubsOptions({
       if (dispHub) {
         setHubsList(dispHub);
         const thisHub = dispHub.filter((hub: Hub) =>
-          hub_id.includes(hub.hub_id)
+          hubs_ids.includes(hub.hub_id)
         );
-
-        if (thisHub) {
-          setSelected(thisHub);
-        }
       }
     } else {
-      getHubs().then((hubs: Hub[]) => {
-        setHubsList(hubs);
+      getHubs().then((hubsList: Hub[]) => {
+        setHubsList(hubsList);
 
         const thisHub = hubs.filter((hub: Hub) => {
-          return hub_id.includes(hub.hub_id);
+          return hubs_ids.includes(hub.hub_id);
         });
-
-        if (thisHub) {
-          setSelected(thisHub);
-        }
       });
     }
   }, [session]);
@@ -63,10 +64,9 @@ export default function FormHubsOptions({
       <>
         {/* <pre>{JSON.stringify(session, null, 2)}</pre> */}
         <Listbox
-          value={selected}
+          value={hubs}
           onChange={(vals) => {
-            const filtered = vals.filter((v: Hub) => v.hub_id != 0);
-            setSelected(filtered);
+            setHubs(vals);
           }}
           multiple
         >
@@ -77,8 +77,8 @@ export default function FormHubsOptions({
                   <span className="flex items-center">
                     <span className="bg-gray-200 inline-block h-2 w-2 flex-shrink-0 rounded-full" />
                     <span className="ml-3 block truncate">
-                      {selected.length > 0
-                        ? `Selecionado(s) ${selected.length} hub's`
+                      {hubs.length > 0
+                        ? `Selecionado(s) ${hubs.length} hub's`
                         : "Todos os Hub's"}
                     </span>
                   </span>

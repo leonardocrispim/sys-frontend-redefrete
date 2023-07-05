@@ -11,7 +11,7 @@ export const AllMenus = [
     menu: [
       {
         name: 'Lista de Rotas',
-        href: '/admin/routes',
+        href: '/admin/routes?s=&page=0',
         icon: BsCardChecklist,
         permission: ['ADMIN', 'DISPATCHER', 'OPERADOR'],
       },

@@ -20,6 +20,14 @@ export default function LineRoute({ route }: DataProps) {
   const [isOpenModalDriver, setIsOpenModalDriver] = useState(false);
   const [thisDriver, setThisDriver] = useState(route.rd_drivers);
 
+  const qtdDelivered = route.rd_packages
+    ? route.rd_packages?.filter(
+        (pkg) => pkg.package_client_status == 'Delivered'
+      ).length
+    : 0;
+
+  const qtdPackages = route.rd_packages ? route.rd_packages.length : 0;
+
   return (
     <tr key={route.route_code}>
       <td className="whitespace-nowrap p-2">
@@ -50,16 +58,10 @@ export default function LineRoute({ route }: DataProps) {
       </td>
       <td className="whitespace-nowrap  p-2 text-md text-gray-500">
         <div className="text-gray-900 font-bold">
-          {formatDecimal(
-            calcularPorcentagem(
-              route.packages_delivered,
-              route.packages_quantity
-            )
-          )}
-          %
+          {formatDecimal(calcularPorcentagem(qtdDelivered, qtdPackages))}%
         </div>
         <div className=" text-gray-500 text-xs">
-          {route.packages_delivered}/{route.packages_quantity} pcts
+          {qtdDelivered}/{qtdPackages} pcts
         </div>
       </td>
 

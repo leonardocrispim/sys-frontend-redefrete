@@ -52,7 +52,7 @@ export default function Paginate({
   const pgTotal = Math.ceil(totalItems / itemsPerPage);
 
   let pages = [];
-  const squares = 7;
+  const squares = Math.min(pgTotal, 7);
   const middle = Math.floor(squares / 2);
 
   for (let x = 0; x < squares; x++) {
