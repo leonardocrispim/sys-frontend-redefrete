@@ -25,9 +25,6 @@ export async function editRoute(route: Route) {
     });
     const ret = await response.json();
 
-    console.log(route_code);
-    console.log(data);
-
     if (ret.return == 'success') {
       return ret;
     } else {
