@@ -7,13 +7,13 @@ import { BsCardChecklist } from 'react-icons/bs';
 export const AllMenus = [
   {
     name: 'Rotas',
-    permission: ['ADMIN', 'DISPATCHER', 'OPERADOR'],
+    permission: ['ADMIN', 'DISPATCHER', 'OPERADOR', 'COORDENADOR'],
     menu: [
       {
         name: 'Lista de Rotas',
         href: '/admin/routes?s=&page=0',
         icon: BsCardChecklist,
-        permission: ['ADMIN', 'DISPATCHER', 'OPERADOR'],
+        permission: ['ADMIN', 'DISPATCHER', 'OPERADOR', 'COORDENADOR'],
       },
     ],
   },
@@ -29,7 +29,7 @@ export const AllMenus = [
       },
       {
         name: 'Lista de Contas',
-        href: '/admin/accounts',
+        href: '/admin/accounts?s=&page=0',
         icon: FaLayerGroup,
         permission: ['ADMIN'],
       },

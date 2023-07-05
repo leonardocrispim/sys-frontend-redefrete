@@ -3,8 +3,7 @@ import querystring from 'querystring';
 import { URL_BACKEND } from '@utils/utils';
 import { Driver, DriversSearchData } from 'DriversTypes';
 import { ApiReturn } from 'UtilsTypes';
-
-//
+import { Vin_drivers } from 'DriversTypes';
 
 export async function getDriver(cpf_cnpj: string): Promise<Driver> {
   try {
@@ -43,9 +42,29 @@ export async function getDrivers(data?: DriversSearchData) {
   }
 }
 
-export async function getDriversByPlate(plate: string) {
+type DataProps = {
+  license_plate: string;
+  account_id: number;
+}
+
+export async function getDriversByPlateAndAccount({ license_plate, account_id }: DataProps) {
   try {
-    const response = await fetch(`${URL_BACKEND}/drivers/plate/${plate}`, {
+    const response = await fetch(`${URL_BACKEND}/drivers/plate/${license_plate}/${account_id}`, {
+      cache: 'no-cache',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
+  } catch {
+    throw new Error('Erro de conexão com backend');
+  }
+}
+
+export async function getDriversByPlate(license_plate: string) {
+  try {
+    const response = await fetch(`${URL_BACKEND}/drivers/plate/${license_plate}`, {
       cache: 'no-cache',
       method: 'GET',
       headers: {

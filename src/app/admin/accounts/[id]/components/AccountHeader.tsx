@@ -5,10 +5,10 @@ import {
   driversStatusRFKeys,
 } from '@/lib/utils/driversConstants';
 import { timestampToBR } from '@/lib/utils/utils';
-import { Account } from 'AccountsTypes';
+import { Account, Account_Address } from 'AccountsTypes';
 
 type PropsType = {
-  account: Account;
+  account: Account_Address;
 };
 
 export default function AccountHeader({ account }: PropsType) {

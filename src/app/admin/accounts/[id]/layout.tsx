@@ -1,6 +1,6 @@
 import FeedbackError from '@/components/utils/feedbacks/FeedbackError';
 import { getAccount } from '@/lib/accounts/getAccounts';
-import { Account } from 'AccountsTypes';
+import { Account, Account_Address } from 'AccountsTypes';
 import { ApiReturn } from 'UtilsTypes';
 import AccountHeader from './components/AccountHeader';
 
@@ -19,7 +19,7 @@ export default async function accountsDriversPage({
 }: DataType) {
   const account_id = Number(params.id);
 
-  const account: ApiReturn<Account> = await getAccount(account_id)
+  const account: ApiReturn<Account_Address> = await getAccount(account_id)
     .then((data) => {
       if (!data.data?.account_id) {
         throw new Error('Account not found');
@@ -43,7 +43,7 @@ export default async function accountsDriversPage({
 
   return (
     <div>
-      <AccountHeader account={account.data as Account} />
+      <AccountHeader account={account.data as Account_Address} />
       <div>{children}</div>
     </div>
   );

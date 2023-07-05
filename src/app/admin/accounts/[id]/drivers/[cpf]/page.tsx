@@ -32,6 +32,8 @@ export default async function accountsPage({ params }: DataType) {
       return <FeedbackError text={err.message} />;
     });
 
+    //console.log("DRIVER", driver)
+
   return (
     <>
       <TabsPage current="drivers" account_id={accountId} />

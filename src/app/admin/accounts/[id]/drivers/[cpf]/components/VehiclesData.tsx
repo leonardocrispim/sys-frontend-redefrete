@@ -18,6 +18,8 @@ export default function VehiclesData({ driverVehicles, driverId, account_id }: D
   const [isOpenModal, setIsOpenModal] = useState(false);
   const isLoading = false;
 
+  console.log("VEHICLES", vehicles)
+
   return (
     <>
       <div className="mb-5">
