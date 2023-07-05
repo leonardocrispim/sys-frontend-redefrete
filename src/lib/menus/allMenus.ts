@@ -11,7 +11,7 @@ export const AllMenus = [
     menu: [
       {
         name: 'Lista de Rotas',
-        href: '/admin/routes?s=&page=0',
+        href: '/admin/routes',
         icon: BsCardChecklist,
         permission: ['ADMIN', 'DISPATCHER', 'OPERADOR', 'COORDENADOR'],
       },
@@ -35,22 +35,4 @@ export const AllMenus = [
       },
     ],
   },
-  /* {
-    name: 'Pré Cadastros',
-    permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
-    menu: [
-      {
-        name: 'Novo Cadastro',
-        href: '/admin/registrations/new',
-        icon: FaUserClock,
-        permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
-      },
-      {
-        name: 'Lista de Cadastros',
-        href: '/admin/registrations',
-        icon: FaClipboardList,
-        permission: ['ADMIN', 'OPERADOR', 'CAPTADOR'],
-      },
-    ],
-  },*/
 ];

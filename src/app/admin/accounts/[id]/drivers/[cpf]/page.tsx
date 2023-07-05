@@ -1,14 +1,11 @@
-import { ApiReturn } from 'UtilsTypes';
-import { Account } from 'AccountsTypes';
-import { getAccount } from '@/lib/accounts/getAccounts';
 import FeedbackError from '@/components/utils/feedbacks/FeedbackError';
-import AccountHeader from '../../components/AccountHeader';
 import TabsPage from '../../components/TabsPage';
-import DriversMenu from '../components/DriversMenu';
 import DriverData from './components/DriverData';
 import { getDriver } from '@/lib/drivers/getDrivers';
 import { Driver } from 'DriversTypes';
 import VehiclesData from './components/VehiclesData';
+
+export const dynamic = 'force-dynamic';
 
 type DataType = {
   params: {

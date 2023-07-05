@@ -4,7 +4,8 @@ import { format } from 'date-fns';
 export const URL_BACKEND = process.env.NEXT_PUBLIC_URL_BACKEND;
 
 export function isMenuSelected(patch: string, menu: MenuLine) {
-  return patch === menu.href;
+  const [final, queryVars] = menu.href.split('?');
+  return patch.endsWith(final);
 }
 
 export function formatPhone(phoneNumber: string) {

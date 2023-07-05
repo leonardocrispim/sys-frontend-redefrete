@@ -25,12 +25,14 @@ export default function DesktopSidebar() {
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-rede-gray-700 px-6 pb-4">
           <div className="flex pt-4 items-center">
-            <Image
-              alt="logo horizontal"
-              src="/images/logo-p-horizontal.png"
-              width={300}
-              height={67}
-            />
+            <Link href="/admin">
+              <Image
+                alt="logo horizontal"
+                src="/images/logo-p-horizontal.png"
+                width={300}
+                height={67}
+              />
+            </Link>
           </div>
 
           <nav className="flex flex-1 flex-col">
