@@ -12,6 +12,7 @@ export async function editRoute(route: Route) {
       rd_hubs,
       created_at,
       updated_at,
+      rd_packages,
       ...data
     } = route;
 
@@ -23,6 +24,9 @@ export async function editRoute(route: Route) {
       body: JSON.stringify(data),
     });
     const ret = await response.json();
+
+    console.log(route_code);
+    console.log(data);
 
     if (ret.return == 'success') {
       return ret;

@@ -13,12 +13,14 @@ type DataType = {
   account_id: number;
 };
 
-export default function VehiclesData({ driverVehicles, driverId, account_id }: DataType) {
+export default function VehiclesData({
+  driverVehicles,
+  driverId,
+  account_id,
+}: DataType) {
   const [vehicles, setVehicles] = useState(driverVehicles);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const isLoading = false;
-
-  console.log("VEHICLES", vehicles)
 
   return (
     <>

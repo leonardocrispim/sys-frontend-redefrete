@@ -89,8 +89,8 @@ export default function newForm({ account_id }: PropsType) {
         account_id: account_id,
       });
 
-      if(data.data.length == 0) {
-        setIsEmpty(false)
+      if (data.data.length == 0) {
+        setIsEmpty(false);
       }
 
       setDrivers(data.data);
@@ -107,14 +107,14 @@ export default function newForm({ account_id }: PropsType) {
   }, []);
 
   function formatDate(data: string) {
-    let splited = data.split('/')
-    let day = splited[0]
-    let month = splited[1]
-    let year = splited[2]
+    let splited = data.split('/');
+    let day = splited[0];
+    let month = splited[1];
+    let year = splited[2];
 
-    const dateFormated = year + '-' + month + '-' + day
+    const dateFormated = year + '-' + month + '-' + day;
 
-    return dateFormated
+    return dateFormated;
   }
 
   const onSubmit = (data: FormValues) => {
@@ -124,11 +124,15 @@ export default function newForm({ account_id }: PropsType) {
       vehicle_type: data.vehicle_type,
       vehicle_renavam: data.vehicle_renavam,
       vehicle_owner_name: data.vehicle_owner_name,
-      vehicle_owner_birth_date: data?.vehicle_owner_birth_date ? formatDate(data.vehicle_owner_birth_date) : null,
+      vehicle_owner_birth_date: data?.vehicle_owner_birth_date
+        ? formatDate(data.vehicle_owner_birth_date)
+        : null,
       vehicle_owner_cpf_cnpj: data.vehicle_owner_cpf_cnpj,
       vehicle_owner_sex: data.vehicle_owner_sex,
       vehicle_owner_rg: data.vehicle_owner_rg,
-      vehicle_owner_rg_date: data?.vehicle_owner_rg_date ? formatDate(data.vehicle_owner_rg_date) : null,
+      vehicle_owner_rg_date: data?.vehicle_owner_rg_date
+        ? formatDate(data.vehicle_owner_rg_date)
+        : null,
       vehicle_owner_rg_uf: data.vehicle_owner_rg_uf,
       vehicle_owner_father_name: data.vehicle_owner_father_name,
       vehicle_owner_mother_name: data.vehicle_owner_mother_name,
@@ -149,8 +153,6 @@ export default function newForm({ account_id }: PropsType) {
         );
       }
     });
-    console.log("new vehicle", vehicleData)
-    console.log('DATA FORM', data)
   };
 
   return (
@@ -164,8 +166,7 @@ export default function newForm({ account_id }: PropsType) {
 
       {vehicles && (
         <form onSubmit={handleSubmit(onSubmit)}>
-
-          <VehicleInfos 
+          <VehicleInfos
             register={register}
             errors={errors}
             setValue={setValue}
@@ -179,15 +180,15 @@ export default function newForm({ account_id }: PropsType) {
           />
 
           {hasVehicleType && (
-            <OwnerInfos 
-             errors={errors}
-             register={register}
-             setValue={setValue}
+            <OwnerInfos
+              errors={errors}
+              register={register}
+              setValue={setValue}
             />
           )}
 
           {hasVehicleType && drivers && (
-            <VinculateDriver 
+            <VinculateDriver
               register={register}
               errors={errors}
               isEmpty={isEmpty}
@@ -208,9 +209,9 @@ export default function newForm({ account_id }: PropsType) {
                 {isLoading ? (
                   <AiOutlineLoading3Quarters className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900 animate-spin " />
                 ) : (
-                   <FaRegSave className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900" />
+                  <FaRegSave className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900" />
                 )}
-                  <span>CADASTRAR</span>
+                <span>CADASTRAR</span>
               </button>
             </div>
           )}

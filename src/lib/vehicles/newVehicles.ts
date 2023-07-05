@@ -8,37 +8,34 @@ import { getVehicle } from './getVehicles';
 type DataType = {
   vehicle: NewVehicle;
   account_id: number;
-  driver_id?: number
-}
+  driver_id?: number;
+};
 
 export async function newVehicle({ vehicle, account_id, driver_id }: DataType) {
-  const vehicleExist: Vehicle = await getVehicle(vehicle.license_plate)
-  console.log("Veículo existe", vehicleExist)
-  console.log("VEHICLE REQUISIÇÃO", vehicle)
+  const vehicleExist: Vehicle = await getVehicle(vehicle.license_plate);
+
   try {
     if (vehicleExist.license_plate) {
-      if(driver_id) {
+      if (driver_id) {
         await vinDriverVehicle({
           driver_id: Number(driver_id),
           license_plate: vehicle.license_plate,
-          account_id: account_id
-        })
+          account_id: account_id,
+        });
       }
 
       await newVinAccountVehicle({
-        account_id: account_id, vehicle_id: vehicleExist.vehicle_id? vehicleExist.vehicle_id : 0
-      })
+        account_id: account_id,
+        vehicle_id: vehicleExist.vehicle_id ? vehicleExist.vehicle_id : 0,
+      });
 
       const ret = {
         return: 'success',
-        data: "Vínculo Cadastrado com sucesso"
-      }
+        data: 'Vínculo Cadastrado com sucesso',
+      };
 
-      return ret
-    
-    
+      return ret;
     } else {
-      console.log("ENTROU NO ELSE")
       const response = await fetch(`${URL_BACKEND}/vehicles/new`, {
         method: 'POST',
         headers: {
@@ -46,30 +43,28 @@ export async function newVehicle({ vehicle, account_id, driver_id }: DataType) {
         },
         body: JSON.stringify(vehicle),
       });
-  
+
       const ret = await response.json();
-  
+
       if (ret.return == 'success') {
         if (ret.data) {
-  
-          if(driver_id) {
+          if (driver_id) {
             await vinDriverVehicle({
               driver_id: Number(driver_id),
               license_plate: vehicle.license_plate,
-              account_id: account_id
-            })
+              account_id: account_id,
+            });
           }
-  
+
           await newVinAccountVehicle({
-            account_id: account_id, vehicle_id: ret.data.vehicle_id
-          })
-  
-          return ret
-        
+            account_id: account_id,
+            vehicle_id: ret.data.vehicle_id,
+          });
+
+          return ret;
         } else {
           return ret;
         }
-        
       } else {
         throw new Error(
           DbError[ret.data.code as DbErrorKeys] ||
@@ -77,7 +72,6 @@ export async function newVehicle({ vehicle, account_id, driver_id }: DataType) {
         );
       }
     }
-
   } catch (error: any) {
     return {
       return: 'error',

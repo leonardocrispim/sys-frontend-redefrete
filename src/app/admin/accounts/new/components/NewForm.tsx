@@ -19,7 +19,7 @@ export default function newForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [saveError, setSaveError] = useState('');
 
-  const [createDriver, setCreateDriver] = useState<boolean>(false)
+  const [createDriver, setCreateDriver] = useState<boolean>(false);
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -33,17 +33,16 @@ export default function newForm() {
     formState: { errors },
   } = useForm<Account>();
 
-  const checkBoxNewDriver = useRef<HTMLInputElement>(null)
+  const checkBoxNewDriver = useRef<HTMLInputElement>(null);
 
   function handleCheckNewDriver(): void {
-    const isCheckedNewDriver = checkBoxNewDriver.current?.checked
+    const isCheckedNewDriver = checkBoxNewDriver.current?.checked;
 
-    if(isCheckedNewDriver) {
-      setCreateDriver(true)
+    if (isCheckedNewDriver) {
+      setCreateDriver(true);
     } else {
-      setCreateDriver(false)
+      setCreateDriver(false);
     }
-
   }
 
   //Formatação input do número da agência bancária
@@ -105,8 +104,6 @@ export default function newForm() {
   function submitForm(data: Account) {
     setIsLoading(true);
 
-    console.log("DATA FORM", data)
-
     if (data.account_bank_number != '') {
       if (
         !(
@@ -130,7 +127,7 @@ export default function newForm() {
       }
     }
 
-    newAccount({ account: data, createDriver: createDriver})
+    newAccount({ account: data, createDriver: createDriver })
       .then((data: ApiReturn<Account>) => {
         if (data.return == 'error') {
           throw new Error(data.message);
@@ -159,21 +156,16 @@ export default function newForm() {
         submitForm(dataFormat);
       })}
     >
-
-      <AccountInfos 
+      <AccountInfos
         errors={errors}
         register={register}
         setValue={setValue}
         saveError={saveError}
       />
 
-      <AddressForm
-        errors={errors}
-        register={register}
-        setValue={setValue}
-      />
+      <AddressForm errors={errors} register={register} setValue={setValue} />
 
-      <BankInfos 
+      <BankInfos
         errors={errors}
         register={register}
         handleBankAccountInput={handleBankAccountInput}
@@ -183,12 +175,11 @@ export default function newForm() {
       <div className="sm:col-span-4 flex border-b mb-2 p-2">
         <div className="mt-1">
           <input
-            type='checkbox'
+            type="checkbox"
             className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
             onClick={handleCheckNewDriver}
             ref={checkBoxNewDriver}
-          >
-          </input>
+          ></input>
         </div>
 
         <label className="block text-sm font-medium leading-6 text-gray-900 ml-2 mt-[3px]">

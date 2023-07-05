@@ -87,13 +87,6 @@ export default function RoutesListPage() {
     setIsEmpty(false);
     setIsLoading(true);
 
-    console.log({
-      hub_id: hubIds,
-      s: search,
-      skip: currentPage * itemsPerPage,
-      take: itemsPerPage,
-    });
-
     getRoutesSearch(
       {
         hub_id: hubIds,
@@ -104,7 +97,6 @@ export default function RoutesListPage() {
       session?.userdata
     )
       .then((data: ApiReturn<Route[]>) => {
-        console.log(data);
         if (data.return == 'success') {
           if (data.data && data.data.length == 0) {
             setIsEmpty(true);
