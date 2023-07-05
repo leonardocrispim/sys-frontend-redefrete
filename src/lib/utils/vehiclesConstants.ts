@@ -11,7 +11,7 @@ export const VehiclesConstants = {
 };
 
 export const vehiclesMap = [
-  {value: "", type: "-- Selecione o tipo de veículo --"},
+  {value: "", type: "Selecione"},
   {value: "3/4", type: "3/4"},
   {value: "ELÉTRICO", type: "ELÉTRICO"},
   {value: "HR", type: "HR"},

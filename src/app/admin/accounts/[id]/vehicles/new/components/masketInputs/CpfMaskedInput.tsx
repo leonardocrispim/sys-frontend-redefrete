@@ -1,60 +1,57 @@
 'use client';
 import InputMask from 'react-input-mask';
 import { useState, ChangeEvent } from 'react';
+import { isValidCpfCnpj } from '@/lib/utils/utils';
 
 type DataType = {
   register: any;
   name: string;
   errors: any;
   setValue: any;
-  title: string;
   isChecked?: boolean | null
 };
 
-export default function TelephoneMaskedInput({
+export default function CpfMaskedInput({
   register,
   name,
   errors,
   setValue,
-  title,
   isChecked
 }: DataType) {
-  const [mask, setMask] = useState('(99) 9999-99999');
+  const [mask, setMask] = useState('999.999.999-999');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const text = event.target.value;
     setValue(name, text);
-    if (text.length == 15) {
-      setMask('(99) 99999-9999');
+    if (text.length >= 15) {
+      setMask('99.999.999/9999-99');
     } else {
-      setMask('(99) 9999-99999');
+      setMask('999.999.999-999');
+    }
+  };
+  const handleBlur = (event: ChangeEvent<HTMLInputElement>) => {
+    const text = event.target.value;
+    if (text.length != 14 && text.length != 18) {
+      event.target.value = '';
     }
   };
 
   return (
     <>
       <label className="block text-sm font-medium leading-6 text-gray-900">
-        {title}
+        CPF/CNPJ<sup className="text-red-700">*</sup>
       </label>
 
       <div className="mt-1">
         <InputMask
-          {...register(name, {
-            validate: (value: string) => {
-              if (isChecked == true) {
-                return true
-              } else if (value.length > 0 && value.length < 14) {
-                return 'Insira um número válido';
-              }
-              return true
-            },
-          })}
+          {...register(name)}
           name={name}
           id={name}
           mask={mask}
           onChange={handleChange}
+          onBlur={handleBlur}
           maskChar=""
-          placeholder="(00) 00000-0000"
+          placeholder="000.000.000-00"
           type="text"
           readOnly={isChecked}
           className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isChecked ? ` bg-rede-gray-600` : `bg-white`}`} 

@@ -3,34 +3,39 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import FeedbackError from '@/components/utils/feedbacks/FeedbackError';
 import { RdVehicles } from '../../components/ListVehicles';
 import { getVehiclesByAccountId } from '@/lib/vehicles/getVehiclesByAccountId';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import PlateMaskedInput from './masketInputs/PlateMaskedInput';
 
 import { getDrivers } from '@/lib/drivers/getDrivers';
 
-import { VehiclesConstants, vehiclesMap } from '@/lib/utils/vehiclesConstants';
 import { Driver } from 'DriversTypes';
 import { FaRegSave } from 'react-icons/fa';
 import { NewVehicle, Vehicle } from 'VehiclesTypes';
 import { newVehicle } from '@/lib/vehicles/newVehicles';
 import { ApiReturn } from 'UtilsTypes';
+import OwnerInfos from './form-steps/OwnerInfos';
+import VehicleInfos from './form-steps/VehicleInfo';
+import VinculateDriver from './form-steps/VinculateDriver';
 
 type FormValues = {
   license_plate: string;
   vehicle_type: string;
   driver_id: number;
+  vehicle_renavam: string;
+  vehicle_owner_name: string;
+  vehicle_owner_cpf_cnpj: string;
+  vehicle_owner_birth_date: string;
+  vehicle_owner_sex: string;
+  vehicle_owner_rg: string;
+  vehicle_owner_rg_date: string;
+  vehicle_owner_rg_uf: string;
+  vehicle_owner_father_name: string;
+  vehicle_owner_mother_name: string;
 };
 
 type PropsType = {
   account_id: number;
-};
-
-type VehicleType = {
-  value: string;
-  type: string;
 };
 
 export default function newForm({ account_id }: PropsType) {
@@ -38,7 +43,6 @@ export default function newForm({ account_id }: PropsType) {
 
   const [hasVehicleType, setHasVehicleType] = useState(false);
   const [vehicleRegistered, setVehicleRegistered] = useState(false);
-  const [vehicleType, setVehicleType] = useState('');
 
   const [isCastrated, setIsCastrated] = useState<boolean | null>(false);
 
@@ -85,6 +89,10 @@ export default function newForm({ account_id }: PropsType) {
         account_id: account_id,
       });
 
+      if(data.data.length == 0) {
+        setIsEmpty(false)
+      }
+
       setDrivers(data.data);
     } catch (error) {
       setIsLoading(false);
@@ -98,11 +106,32 @@ export default function newForm({ account_id }: PropsType) {
     searchDrivers();
   }, []);
 
+  function formatDate(data: string) {
+    let splited = data.split('/')
+    let day = splited[0]
+    let month = splited[1]
+    let year = splited[2]
+
+    const dateFormated = year + '-' + month + '-' + day
+
+    return dateFormated
+  }
+
   const onSubmit = (data: FormValues) => {
     setIsLoading(true);
     const vehicleData: NewVehicle = {
       license_plate: data.license_plate,
       vehicle_type: data.vehicle_type,
+      vehicle_renavam: data.vehicle_renavam,
+      vehicle_owner_name: data.vehicle_owner_name,
+      vehicle_owner_birth_date: data?.vehicle_owner_birth_date ? formatDate(data.vehicle_owner_birth_date) : null,
+      vehicle_owner_cpf_cnpj: data.vehicle_owner_cpf_cnpj,
+      vehicle_owner_sex: data.vehicle_owner_sex,
+      vehicle_owner_rg: data.vehicle_owner_rg,
+      vehicle_owner_rg_date: data?.vehicle_owner_rg_date ? formatDate(data.vehicle_owner_rg_date) : null,
+      vehicle_owner_rg_uf: data.vehicle_owner_rg_uf,
+      vehicle_owner_father_name: data.vehicle_owner_father_name,
+      vehicle_owner_mother_name: data.vehicle_owner_mother_name,
     };
     newVehicle({
       vehicle: vehicleData,
@@ -120,6 +149,8 @@ export default function newForm({ account_id }: PropsType) {
         );
       }
     });
+    console.log("new vehicle", vehicleData)
+    console.log('DATA FORM', data)
   };
 
   return (
@@ -133,125 +164,56 @@ export default function newForm({ account_id }: PropsType) {
 
       {vehicles && (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="border rounded-md p-4">
-            {saveError.length > 0 && <FeedbackError text={saveError} />}
 
-            <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
-              <div className="sm:col-span-2">
-                <label className="block text-sm font-medium leading-6 text-gray-900">
-                  Digite a Placa do veículo
-                </label>
-                <div className="mt-1">
-                  <PlateMaskedInput
-                    vehicles={vehicles}
-                    register={register}
-                    setValue={setValue}
-                    name="license_plate"
-                    setIsCastrated={setIsCastrated}
-                    setHasVehicleType={setHasVehicleType}
-                    setVehicleRegistered={setVehicleRegistered}
-                  />
-                  {vehicleRegistered ? (
-                    <p className="font-semibold text-red-700 text-xs mt-1">
-                      Veículo já registrado nesta conta
-                    </p>
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </div>
+          <VehicleInfos 
+            register={register}
+            errors={errors}
+            setValue={setValue}
+            vehicles={vehicles}
+            saveError={saveError}
+            vehicleRegistered={vehicleRegistered}
+            hasVehicleType={hasVehicleType}
+            setHasVehicleType={setHasVehicleType}
+            setIsCastrated={setIsCastrated}
+            setVehicleRegistered={setVehicleRegistered}
+          />
 
-              {hasVehicleType ? (
-                <>
-                  <div className="sm:col-span-2">
-                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                      Tipo de veículo
-                    </label>
-                    <div className="mt-1">
-                      <select
-                        {...register('vehicle_type', {
-                          required: 'Tipo obrigatório',
-                        })}
-                        id="vehicle_type"
-                        name="vehicle_type"
-                        className="w-full bg-white py-2 pl-3 pr-10 cursor-pointer text-sm leading-5 rounded-md text-rede-gray-300 border focus:outline-none border-rede-gray-400 focus:border-rede-blue/50"
-                      >
-                        {vehiclesMap.map((type: VehicleType) => {
-                          return (
-                            <option value={type.value} key={type.value}>
-                              {type.type}
-                            </option>
-                          );
-                        })}
-                      </select>
-                      {errors.vehicle_type && (
-                        <p className=" text-red-700 text-xs mt-1">
-                          {errors.vehicle_type.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
+          {hasVehicleType && (
+            <OwnerInfos 
+             errors={errors}
+             register={register}
+             setValue={setValue}
+            />
+          )}
 
-                  <div className="sm:col-span-2">
-                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                      Vincular com motorista (opcional)
-                    </label>
-                    <div className="mt-1">
-                      <select
-                        {...register('driver_id')}
-                        id="driver_id"
-                        name="driver_id"
-                        className="w-full bg-white py-2 pl-3 pr-10 cursor-pointer text-sm leading-5 rounded-md text-rede-gray-300 border focus:outline-none border-rede-gray-400 focus:border-rede-blue/50"
-                      >
-                        {isEmpty ? (
-                          <option value={''}>
-                            -- Nenhum motorista cadastrado nesta conta --
-                          </option>
-                        ) : (
-                          <option value={''}>
-                            -- Selecione o Motorista --
-                          </option>
-                        )}
-                        {drivers ? (
-                          drivers.map((driver: Driver) => {
-                            return (
-                              <option
-                                value={driver.driver_id}
-                                key={driver.driver_id}
-                              >
-                                {driver.driver_name}
-                              </option>
-                            );
-                          })
-                        ) : (
-                          <></>
-                        )}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="pt-4">
-                    <button
-                      type="submit"
-                      disabled={isLoading}
-                      className={
-                        `inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-4 text-white hover:bg-rede-green-400 dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900 w-full` +
-                        (isLoading ? ' bg-rede-gray-400' : ' bg-rede-green')
-                      }
-                    >
-                      {isLoading ? (
-                        <AiOutlineLoading3Quarters className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900 animate-spin " />
-                      ) : (
-                        <FaRegSave className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900" />
-                      )}
-                      <span>CADASTRAR</span>
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <></>
-              )}
+          {hasVehicleType && drivers && (
+            <VinculateDriver 
+              register={register}
+              errors={errors}
+              isEmpty={isEmpty}
+              drivers={drivers}
+            />
+          )}
+
+          {hasVehicleType && (
+            <div className="pt-4 sm:col-span-2">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={
+                  `inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-4 text-white hover:bg-rede-green-400 dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900 w-full` +
+                  (isLoading ? ' bg-rede-gray-400' : ' bg-rede-green')
+                }
+              >
+                {isLoading ? (
+                  <AiOutlineLoading3Quarters className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900 animate-spin " />
+                ) : (
+                   <FaRegSave className=" -ml-1 mr-2 h-5 w-5 text-white dark:text-slate-900" />
+                )}
+                  <span>CADASTRAR</span>
+              </button>
             </div>
-          </div>
+          )}
         </form>
       )}
     </>

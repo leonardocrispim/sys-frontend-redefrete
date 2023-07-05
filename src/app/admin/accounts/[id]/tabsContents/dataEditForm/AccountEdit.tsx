@@ -15,14 +15,14 @@ import {
   isValidEmail,
 } from '@/lib/utils/utils';
 import { alterRegistration } from '@/lib/registrations/alterRegistrations';
-import { Account } from 'AccountsTypes';
+import { Account, Account_Address } from 'AccountsTypes';
 import TelephoneMaskedInput from './maskedInputs/TelephoneMaskedInput';
 import CpfMaskedInput from './maskedInputs/CpfMaskedInput';
 import { alterAccount } from '@/lib/accounts/alterAccounts';
 import { ApiReturn } from 'UtilsTypes';
 
 type DataType = {
-  account: Account;
+  account: Account_Address;
   setCurrentAccount: React.Dispatch<React.SetStateAction<any>>;
   setIsSaved: React.Dispatch<React.SetStateAction<boolean>>;
   setTab: React.Dispatch<React.SetStateAction<'data' | 'edit'>>;

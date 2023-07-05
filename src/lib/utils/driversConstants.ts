@@ -8,12 +8,10 @@ export const driversStatusRF = {
 };
 
 export const driversStatusGR = {
-  EM_ANALISE: 'EM ANÁLISE',
-  APROVADO: 'APROVADO',
-  REPROVADO: 'REPROVADO',
-  BLOQUEADO: 'BLOQUEADO',
-  DESATIVADO: 'DESATIVADO',
-  NAO_ENVIADO: 'NÃO ENVIADO',
+  NAO_CONSULTADO: 'NÃO CONSULTADO',
+  PENDENTE: 'PENDENTE',
+  ACORDO: 'ACORDO',
+  REQUER_ATENÇAO: 'REQUER ATENÇÃO'
 };
 
 export type driversStatusRFKeys = keyof typeof driversStatusRF;

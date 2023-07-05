@@ -25,12 +25,12 @@ export default function DriverData({ driver }: DataType) {
         </div>
         <div className="flex items-center">
           <div className="w-full">
-            <div className="text-xs mb-1 text-center font-medium text-rede-gray-400">
+            {/* <div className="text-xs mb-1 text-center font-medium text-rede-gray-400">
               Gerenciadora de Risco
-            </div>
-            <TagStatus status={driver.driver_status_gr}>
+            </div> */}
+            {/* <TagStatus status={driver.driver_status_gr}>
               {driversStatusGR[driver.driver_status_gr as driversStatusGRKeys]}
-            </TagStatus>
+            </TagStatus> */}
           </div>
         </div>
         <div className="flex items-center">

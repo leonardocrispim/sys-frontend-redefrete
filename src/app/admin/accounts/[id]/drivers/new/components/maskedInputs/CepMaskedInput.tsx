@@ -61,14 +61,15 @@ export default function CepMaskedInput({
       <div className="mt-1">
         <InputMask
           {...register(name, {
-            required: 'CEP é obrigatório',
-            maxLength: {
-              value: 9,
-              message: 'CEP inválido',
-            },
-            minLength: {
-              value: 9,
-              message: 'CEP inválido',
+            validate: (value: string) => {
+              if (isCheckedAddress == true) {
+                return true
+              } else if (value == '') {
+                return true;
+              } else if (value.length !== 9) {
+                return 'CEP inválido';
+              } 
+              return true
             },
           })}
           readOnly={isCheckedAddress ? isCheckedAddress || isLoading : isLoading}
