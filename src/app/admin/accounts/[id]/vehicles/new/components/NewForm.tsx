@@ -59,6 +59,7 @@ export default function newForm({ account_id }: PropsType) {
     register,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<FormValues>();
 
@@ -137,6 +138,30 @@ export default function newForm({ account_id }: PropsType) {
       vehicle_owner_father_name: data.vehicle_owner_father_name,
       vehicle_owner_mother_name: data.vehicle_owner_mother_name,
     };
+
+    let hasErrorRg = false;
+
+    if(vehicleData.vehicle_owner_rg?.length) {
+      
+      if(vehicleData.vehicle_owner_rg_date?.length !== 10) {
+        setError('vehicle_owner_rg_date', {
+          message: 'Digite uma data válida!',
+        });
+        hasErrorRg = true;
+      }
+
+      if(vehicleData.vehicle_owner_rg_uf == '') {
+        setError('vehicle_owner_rg_uf', {
+          message: 'Selecione o Estado de emissão!'
+        })
+        hasErrorRg = true
+      }
+    }
+    if(hasErrorRg) {
+      setIsLoading(false)
+      return
+    }
+
     newVehicle({
       vehicle: vehicleData,
       driver_id: data.driver_id,

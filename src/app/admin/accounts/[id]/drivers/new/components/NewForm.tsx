@@ -266,85 +266,116 @@ export default function newForm({ account_id }: PropsType) {
       ...data,
       driver_birth_date: data.driver_birth_date
         ? formatDate(data.driver_birth_date)
-        : '',
+        : null,
       driver_rg_date: data.driver_rg_date
         ? formatDate(data.driver_rg_date)
-        : '',
+        : null,
       driver_cnh_first_license: data.driver_cnh_first_license
         ? formatDate(data.driver_cnh_first_license)
-        : '',
+        : null,
       driver_cnh_validate: data.driver_cnh_validate
         ? formatDate(data.driver_cnh_validate)
-        : '',
+        : null,
       account_id: account_id,
       driver_status: 'NOVO_CADASTRO',
       created_by: session?.userdata.user_id,
     };
 
-    if (dataNew.driver_rg !== '' && dataNew.driver_rg?.length !== 12) {
-      setError('driver_rg', {
-        message: 'Digite um rg válido!',
-      });
-      setIsLoading(false);
+    let hasErrorAddress = false
+
+    if(dataNew.address_zip_code.length) {
+      if(!data.address_number) {
+        setError('address_number', {
+          message: 'Digite o número!'
+        })
+        hasErrorAddress = true
+      }
+
+      if(data.address_street.length < 4) {
+        setError('address_street', {
+          message: 'Logradouro inválido!'
+        })
+        hasErrorAddress = true
+      }
+
+      if(data.address_city.length < 4) {
+        setError('address_city', {
+          message: 'Cidade inválida'
+        })
+        hasErrorAddress = true
+      }
+
+      if(data.address_state == '') {
+        setError('address_state', {
+          message: 'Selecione o Estado!'
+        })
+        hasErrorAddress = true 
+      }
     }
 
-    if (dataNew.driver_rg !== '' && dataNew.driver_rg?.length == 12) {
+    let hasErrorRg = false
+
+    if (dataNew.driver_rg?.length) {
       if (dataNew.driver_rg_date?.length !== 10) {
         setError('driver_rg_date', {
           message: 'Digite uma data válida!',
         });
-        setIsLoading(false);
+        hasErrorRg = true
       }
 
-      if (dataNew.driver_rg_uf == 'selecionado') {
+      if (dataNew.driver_rg_uf == '') {
         setError('driver_rg_uf', {
           message: 'Selecione o Estado de emissão!',
         });
+        hasErrorRg = true
       }
     }
 
-    if (
-      dataNew.driver_cnh_number !== '' &&
-      dataNew.driver_cnh_number?.length !== 11
-    ) {
-      setError('driver_cnh_number', {
-        message: 'Digite uma cnh válida',
-      });
-    }
+    let hasErrorCnh = false
 
-    if (
-      dataNew.driver_cnh_number !== '' &&
-      dataNew.driver_cnh_number?.length == 11
-    ) {
-      if (dataNew.driver_cnh_uf == '') {
+    if ( dataNew.driver_cnh_number?.length) {
+      
+      if (dataNew.driver_cnh_uf == "") {
         setError('driver_cnh_uf', {
           message: 'Selecione o Estado de expedição',
         });
+        hasErrorCnh = true;
       }
 
       if (dataNew.driver_cnh_first_license?.length !== 10) {
         setError('driver_cnh_first_license', {
           message: 'Data inválida',
         });
+        hasErrorCnh = true;
       }
 
       if (dataNew.driver_cnh_validate?.length !== 10) {
         setError('driver_cnh_validate', {
           message: 'Data inválida',
         });
+        hasErrorCnh = true;
+
       }
 
       if (dataNew.driver_cnh_safety_code?.length !== 11) {
         setError('driver_cnh_safety_code', {
           message: 'Código de segurança inválida',
         });
+        hasErrorCnh = true;
+
       }
 
       if (dataNew.driver_cnh_category == '') {
         setError('driver_cnh_category', {
           message: 'Selecione a categoria da CNH',
         });
+        hasErrorCnh = true;
       }
+    }
+
+    if(hasErrorCnh || hasErrorRg || hasErrorAddress) {
+      setIsLoading(false)
+      return
     }
 
     newDriver(dataNew).then((data: ApiReturn<Driver>) => {

@@ -9,7 +9,10 @@ export async function getVehicle(plate: string) {
         'Content-Type': 'application/json',
       },
     });
-    return await response.json();
+
+    const ret = await response.json()
+
+    return ret;
   } catch {
     throw new Error('Erro de conexão com backend');
   }

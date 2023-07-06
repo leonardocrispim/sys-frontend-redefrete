@@ -9,6 +9,7 @@ import { DriverVinVehicles } from 'DriversTypes';
 type TypeVinDriverVehicle = {
   driver_id: number;
   license_plate: string;
+  vehicle_renavam?: string;
   vehicle_type?: string;
   account_id: number;
 };
@@ -16,11 +17,11 @@ type TypeVinDriverVehicle = {
 export async function vinDriverVehicle(data: TypeVinDriverVehicle) {
   try {
     let vehicle: Vehicle = await getVehicle(data.license_plate);
-    if (!vehicle) {
-      
+    if (!vehicle.vehicle_type) {
       const newVehicleData: NewVehicle = {
         license_plate: data.license_plate,
-        vehicle_type: data.vehicle_type
+        vehicle_type: data.vehicle_type,
+        vehicle_renavam: data.vehicle_renavam
       }
       
       const nVehicle = await newVehicle({

@@ -44,7 +44,17 @@ export default function CpfMaskedInput({
 
       <div className="mt-1">
         <InputMask
-          {...register(name)}
+          {...register('vehicle_owner_cpf_cnpj', {
+            validate: (value: string) => {
+              if(value.length == 0 || value.length == 14 || value.length == 18) {
+                return true
+              } else if(isValidCpfCnpj(value)) {
+                return true
+              } else {
+                return 'Insira um CPF/CNPJ válido';
+              }
+            }
+          })}
           name={name}
           id={name}
           mask={mask}

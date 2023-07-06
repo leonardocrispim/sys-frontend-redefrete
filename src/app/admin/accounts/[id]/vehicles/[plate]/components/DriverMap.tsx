@@ -18,6 +18,8 @@ import { getDriver } from "@/lib/drivers/getDrivers";
 import FeedbackError from "@/components/utils/feedbacks/FeedbackError";
 import { useEffect, useState } from "react";
 
+export const dynamic = 'force-dynamic'
+
 type DataProps = {
     driver: Vin_drivers;
     vehicle: Vehicle
@@ -35,7 +37,7 @@ export default function DriverMap({
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
     async function verifyDriverInfos(res: Driver) {
-        if(res.rd_driver_meta.driver_birth_date == null || res.rd_driver_meta.driver_cnh_category == null || res.rd_driver_meta.driver_cnh_first_license == null || res.rd_driver_meta.driver_cnh_number == null || res.rd_driver_meta.driver_cnh_safety_code == null || res.rd_driver_meta.driver_cnh_uf == null || res.rd_driver_meta.driver_cnh_validate == null || res.rd_driver_meta.driver_father_name == null || res.rd_driver_meta.driver_mother_name == null || res.rd_driver_meta.driver_rg == null || res.rd_driver_meta.driver_rg_date == null || res.rd_driver_meta.driver_rg_uf == null || res.rd_driver_meta.driver_sex == null) {
+        if( !res.rd_driver_meta.driver_birth_date || !res.rd_driver_meta.driver_cnh_category || !res.rd_driver_meta.driver_cnh_first_license || !res.rd_driver_meta.driver_cnh_number || !res.rd_driver_meta.driver_cnh_safety_code || !res.rd_driver_meta.driver_cnh_uf || !res.rd_driver_meta.driver_cnh_validate || !res.rd_driver_meta.driver_father_name || !res.rd_driver_meta.driver_mother_name || !res.rd_driver_meta.driver_rg || !res.rd_driver_meta.driver_rg_date || !res.rd_driver_meta.driver_rg_uf || !res.rd_driver_meta.driver_sex) {
             setDriverOK(false)
         } else {
             setDriverOK(true)
@@ -55,13 +57,13 @@ export default function DriverMap({
         .catch((err) => {
             return <FeedbackError text={err.message} />
         })
+        .finally(() => {
+            setIsLoading(false)
+        })
     }
 
     useEffect(() => {
         getDriverInfo()
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 3000)
     }, [])
 
     return (
@@ -90,7 +92,7 @@ export default function DriverMap({
     
             <div className="flex sm:w-60 sm:ml-10 w-full items-center justify-around mt-4 sm:mt-0">
 
-            {/* {isLoading ? (
+            {isLoading ? (
                 
                 <button
                     disabled={true}
@@ -102,7 +104,8 @@ export default function DriverMap({
             ) : driverOk && vehicleOk ?  (
                
                 <button
-                    className="inline-flex justify-center rounded-lg text-xs font-semibold py-2 px-4 text-white hover:bg-rede-green-400 dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900 sm:w-40 w-36 bg-rede-green"
+                    title="Em breve"
+                    className="inline-flex justify-center rounded-lg text-xs font-semibold py-2 text-white hover:bg-rede-green-400 dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900 sm:w-40 w-36 bg-rede-green"
                 >
                     CONSULTAR GR
                 </button>
@@ -110,12 +113,13 @@ export default function DriverMap({
             ) : (
                 
                 <button
+                    title="Edite as informações de veículo e motorista"
                     disabled={true}
-                    className="inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-4 text-white dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900 w-36 bg-rede-gray-400"
+                    className="inline-flex justify-center rounded-lg text-xs font-semibold py-2 text-white dark:bg-gray-200 dark:hover:bg-white dark:text-slate-900 w-36 bg-rede-gray-400"
                 >
                     CADASTRO INCOMPLETO
                 </button>
-            )}     */}
+            )}    
 
             <Link
                 href={`/admin/accounts/${account_id}/drivers/${driver.rd_drivers.driver_cpf_cnpj}`}

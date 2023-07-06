@@ -20,7 +20,15 @@ export default function RgMaskedInput({ register, name, errors }: DataType) {
       </label>
       <div className="mt-1">
         <InputMask
-          {...register(name)}
+          {...register(name, {
+            validate: (value: string) => {
+              if(value.length == 0 || value.length == 12) {
+                return true
+              } else {
+                return 'Digite um RG válido!'
+              }
+            }
+          })}
           name={name}
           id={name}
           mask={mask}

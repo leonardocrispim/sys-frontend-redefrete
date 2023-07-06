@@ -23,7 +23,15 @@ export default function CnhMaskedInput({
                 </label>
                 <div className="mt-1">
                     <InputMask 
-                        {...register(name)}
+                        {...register(name, {
+                            validate: (value: string) => {
+                                if(value.length == 0 || value.length == 11) {
+                                    return true
+                                } else {
+                                    return 'Digite uma cnh válida'
+                                }
+                            }
+                        })}
                         name={name}
                         id={name}
                         mask={mask}
