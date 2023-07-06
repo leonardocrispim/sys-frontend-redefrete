@@ -17,6 +17,7 @@ export const vehiclesMap = [
   {value: "HR", type: "HR"},
   {value: "MOTO", type: "MOTO"},
   {value: "RENTAL", type: "RENTAL"},
+  {value: "PASSEIO", type: "PASSEIO"},
   {value: "UTILITARIO", type: "UTILITARIO"},
   {value: "VAN", type: "VAN"},
   {value: "VUC", type: "VUC"},

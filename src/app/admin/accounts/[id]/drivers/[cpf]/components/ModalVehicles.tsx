@@ -17,10 +17,12 @@ import { vinDriverVehicle } from '@/lib/drivers/vinDrivers';
 import { Vehicle } from 'VehiclesTypes';
 import { DriverVinVehicles } from 'DriversTypes';
 import { ApiReturn } from 'UtilsTypes';
+import RenavamMaskedInput from './maskedInputs/RenavamMasketInput';
 
 type FormValues = {
   license_plate: string;
   vehicle_type: string;
+  vehicle_renavam: string;
 };
 
 type DataType = {
@@ -56,6 +58,7 @@ export default function ModalVehicles({
       driver_id: driverId,
       license_plate: data.license_plate,
       vehicle_type: data.vehicle_type,
+      vehicle_renavam: data.vehicle_renavam,
       account_id: account_id
     })
       .then((data) => {
@@ -198,6 +201,13 @@ export default function ModalVehicles({
                                     </p>
                                   )}
                                 </div>
+                              </div>
+                              <div className='mt-2'>
+                                <RenavamMaskedInput 
+                                  register={register}
+                                  errors={errors}
+                                  name='vehicle_renavam'
+                                />
                               </div>
                             </Transition>
                             {/* {errors?.driver_name && (

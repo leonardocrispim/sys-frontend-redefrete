@@ -46,7 +46,7 @@ export default function PlateMaskedInput({
 
         getVehicle(plate)
           .then((vehicle: Vehicle | null) => {
-            if (vehicle) {
+            if (vehicle?.vehicle_type) {
               setIsCastrated(true);
             } else {
               setHasVehicleType(true);

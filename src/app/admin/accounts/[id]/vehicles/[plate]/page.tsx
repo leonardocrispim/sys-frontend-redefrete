@@ -9,6 +9,8 @@ import PageTitle from "@/components/utils/PageTitle";
 import { Vin_drivers } from "DriversTypes";
 import DriverMap from "./components/DriverMap";
 
+export const dynamic = 'force-dynamic'
+
 type DataType = {
     params: {
         id: string
@@ -22,7 +24,7 @@ export default async function VehiclePage({ params }: DataType) {
     let vehicleOk = false
 
     function verifyVehicleInfos(res: Vehicle) {
-        if(res.vehicle_type == null || res.license_plate == null || res.vehicle_renavam == null || res.rd_vehicle_meta.vehicle_owner_cpf_cnpj == null || res.rd_vehicle_meta.vehicle_owner_birth_date == null || res.rd_vehicle_meta.vehicle_owner_name == null || res.rd_vehicle_meta.vehicle_owner_father_name == null || res.rd_vehicle_meta.vehicle_owner_mother_name == null || res.rd_vehicle_meta.vehicle_owner_rg == null || res.rd_vehicle_meta.vehicle_owner_rg_date == null || res.rd_vehicle_meta.vehicle_owner_rg_uf == null || res.rd_vehicle_meta.vehicle_owner_sex == null) {
+        if(!res.vehicle_type || !res.license_plate || !res.vehicle_renavam || !res.rd_vehicle_meta.vehicle_owner_cpf_cnpj || !res.rd_vehicle_meta.vehicle_owner_birth_date || !res.rd_vehicle_meta.vehicle_owner_name || !res.rd_vehicle_meta.vehicle_owner_father_name || !res.rd_vehicle_meta.vehicle_owner_mother_name || !res.rd_vehicle_meta.vehicle_owner_rg || !res.rd_vehicle_meta.vehicle_owner_rg_date || !res.rd_vehicle_meta.vehicle_owner_rg_uf || !res.rd_vehicle_meta.vehicle_owner_sex) {
             vehicleOk = false
         } else {
             vehicleOk = true
@@ -66,11 +68,10 @@ export default async function VehiclePage({ params }: DataType) {
                 </p>
             )}
 
-            {drivers && (
+            {drivers && vehicle && (
                 <div className="px-4 py-6 border rounded-b-md">
                 <VehicleData vehicle={vehicle} />
 
-                {/* <DriversData account_id={account_id} vehicle_id={vehicle.vehicle_id} drivers={drivers} /> */}
                 <div className="mb-5">
                     <PageTitle>Motorista(s)</PageTitle>
                 </div>
