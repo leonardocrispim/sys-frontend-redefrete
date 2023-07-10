@@ -127,6 +127,22 @@ export default function newForm() {
       }
     }
 
+    let hasErrorAddress = false;
+
+    if (data.address_zip_code?.length) {
+      if (!data.address_number) {
+        setError('address_number', {
+          message: 'Digite o número!',
+        });
+        hasErrorAddress = true;
+      }
+    }
+
+    if (hasErrorAddress) {
+      setIsLoading(false);
+      return;
+    }
+
     newAccount({ account: data, createDriver: createDriver })
       .then((data: ApiReturn<Account>) => {
         if (data.return == 'error') {

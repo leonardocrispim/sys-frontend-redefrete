@@ -212,15 +212,19 @@ export default function newForm({ account_id }: PropsType) {
     setVehicles(null);
 
     try {
-      const data = await getVehiclesByAccountId({
+      getVehiclesByAccountId({
         account_id: account_id,
+      }).then((data: ApiReturn<RdVehicles[]>) => {
+        if (data.return == 'success') {
+          if (data.data && data.count_items == 0) {
+            setIsEmpty(true);
+          } else {
+            setVehicles(data.data);
+          }
+        } else {
+          console.log('Deu ruim');
+        }
       });
-
-      if (data && data.length == 0) {
-        setIsEmpty(true);
-      } else {
-        setVehicles(data);
-      }
     } catch (error) {
       setIsLoading(false);
     } finally {
@@ -281,61 +285,60 @@ export default function newForm({ account_id }: PropsType) {
       created_by: session?.userdata.user_id,
     };
 
-    let hasErrorAddress = false
+    let hasErrorAddress = false;
 
-    if(dataNew.address_zip_code.length) {
-      if(!data.address_number) {
+    if (dataNew.address_zip_code.length) {
+      if (!data.address_number) {
         setError('address_number', {
-          message: 'Digite o número!'
-        })
-        hasErrorAddress = true
+          message: 'Digite o número!',
+        });
+        hasErrorAddress = true;
       }
 
-      if(data.address_street.length < 4) {
+      if (data.address_street.length < 4) {
         setError('address_street', {
-          message: 'Logradouro inválido!'
-        })
-        hasErrorAddress = true
+          message: 'Logradouro inválido!',
+        });
+        hasErrorAddress = true;
       }
 
-      if(data.address_city.length < 4) {
+      if (data.address_city.length < 4) {
         setError('address_city', {
-          message: 'Cidade inválida'
-        })
-        hasErrorAddress = true
+          message: 'Cidade inválida',
+        });
+        hasErrorAddress = true;
       }
 
-      if(data.address_state == '') {
+      if (data.address_state == '') {
         setError('address_state', {
-          message: 'Selecione o Estado!'
-        })
-        hasErrorAddress = true 
+          message: 'Selecione o Estado!',
+        });
+        hasErrorAddress = true;
       }
     }
 
-    let hasErrorRg = false
+    let hasErrorRg = false;
 
     if (dataNew.driver_rg?.length) {
       if (dataNew.driver_rg_date?.length !== 10) {
         setError('driver_rg_date', {
           message: 'Digite uma data válida!',
         });
-        hasErrorRg = true
+        hasErrorRg = true;
       }
 
       if (dataNew.driver_rg_uf == '') {
         setError('driver_rg_uf', {
           message: 'Selecione o Estado de emissão!',
         });
-        hasErrorRg = true
+        hasErrorRg = true;
       }
     }
 
-    let hasErrorCnh = false
+    let hasErrorCnh = false;
 
-    if ( dataNew.driver_cnh_number?.length) {
-      
-      if (dataNew.driver_cnh_uf == "") {
+    if (dataNew.driver_cnh_number?.length) {
+      if (dataNew.driver_cnh_uf == '') {
         setError('driver_cnh_uf', {
           message: 'Selecione o Estado de expedição',
         });
@@ -354,7 +357,6 @@ export default function newForm({ account_id }: PropsType) {
           message: 'Data inválida',
         });
         hasErrorCnh = true;
-
       }
 
       if (dataNew.driver_cnh_safety_code?.length !== 11) {
@@ -362,7 +364,6 @@ export default function newForm({ account_id }: PropsType) {
           message: 'Código de segurança inválida',
         });
         hasErrorCnh = true;
-
       }
 
       if (dataNew.driver_cnh_category == '') {
@@ -373,9 +374,9 @@ export default function newForm({ account_id }: PropsType) {
       }
     }
 
-    if(hasErrorCnh || hasErrorRg || hasErrorAddress) {
-      setIsLoading(false)
-      return
+    if (hasErrorCnh || hasErrorRg || hasErrorAddress) {
+      setIsLoading(false);
+      return;
     }
 
     newDriver(dataNew).then((data: ApiReturn<Driver>) => {

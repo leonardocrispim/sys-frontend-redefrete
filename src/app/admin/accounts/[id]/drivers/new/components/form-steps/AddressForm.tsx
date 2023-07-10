@@ -22,38 +22,40 @@ export default function AddressForm({
   handleCheckAddress,
   checkBoxAddressRef,
   isCheckedAddress,
-  account
+  account,
 }: DataProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
       <div className="border rounded-md p-4 mt-4">
-        
-        {
-          account?.rd_account_meta.address_zip_code ? (
-            <div className="sm:col-span-4 flex border-b mb-2 pb-2">
-              <div className="mt-1">
-                <input
-                  type='checkbox'
-                  className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                  onClick={handleCheckAddress}
-                  ref={checkBoxAddressRef}
-                >
-                </input>
-              </div>
-
-              <label className="block text-sm font-medium leading-6 text-gray-900 ml-2 mt-[3px]">
-                Preencher com os dados da conta
-              </label>
+        {account?.rd_account_meta.address_zip_code ? (
+          <div className="sm:col-span-4 flex border-b mb-2 pb-2">
+            <div className="mt-1">
+              <input
+                type="checkbox"
+                className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                onClick={handleCheckAddress}
+                ref={checkBoxAddressRef}
+              ></input>
             </div>
-          ) : (
-            <></>
-          )
-        }
-        
+
+            <label className="block text-sm font-medium leading-6 text-gray-900 ml-2 mt-[3px]">
+              Preencher com os dados da conta
+            </label>
+          </div>
+        ) : (
+          <></>
+        )}
+
         <div className="mb-6 flex items-center">
-          <FormTitle content={isCheckedAddress == true || isCheckedAddress == false ? 'Endereço do Motorista' : 'Endereço da Conta'} />
+          <FormTitle
+            content={
+              isCheckedAddress == true || isCheckedAddress == false
+                ? 'Endereço do Motorista'
+                : 'Endereço da Conta'
+            }
+          />
           {isLoading && (
             <AiOutlineLoading3Quarters className=" -ml-1 mr-2 h-5 w-5 text-dark dark:text-slate-900 animate-spin " />
           )}
@@ -84,7 +86,9 @@ export default function AddressForm({
                 name="address_street"
                 id="address_street"
                 placeholder="Rua Um Dois Três"
-                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`}`} 
+                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${
+                  isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`
+                }`}
               />
             </div>
             {errors?.address_street && (
@@ -106,7 +110,9 @@ export default function AddressForm({
                 name="address_number"
                 id="address_number"
                 placeholder="20"
-                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`}`} 
+                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${
+                  isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`
+                }`}
               />
             </div>
             {errors?.address_number && (
@@ -128,9 +134,35 @@ export default function AddressForm({
                 name="address_complement"
                 id="address_complement"
                 placeholder="casa 1"
-                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`}`} 
+                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${
+                  isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`
+                }`}
               />
             </div>
+          </div>
+
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium leading-6 text-gray-900">
+              Bairro<sup className="text-red-700">*</sup>
+            </label>
+            <div className="mt-1">
+              <input
+                {...register('address_district')}
+                readOnly={isLoading || isCheckedAddress}
+                type="text"
+                name="address_district"
+                id="address_district"
+                placeholder="Bairro Quatro Cinco Seis"
+                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${
+                  isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`
+                }`}
+              />
+            </div>
+            {errors?.address_district && (
+              <p className=" text-red-700 text-xs mt-1">
+                {errors.address_district.message}
+              </p>
+            )}
           </div>
 
           <div className="sm:col-span-2">
@@ -145,7 +177,9 @@ export default function AddressForm({
                 name="address_city"
                 id="address_city"
                 placeholder="Rua Um Dois Três"
-                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`}`} 
+                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${
+                  isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`
+                }`}
               />
             </div>
             {errors?.address_city && (
@@ -165,7 +199,9 @@ export default function AddressForm({
                 readOnly={isLoading || isCheckedAddress}
                 name="address_state"
                 id="address_state"
-                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`}`} 
+                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${
+                  isCheckedAddress ? ` bg-rede-gray-600` : `bg-white`
+                }`}
               >
                 <option value="">Selecione</option>
                 {Object.entries(brazilStates).map(([uf, state]) => (

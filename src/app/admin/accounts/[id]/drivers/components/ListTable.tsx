@@ -51,8 +51,6 @@ export default function ListTable({ account_id }: DataProps) {
       take: itemsPerPage,
     })
       .then((data: ApiReturn<Driver[]>) => {
-        console.log(data);
-
         if (data.return == 'success') {
           if (data.data && Number(data.count_items) == 0) {
             setIsEmpty(true);
@@ -70,10 +68,6 @@ export default function ListTable({ account_id }: DataProps) {
       })
       .finally(() => {
         setIsLoading(false);
-
-        console.log('currentPage', currentPage);
-        console.log('totalItems', totalItems);
-        console.log('itemsPerPage', itemsPerPage);
       });
   }
 
