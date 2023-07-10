@@ -72,7 +72,7 @@ export default function newForm({ account_id }: PropsType) {
         account_id: account_id,
       });
 
-      setVehicles(data);
+      setVehicles(data.data);
     } catch (error) {
       setIsLoading(false);
     } finally {
@@ -141,25 +141,24 @@ export default function newForm({ account_id }: PropsType) {
 
     let hasErrorRg = false;
 
-    if(vehicleData.vehicle_owner_rg?.length) {
-      
-      if(vehicleData.vehicle_owner_rg_date?.length !== 10) {
+    if (vehicleData.vehicle_owner_rg?.length) {
+      if (vehicleData.vehicle_owner_rg_date?.length !== 10) {
         setError('vehicle_owner_rg_date', {
           message: 'Digite uma data válida!',
         });
         hasErrorRg = true;
       }
 
-      if(vehicleData.vehicle_owner_rg_uf == '') {
+      if (vehicleData.vehicle_owner_rg_uf == '') {
         setError('vehicle_owner_rg_uf', {
-          message: 'Selecione o Estado de emissão!'
-        })
-        hasErrorRg = true
+          message: 'Selecione o Estado de emissão!',
+        });
+        hasErrorRg = true;
       }
     }
-    if(hasErrorRg) {
-      setIsLoading(false)
-      return
+    if (hasErrorRg) {
+      setIsLoading(false);
+      return;
     }
 
     newVehicle({

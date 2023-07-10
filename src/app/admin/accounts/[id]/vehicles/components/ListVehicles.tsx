@@ -9,6 +9,9 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { getVehiclesByAccountId } from '@/lib/vehicles/getVehiclesByAccountId';
 import LineVehicle from './LineVehicle';
 import FeedbackInfo from '@/components/utils/feedbacks/FeedbackInfo';
+import SearchForm from './SearchForm';
+import { ApiReturn } from 'UtilsTypes';
+import Paginate from '@/components/utils/Paginate';
 
 type DataProps = {
   account_id: number;
@@ -19,9 +22,9 @@ export type RdVehicles = {
 };
 
 export default function ListVehicles({ account_id }: DataProps) {
-  const itemsPerPage = 20;
+  const itemsPerPage = 10;
 
-  //const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   //const router = useRouter()
 
   const [totalItems, setTotalItems] = useState<number>(0);
@@ -30,14 +33,16 @@ export default function ListVehicles({ account_id }: DataProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [vehicles, setVehicles] = useState<RdVehicles[] | undefined | null>();
 
-  const pathName = usePathname();
+  //const pathName = usePathname();
 
-  // const [currentPage, setCurrentPage] = useState<number>(
-  //     Number(searchParams.get('page'))
-  // )
+  const [currentPage, setCurrentPage] = useState<number>(
+    Number(searchParams.get('page'))
+  );
 
-  //const [search, setSearch] = useState<string>(searchParams.get('s') || '')
-  //const [searchBack, setSearchBack] = useState<string>(searchParams.get('s') || '')
+  const [search, setSearch] = useState<string>(searchParams.get('s') || '');
+  const [searchBack, setSearchBack] = useState<string>(
+    searchParams.get('s') || ''
+  );
 
   async function searchVehicles() {
     setVehicles(null);
@@ -45,30 +50,49 @@ export default function ListVehicles({ account_id }: DataProps) {
     setIsError(false);
     setIsLoading(true);
 
-    try {
-      const data = await getVehiclesByAccountId({
-        account_id: account_id,
+    getVehiclesByAccountId({
+      account_id: account_id,
+      s: search,
+      skip: currentPage * itemsPerPage,
+      take: itemsPerPage,
+    })
+      .then((data: ApiReturn<RdVehicles[]>) => {
+        if (data.return == 'success') {
+          if (data.data && Number(data.count_items) == 0) {
+            setIsEmpty(true);
+            setTotalItems(0);
+          } else {
+            setTotalItems(Number(data.count_items));
+            setVehicles(data.data);
+          }
+        } else {
+          setTotalItems(0);
+          setIsError(true);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-
-      if (data && data.length == 0) {
-        setIsEmpty(true);
-        setTotalItems(0);
-      } else {
-        setVehicles(data);
-      }
-    } catch (error) {
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
-    }
   }
 
   useEffect(() => {
+    if (search == searchBack) {
+      searchVehicles();
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(0);
+    setSearchBack(search);
     searchVehicles();
-  }, []);
+  }, [search]);
 
   return (
     <>
+      <div className="mb-4">
+        <SearchForm search={search} setSearch={setSearch} />
+      </div>
+
       {isLoading && (
         <p className="p-2 rounded-md border text-xl flex items-center text-rede-gray-400 bg-rede-gray-800 border-rede-gray-700 mb-4">
           <AiOutlineLoading3Quarters className="mr-1 animate-spin h-4 w-4 text-rede-gray-400" />{' '}
@@ -89,6 +113,17 @@ export default function ListVehicles({ account_id }: DataProps) {
 
       {isEmpty && (
         <FeedbackInfo text="Nenhum veículo encontrado, por favor refaça a busca ou cadastre veículos!" />
+      )}
+
+      {!isLoading && (
+        <div className="flex justify-end mt-4 pb-20">
+          <Paginate
+            currentPage={currentPage}
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            hook={setCurrentPage}
+          />
+        </div>
       )}
     </>
   );
