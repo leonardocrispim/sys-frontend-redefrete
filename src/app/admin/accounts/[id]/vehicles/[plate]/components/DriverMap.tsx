@@ -26,6 +26,7 @@ export const dynamic = 'force-dynamic';
 type DataProps = {
   driver: Vin_drivers;
   vehicle: Vehicle;
+  accountDrivers: Driver[] | undefined | null;
   account_id: number;
   vehicleOk: boolean;
 };
@@ -35,6 +36,7 @@ export default function DriverMap({
   account_id,
   vehicle,
   vehicleOk,
+  accountDrivers,
 }: DataProps) {
   const [driverOk, setDriverOK] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);

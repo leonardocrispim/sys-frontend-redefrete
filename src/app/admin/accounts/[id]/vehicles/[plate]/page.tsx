@@ -1,3 +1,4 @@
+'use client';
 import { Vehicle } from 'VehiclesTypes';
 import TabsPage from '../../components/TabsPage';
 import { getVehicle } from '@/lib/vehicles/getVehicles';
@@ -5,9 +6,7 @@ import FeedbackError from '@/components/utils/feedbacks/FeedbackError';
 import VehicleData from './components/VehicleData';
 import { getDriversByPlateAndAccount } from '@/lib/drivers/getDrivers';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import PageTitle from '@/components/utils/PageTitle';
-import { Vin_drivers } from 'DriversTypes';
-import DriverMap from './components/DriverMap';
+import DriversData from './components/DriversData';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,6 +19,7 @@ type DataType = {
 
 export default async function VehiclePage({ params }: DataType) {
   const account_id = Number(params.id);
+
   let isLoading = true;
   let vehicleOk = false;
 
@@ -85,33 +85,20 @@ export default async function VehiclePage({ params }: DataType) {
       )}
 
       {drivers && vehicle && (
-        <div className="px-4 py-6 border rounded-b-md">
-          <VehicleData vehicle={vehicle} />
+        <>
+          <div className="px-4 py-6 border rounded-b-md">
+            <VehicleData vehicle={vehicle} />
 
-          <div className="mb-5">
-            <PageTitle>Motorista(s)</PageTitle>
-          </div>
-
-          {drivers.map((driver: Vin_drivers) => {
-            return (
-              <DriverMap
-                key={driver.driver_id}
-                vehicleOk={vehicleOk}
-                driver={driver}
+            {drivers && (
+              <DriversData
                 vehicle={vehicle}
+                drivers={drivers}
+                vehicleOk={vehicleOk}
                 account_id={account_id}
               />
-            );
-          })}
-
-          {drivers && drivers.length == 0 && (
-            <div className="border rounded-md p-4 mb-2">
-              <div className="text-rede-red-400 text-lg">
-                Não há motoristas vinculados a este veículo
-              </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        </>
       )}
     </>
   );

@@ -40,7 +40,7 @@ export default function ModalVehicles({
   driverId,
   vehicles,
   setVehicles,
-  account_id
+  account_id,
 }: DataType) {
   const [isLoading, setIsLoading] = useState(false);
   const [hasVehicleType, setHasVehicleType] = useState(false);
@@ -59,7 +59,7 @@ export default function ModalVehicles({
       license_plate: data.license_plate,
       vehicle_type: data.vehicle_type,
       vehicle_renavam: data.vehicle_renavam,
-      account_id: account_id
+      account_id: account_id,
     })
       .then((data) => {
         if (vehicles) {
@@ -202,11 +202,11 @@ export default function ModalVehicles({
                                   )}
                                 </div>
                               </div>
-                              <div className='mt-2'>
-                                <RenavamMaskedInput 
+                              <div className="mt-2">
+                                <RenavamMaskedInput
                                   register={register}
                                   errors={errors}
-                                  name='vehicle_renavam'
+                                  name="vehicle_renavam"
                                 />
                               </div>
                             </Transition>

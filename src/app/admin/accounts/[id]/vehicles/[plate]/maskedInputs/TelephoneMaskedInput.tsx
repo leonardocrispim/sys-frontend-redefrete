@@ -41,14 +41,7 @@ export default function TelephoneMaskedInput({
 
       <div className="mt-1">
         <InputMask
-          {...register(name, {
-            validate: (value: string) => {
-              if (value.length > 0 && value.length < 14) {
-                return 'Insira um número válido';
-              }
-              return true;
-            },
-          })}
+          {...register(name)}
           name={name}
           id={name}
           mask={mask}
