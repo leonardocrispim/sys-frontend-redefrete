@@ -8,7 +8,8 @@ type DataType = {
   name: string;
   errors: any;
   setValue: any;
-  isChecked?: boolean | null
+  isChecked?: boolean | null;
+  value?: string;
 };
 
 export default function CpfMaskedInput({
@@ -16,9 +17,12 @@ export default function CpfMaskedInput({
   name,
   errors,
   setValue,
-  isChecked
+  isChecked,
+  value,
 }: DataType) {
   const [mask, setMask] = useState('999.999.999-999');
+
+  console.log('VALUE CPF', value);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const text = event.target.value;
@@ -62,8 +66,11 @@ export default function CpfMaskedInput({
           maskChar=""
           placeholder="000.000.000-00"
           type="text"
+          defaultValue={value}
           readOnly={isChecked}
-          className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isChecked ? ` bg-rede-gray-600` : `bg-white`}`} 
+          className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${
+            isChecked ? ` bg-rede-gray-600` : `bg-white`
+          }`}
         />
         {errors[name] && (
           <p className=" text-red-700 text-xs mt-1">{errors[name].message}</p>

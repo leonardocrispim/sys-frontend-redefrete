@@ -10,7 +10,8 @@ type DataType = {
 };
 
 export default function AccountData({ account }: DataType) {
-  const [currentAccount, setCurrentAccount] = useState<Account_Address>(account);
+  const [currentAccount, setCurrentAccount] =
+    useState<Account_Address>(account);
 
   const [tab, setTab] = useState<'data' | 'edit'>('data');
   const [isSaved, setIsSaved] = useState(false);

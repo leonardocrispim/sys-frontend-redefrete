@@ -8,7 +8,7 @@ type DataType = {
   errors: any;
   setValue: any;
   title: string;
-  value?: string;
+  value?: string | null;
   driverExistOnAccount?: boolean;
 };
 

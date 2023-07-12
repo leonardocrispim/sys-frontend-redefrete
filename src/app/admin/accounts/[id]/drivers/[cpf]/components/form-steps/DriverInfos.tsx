@@ -1,46 +1,32 @@
 import FeedbackError from '@/components/utils/feedbacks/FeedbackError';
-import CpfMaskedInput from '../maskedInputs/CpfMaskedInput';
-import { DriverContact } from './DriverContact';
-import RgMaskedInput from '../maskedInputs/RgMaskedInput';
+import CpfMaskedInput from '../../../new/components/maskedInputs/CpfMaskedInput';
+import { DriverContact } from '../../../new/components/form-steps/DriverContact';
+import RgMaskedInput from '../../../new/components/maskedInputs/RgMaskedInput';
 import { brazilStates } from '@/lib/utils/utilsConstants';
-import DateMaskedInput from '../maskedInputs/DataMaskedInput';
+import DateMaskedInput from '../../../new/components/maskedInputs/DataMaskedInput';
+import { Driver } from 'DriversTypes';
+import formatDate from '@/lib/utils/formatDate';
 
 export type DataProps = {
   errors: any;
   register: any;
   setValue: any;
-  isChecked: boolean;
-  checkBoxRef: any;
-  handleCheck: any;
   saveError: any;
+  driver?: Driver;
 };
 
-export function DriverInfo({
+export function DriverInfos({
   errors,
   register,
   setValue,
-  isChecked,
-  checkBoxRef,
-  handleCheck,
   saveError,
+  driver,
 }: DataProps) {
+  console.log('DRIVER IN DRIVER INFOS', driver);
+
   return (
     <>
       <div className="border rounded-md p-4">
-        <div className="sm:col-span-4 flex border-b mb-2 pb-2">
-          <div className="mt-1">
-            <input
-              type="checkbox"
-              className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-              onClick={handleCheck}
-              ref={checkBoxRef}
-            ></input>
-          </div>
-
-          <label className="block text-sm font-medium leading-6 text-gray-900 ml-2 mt-[3px]">
-            Preencher com os dados da conta
-          </label>
-        </div>
         {saveError.length > 0 && <FeedbackError text={saveError} />}
 
         <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-4">
@@ -64,14 +50,12 @@ export function DriverInfo({
                     return true;
                   },
                 })}
-                readOnly={isChecked}
                 type="text"
                 name="driver_name"
                 id="driver_name"
+                defaultValue={driver?.driver_name}
                 placeholder="João da Silva"
-                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${
-                  isChecked ? ` bg-rede-gray-600` : `bg-white`
-                }`}
+                className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm bg-white`}
               />
             </div>
             {errors?.driver_name && (
@@ -87,7 +71,7 @@ export function DriverInfo({
               name="driver_cpf_cnpj"
               register={register}
               errors={errors}
-              isChecked={isChecked}
+              value={driver?.driver_cpf_cnpj}
             />
           </div>
 
@@ -97,6 +81,11 @@ export function DriverInfo({
               name="driver_birth_date"
               errors={errors}
               setValue={setValue}
+              value={
+                driver?.rd_driver_meta.driver_birth_date
+                  ? formatDate(driver.rd_driver_meta.driver_birth_date)
+                  : ''
+              }
               labelTitle="Data de Nascimento"
             />
           </div>
@@ -110,6 +99,7 @@ export function DriverInfo({
                 {...register('driver_sex')}
                 name="driver_sex"
                 id="driver_sex"
+                defaultValue={driver?.rd_driver_meta.driver_sex}
                 className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm bg-white`}
               >
                 <option value="">Selecione</option>
@@ -124,6 +114,7 @@ export function DriverInfo({
               name="driver_rg"
               register={register}
               errors={errors}
+              value={driver?.rd_driver_meta.driver_rg}
             />
           </div>
 
@@ -134,6 +125,11 @@ export function DriverInfo({
               register={register}
               errors={errors}
               labelTitle="Data de Emissão"
+              value={
+                driver?.rd_driver_meta.driver_rg_date
+                  ? formatDate(driver.rd_driver_meta.driver_rg_date)
+                  : ''
+              }
             />
           </div>
 
@@ -146,6 +142,7 @@ export function DriverInfo({
                 {...register('driver_rg_uf')}
                 name="driver_rg_uf"
                 id="driver_rg_uf"
+                defaultValue={driver?.rd_driver_meta.driver_rg_uf}
                 className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm bg-white`}
               >
                 <option value="">Selecione</option>
@@ -173,6 +170,7 @@ export function DriverInfo({
                 name="driver_father_name"
                 id="driver_father_name"
                 placeholder="Pedro da Silva"
+                defaultValue={driver?.rd_driver_meta.driver_father_name}
                 className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm bg-white`}
               />
             </div>
@@ -193,6 +191,7 @@ export function DriverInfo({
                 name="driver_mother_name"
                 id="driver_mother_name"
                 placeholder="Joana Pereira"
+                defaultValue={driver?.rd_driver_meta.driver_mother_name}
                 className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm bg-white`}
               />
             </div>
@@ -202,7 +201,7 @@ export function DriverInfo({
             errors={errors}
             register={register}
             setValue={setValue}
-            isChecked={isChecked}
+            driver={driver}
           />
         </div>
       </div>

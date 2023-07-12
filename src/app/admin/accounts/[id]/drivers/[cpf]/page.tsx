@@ -26,16 +26,19 @@ export default async function accountsPage({ params }: DataType) {
       }
     })
     .catch((err) => {
-      return <FeedbackError text={err.message} />;
+      return {} as Driver;
     });
+
+  if (!driver.account_id) {
+    return <FeedbackError text={'Erro na busca de Motorista'} />;
+  }
 
   return (
     <>
       <TabsPage current="drivers" account_id={accountId} />
 
       <div className="px-4 py-6 border rounded-b-md">
-        {/* @ts-ignore */}
-        <DriverData driver={driver} />
+        <DriverData driver={driver as Driver} />
 
         <VehiclesData
           // @ts-ignore

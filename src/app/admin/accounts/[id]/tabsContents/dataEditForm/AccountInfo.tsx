@@ -1,6 +1,6 @@
 import FeedbackSuccess from '@/components/utils/feedbacks/FeedbackSuccess';
 import { formatCPFCNPJ, formatPhone } from '@/lib/utils/utils';
-import { Account, Account_Address } from 'AccountsTypes';
+import { Account_Address } from 'AccountsTypes';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaUserEdit } from 'react-icons/fa';
 

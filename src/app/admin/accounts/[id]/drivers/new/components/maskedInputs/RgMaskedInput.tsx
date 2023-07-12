@@ -8,9 +8,15 @@ type DataType = {
   name: string;
   errors: any;
   isChecked?: boolean | null;
+  value?: string | null;
 };
 
-export default function RgMaskedInput({ register, name, errors }: DataType) {
+export default function RgMaskedInput({
+  register,
+  name,
+  errors,
+  value,
+}: DataType) {
   const [mask, setMask] = useState('99.999.999-*');
 
   return (
@@ -22,12 +28,12 @@ export default function RgMaskedInput({ register, name, errors }: DataType) {
         <InputMask
           {...register(name, {
             validate: (value: string) => {
-              if(value.length == 0 || value.length == 12) {
-                return true
+              if (value.length == 0 || value.length == 12) {
+                return true;
               } else {
-                return 'Digite um RG válido!'
+                return 'Digite um RG válido!';
               }
-            }
+            },
           })}
           name={name}
           id={name}
@@ -35,6 +41,7 @@ export default function RgMaskedInput({ register, name, errors }: DataType) {
           maskChar=""
           type="text"
           placeholder="00.000.000-0"
+          defaultValue={value}
           className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm bg-white`}
         />
         {errors[name] && (

@@ -8,7 +8,8 @@ type DataType = {
   errors: any;
   setValue: any;
   title: string;
-  isChecked?: boolean | null
+  isChecked?: boolean | null;
+  value?: string | null;
 };
 
 export default function TelephoneMaskedInput({
@@ -17,7 +18,8 @@ export default function TelephoneMaskedInput({
   errors,
   setValue,
   title,
-  isChecked
+  isChecked,
+  value,
 }: DataType) {
   const [mask, setMask] = useState('(99) 9999-99999');
 
@@ -42,11 +44,11 @@ export default function TelephoneMaskedInput({
           {...register(name, {
             validate: (value: string) => {
               if (isChecked == true) {
-                return true
+                return true;
               } else if (value.length > 0 && value.length < 14) {
                 return 'Insira um número válido';
               }
-              return true
+              return true;
             },
           })}
           name={name}
@@ -57,7 +59,10 @@ export default function TelephoneMaskedInput({
           placeholder="(00) 00000-0000"
           type="text"
           readOnly={isChecked}
-          className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${isChecked ? ` bg-rede-gray-600` : `bg-white`}`} 
+          defaultValue={value}
+          className={`block w-full text-sm p-2 border rounded-md focus:outline-0 text-rede-gray-300 placeholder:text-rede-gray-500 placeholder:text-sm ${
+            isChecked ? ` bg-rede-gray-600` : `bg-white`
+          }`}
         />
         {errors[name] && (
           <p className=" text-red-700 text-xs mt-1">{errors[name].message}</p>
